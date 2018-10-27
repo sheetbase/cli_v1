@@ -1,6 +1,6 @@
 {
   "name": "@sheetbase/cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Official CLI for working with Sheetbase. ",
   "main": "./src/index.js",
   "preferGlobal": true,
@@ -14,7 +14,6 @@
     "docs-usage": "npm i --save-dev ucfirst extract-comments parse-comments && tsc src/usage.ts && node src/usage.js && npm un --save-dev ucfirst extract-comments parse-comments",
     "docs-api": "typedoc ./src --out ./docs/api --mode modules --target ES5 --ignoreCompilerErrors",
     "docs": "npm run docs-usage && npm run docs-api",
-    "publish": "npm publish --access public",
     "lint": "tslint --project tslint.json && echo 'No lint errors.'",
     "test": "nyc --cache false mocha --timeout 100000 -- tests/*.js",
     "coverage": "nyc --cache false report --reporter=text-lcov | coveralls"
