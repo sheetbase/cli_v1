@@ -138,7 +138,7 @@ Display help.
 
 #### Options
 
-- `detail`: Detail help.
+- `--detail`: Detail help.
 
 ### *
 

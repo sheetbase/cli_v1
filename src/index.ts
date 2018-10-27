@@ -251,7 +251,7 @@ program
 /**
  * Display help.
  * @name help
- * @param {string?} [detail] Detail help.
+ * @param {string?} [--detail] Detail help.
  */
 program
   .command('help')

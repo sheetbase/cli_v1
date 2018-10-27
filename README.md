@@ -4,7 +4,7 @@ Official CLI for working with Sheetbase.
 
 <!-- <block:header> -->
 
-[![Build Status](https://travis-ci.org/Sheetbase/cli.svg?branch=master)](https://travis-ci.org/Sheetbase/cli) [![Coverage Status](https://coveralls.io/repos/github/Sheetbase/cli/badge.svg?branch=master)](https://coveralls.io/github/Sheetbase/cli?branch=master) [![License][license_badge]][license_url] [![Support me on Patreon][badge_patreon]][patreon_url] [![PayPal][badge_paypal_donate]][paypal_donate_url] [![Ask me anything][badge_ask_me]][ask_me_url]
+[![Build Status](https://travis-ci.org/Sheetbase/cli.svg?branch=master)](https://travis-ci.org/Sheetbase/cli) [![Coverage Status](https://coveralls.io/repos/github/Sheetbase/cli/badge.svg?branch=master)](https://coveralls.io/github/Sheetbase/cli?branch=master) [![NPM](https://img.shields.io/npm/v/@sheetbase/cli.svg)](https://github.com/Sheetbase/cli) [![License][license_badge]][license_url] [![Support me on Patreon][badge_patreon]][patreon_url] [![PayPal][badge_paypal_donate]][paypal_donate_url] [![Ask me anything][badge_ask_me]][ask_me_url]
 
 <!-- </block:header> -->
 
@@ -172,7 +172,7 @@ Display help.
 
 #### Options
 
-- `detail`: Detail help.
+- `--detail`: Detail help.
 
 ### *
 
