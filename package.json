@@ -1,0 +1,78 @@
+{
+  "name": "@sheetbase/cli",
+  "version": "0.0.1",
+  "description": "Official CLI for working with Sheetbase. ",
+  "main": "./src/index.js",
+  "preferGlobal": true,
+  "bin": {
+    "sheetbase": "./src/index.js"
+  },
+  "scripts": {
+    "compile": "tsc --project tsconfig.json",
+    "build": "npm run compile && npm i -g --loglevel=error",
+    "build-fresh": "npm cache clean --force && npm i && npm run build",
+    "docs-usage": "npm i --save-dev ucfirst extract-comments parse-comments && tsc src/usage.ts && node src/usage.js && npm un --save-dev ucfirst extract-comments parse-comments",
+    "docs-api": "typedoc ./src --out ./docs/api --mode modules --target ES5 --ignoreCompilerErrors",
+    "docs": "npm run docs-usage && npm run docs-api",
+    "publish": "npm publish --access public",
+    "lint": "tslint --project tslint.json && echo 'No lint errors.'",
+    "test": "nyc --cache false mocha --timeout 100000 -- tests/*.js",
+    "coverage": "nyc --cache false report --reporter=text-lcov | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sheetbase/cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sheetbase/cli/issues"
+  },
+  "keywords": [
+    "sheetbase",
+    "google-apps-script",
+    "web",
+    "app",
+    "api",
+    "theme"
+  ],
+  "importSort": {
+    ".ts": {
+      "parser": "typescript",
+      "style": "module-compact"
+    },
+    "on-save": false
+  },
+  "author": "Sheetbase",
+  "license": "Apache-2.0",
+  "homepage": "https://sheetbase.net",
+  "dependencies": {
+    "adm-zip": "^0.4.11",
+    "axios": "^0.18.0",
+    "chalk": "^2.4.1",
+    "change-case": "^3.0.2",
+    "clear": "^0.1.0",
+    "commander": "^2.19.0",
+    "configstore": "^4.0.0",
+    "figlet": "^1.2.1",
+    "firebase": "^5.5.5",
+    "fs-extra": "^7.0.0",
+    "fs-readdir-recursive": "^1.1.0",
+    "google-auth-library": "^2.0.0",
+    "inquirer": "^6.2.0",
+    "opn": "^5.4.0",
+    "querystring": "^0.2.0",
+    "tty-table": "^2.6.9",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.6",
+    "@types/fs-extra": "^5.0.4",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.0",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.2",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.3"
+  }
+}

@@ -1,0 +1,5 @@
+*.js
+node_modules/
+.nyc_output
+.googlerc.json
+.sheetbaserc.json
