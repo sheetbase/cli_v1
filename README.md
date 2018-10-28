@@ -28,9 +28,31 @@ Go to https://script.google.com/home/usersettings, then enable the API.
 
 My Drive > Connect more apps > (search for Google Apps Script) > Connect
 
-## Development
+## Develop & deploy
 
-Reference: https://sheetbase.github.io/cli
+### Backend
+
+After running `sheetbase setup` successfully.
+
+Develop the backend in the **backend/** folder. Run `npm run build` to build the distribution package (this has security concern, see below). Run `npm run update` to update the backend.
+
+To authorize the script:
+- Run `sheetbase urls open backend`, to open the script in Google Apps Script editor.
+- Publish > Deploy as web app... > Update
+- Follow the steps to authorize (ignore the warning)
+- Verify by `sheetbase urls open backendUrl`
+
+### Frontend
+
+Develop and build according to your framework of choice.
+
+Deploy to a static hosting or build an hybrid app.
+
+## Security
+
+Only start a project with themes that you trust. Bad people may put malicious code in CLI hooks and backend build script.
+
+Please let us know if there is any vulnerable or how to improve the development.
 
 ## Usage
 
@@ -177,6 +199,10 @@ Display help.
 ### *
 
 Any other command is not supported.
+
+## Development
+
+Reference: https://sheetbase.github.io/cli
 
 ## Lisence
 

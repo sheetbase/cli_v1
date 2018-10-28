@@ -79,8 +79,20 @@
 				<p>Go to <a href="https://script.google.com/home/usersettings">https://script.google.com/home/usersettings</a>, then enable the API.</p>
 				<h3 id="connect-apps-script-in-drive">Connect Apps Script in Drive</h3>
 				<p>My Drive &gt; Connect more apps &gt; (search for Google Apps Script) &gt; Connect</p>
-				<h2 id="development">Development</h2>
-				<p>Reference: <a href="https://sheetbase.github.io/cli">https://sheetbase.github.io/cli</a></p>
+				<h2 id="develop-deploy">Develop &amp; deploy</h2>
+				<h3 id="backend">Backend</h3>
+				<p>After running <strong>sheetbase setup</strong> successfully.</p>
+				<p>Develop the backend in the ./backend folder. Run <em>npm run build</em> to build the distribution package. Run <em>npm run update</em> to update the backend.</p>
+				<p>To authorize the script:</p>
+				<ul>
+					<li>Run <strong>sheetbase urls open backend</strong>, to open the script in Google Apps Script editor.</li>
+					<li>Publish &gt; Deploy as web app... &gt; Update</li>
+					<li>Follow the steps to authorize (ignore the warning)</li>
+					<li>Verify by <strong>sheetbase urls open backendUrl</strong></li>
+				</ul>
+				<h3 id="frontend">Frontend</h3>
+				<p>Develop and build according to your framework of choice.</p>
+				<p>Deploy to a static hosting or build an hybrid app.</p>
 				<h2 id="usage">Usage</h2>
 				<h3 id="account">Account</h3>
 				<p>Manage Sheetbase account.
@@ -194,6 +206,8 @@
 				</ul>
 				<h3 id="-">*</h3>
 				<p>Any other command is not supported.</p>
+				<h2 id="development">Development</h2>
+				<p>Reference: <a href="https://sheetbase.github.io/cli">https://sheetbase.github.io/cli</a></p>
 				<h2 id="lisence">Lisence</h2>
 				<p>Sheetbase CLI is released under the <a href="https://github.com/sheetbase/cli/blob/master/LICENSE">Apache-2.0</a> license.</p>
 				<!-- <block:footer> -->
