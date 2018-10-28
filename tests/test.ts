@@ -224,7 +224,7 @@ describe('Test START command', () => {
   });
 });
 
-describe('Test SETUP command', () => {
+describe.skip('Test SETUP command', () => {
   before(() => {
     // create a new project
     spawnSync(SHEETBASE, ['start', PROJECT_NAME, '--no-npm', '--no-setup']);
@@ -247,7 +247,7 @@ describe('Test SETUP command', () => {
     await driveRemove(googleClient, driveFolder);
   });
 
-  it.skip('should setup the project', () => {
+  it('should setup the project', () => {
     expectError(['setup'], '\n Project setup succeed!', PROJECT_PATH);
   });
 });
