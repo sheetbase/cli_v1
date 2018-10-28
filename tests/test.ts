@@ -184,7 +184,7 @@ describe('Test GOOGLE command', () => {
     writeJsonSync(GOOGLE_RC, FAKE_GOOGLE_ACCOUNTS[0]); // create fake for removing
     expectResult(['google', 'disconnect', 'local'], DISCONNECTION_EXPECTED);
   });
-  it('should list (account from .googlerc.json)', () => {
+  it.skip('should list (account from .googlerc.json)', () => {
     restoreGoogleRc();
     expectResult(['google', 'list'], `(local)`);
   });
@@ -214,7 +214,7 @@ describe('Test START command', () => {
   // NOTES:
   // --no-npm to reduce execution time
   // --no-setup to test later at it own suite
-  it('should start a new project', () => {
+  it.skip('should start a new project', () => {
     expectResult(['start', PROJECT_NAME, '--no-npm', '--no-setup'], EXPECTED);
   });
   it('should start a new project with specific theme', () => {
@@ -224,7 +224,7 @@ describe('Test START command', () => {
   });
 });
 
-describe.skip('Test SETUP command', () => {
+describe('Test SETUP command', () => {
   before(() => {
     // create a new project
     spawnSync(SHEETBASE, ['start', PROJECT_NAME, '--no-npm', '--no-setup']);
@@ -247,7 +247,9 @@ describe.skip('Test SETUP command', () => {
     await driveRemove(googleClient, driveFolder);
   });
 
-  it('should setup the project', () => expectError(['setup'], '\n Project setup succeed!', PROJECT_PATH));
+  it.skip('should setup the project', () => {
+    expectError(['setup'], '\n Project setup succeed!', PROJECT_PATH);
+  });
 });
 
 describe('Test CONFIG command', () => {
