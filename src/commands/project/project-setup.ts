@@ -1,4 +1,3 @@
-import { execSync } from 'child_process';
 import { OAuth2Client } from 'google-auth-library';
 import { sentenceCase } from 'change-case';
 
@@ -29,17 +28,13 @@ export async function projectSetupCommand(options: Options) {
             googleClient, `Sheetbase Project: ${sentenceCase(name)}`,
         );
         const scriptId = await gasCreate(
-            googleClient, `${sentenceCase(name)} Backend`,
-            driveFolder,
+            googleClient, `${sentenceCase(name)} Backend`, driveFolder,
         );
         await setPackageDotJson({ name, version: '1.0.0', description: 'A Sheetbase project' }, true);
         await setSheetbaseDotJson({ cloudId: '', driveFolder });
         await setClaspConfigs({ scriptId }, true);
 
-        // deploy backend
-        execSync((options.npm ? '' : 'npm install && ') + 'npm run build',
-            { cwd: './backend', stdio: 'ignore' },
-        );
+        // init deploy backend
         const { url } = await gasWebappInit(googleClient, scriptId);
         await setConfigs({ backendUrl: url });
     } catch (error) {

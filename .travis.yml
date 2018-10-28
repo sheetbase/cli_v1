@@ -1,15 +1,9 @@
 sudo: required
 os:
 - linux
-- osx
 language: node_js
 node_js:
-- node
-- '10'
-- '9'
 - '8'
-- '7'
-- '6'
 before_install:
 - openssl aes-256-cbc -K $encrypted_24f652ca329e_key -iv $encrypted_24f652ca329e_iv
   -in ./tests/.sheetbaserc.json.enc -out .sheetbaserc.json -d || true

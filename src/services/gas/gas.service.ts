@@ -4,7 +4,7 @@ import * as readDir from 'fs-readdir-recursive';
 
 import { FileCopyRequestBody } from '../drive/drive.type';
 import { CreationRequestBody, File } from './gas.type';
-import { DEPLOY_PATH } from './gas.config';
+import { DEPLOY_PATH, INIT_CONTENT } from './gas.config';
 
 export async function gasCreate(
     client: OAuth2Client,
@@ -89,8 +89,11 @@ export async function gasGetLocalContent(path: string): Promise<File[]> {
 export async function gasPush(
     client: OAuth2Client,
     scriptId: string,
+    files?: File[],
 ) {
-    const files = await gasGetLocalContent(DEPLOY_PATH);
+    if (!files) {
+        files = await gasGetLocalContent(DEPLOY_PATH);
+    }
     const { data } = await client.request({
         method: 'PUT',
         url: `https://script.googleapis.com/v1/projects/${scriptId}/content`,
@@ -113,10 +116,10 @@ export async function gasVersions(
 export async function gasVersion(
     client: OAuth2Client,
     scriptId: string,
-    description?: string,
+    description = 'New version',
 ) {
     const requestData: any = {};
-    if (description) requestData.description = description ? description : 'New version.';
+    if (description) requestData.description = description;
     const { data } = await client.request({
         method: 'POST',
         url: `https://script.googleapis.com/v1/projects/${scriptId}/versions`,
@@ -140,11 +143,11 @@ export async function gasDeploy(
     client: OAuth2Client,
     scriptId: string,
     versionNumber = 1,
-    description?: string,
+    description = 'Deploy webapp',
 ) {
     const requestData: any = {};
     if (versionNumber) requestData.versionNumber = versionNumber || 1;
-    if (description) requestData.description = description ? description : 'Init webapp.';
+    if (description) requestData.description = description;
     const { data } = await client.request({
         method: 'POST',
         url: `https://script.googleapis.com/v1/projects/${scriptId}/deployments`,
@@ -158,13 +161,13 @@ export async function gasRedeploy(
     scriptId: string,
     deploymentId: string,
     versionNumber: number,
-    description?: string,
+    description = 'Update webapp',
 ) {
     const requestData: any = {
         deploymentConfig: {
             scriptId,
             versionNumber,
-            description: description ? description : `Update webapp V${versionNumber}.`,
+            description: description ? description : `Update webapp V${versionNumber}`,
         },
     };
     const { data } = await client.request({
@@ -190,13 +193,14 @@ export async function gasUndeploy(
 export async function gasWebappInit(
     client: OAuth2Client,
     scriptId: string,
-    description?: string,
+    description = 'Init webapp',
+    pushContent = false,
 ) {
     // update the content
-    await gasPush(client, scriptId);
+    await gasPush(client, scriptId, pushContent ? null : INIT_CONTENT);
     // create new version
-    await gasVersion(client, scriptId, description);
-    const result = await gasDeploy(client, scriptId, 1, 'Init the webapp') as any;
+    await gasVersion(client, scriptId, 'Init');
+    const result = await gasDeploy(client, scriptId, 1, description) as any;
     return result.entryPoints[0].webApp;
 }
 
@@ -205,14 +209,14 @@ export async function gasWebappUpdate(
     scriptId: string,
     deploymentId: string,
     versionNumber?: number,
-    description?: string,
+    description = 'Update webapp',
 ) {
     // deploy new version
     if (!versionNumber) {
         await gasPush(client, scriptId);
         // create new version
-        versionNumber = (await gasVersion(client, scriptId, description) as any).versionNumber;
+        versionNumber = (await gasVersion(client, scriptId, `Update V${versionNumber}`) as any).versionNumber;
     }
     // redeploy or rollback
-    return await gasRedeploy(client, scriptId, deploymentId, versionNumber);
+    return await gasRedeploy(client, scriptId, deploymentId, versionNumber, description);
 }

@@ -30,7 +30,7 @@ My Drive > Connect more apps > (search for Google Apps Script) > Connect
 
 ## Development
 
-Reference: https://sheetbase.github.io/cli/api
+Reference: https://sheetbase.github.io/cli
 
 ## Usage
 

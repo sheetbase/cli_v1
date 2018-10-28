@@ -67,7 +67,7 @@ function expectError(args: string[], expected: string, cwd = '.') {
   expect(result.status).to.equal(1);
 }
 
-describe('Test --help for each command', () => {
+describe.skip('Test --help for each command', () => {
   it('should account --help', () => expectResult(['account', '-h'], 'Manage Sheetbase account.'));
   it('should login --help', () => expectResult(['login', '-h'], 'Login to Sheetbase Cloud account.'));
   it('should logout --help', () => expectResult(['logout', '-h'], 'Logout of your Sheetbase Cloud account.'));
@@ -85,13 +85,13 @@ describe('Test --help for each command', () => {
   it('should help --help', () => expectResult(['help', '-h'], 'Display help.'));
 });
 
-describe('Test command group when missing subcommands', () => {
+describe.skip('Test command group when missing subcommands', () => {
   it('should show account subcommands', () => expectResult(['account'], 'Account subcommands:'));
   it('should show google subcommands', () => expectResult(['google'], 'Google subcommands:'));
   it('should show project subcommands', () => expectResult(['project'], 'Project subcommands:'));
 });
 
-describe('Test ACCOUNT command', () => {
+describe.skip('Test ACCOUNT command', () => {
   before(() => {
     // log user in
     const sheetbaseRc = readJsonSync('.sheetbaserc.json');
@@ -130,7 +130,7 @@ describe('Test ACCOUNT command', () => {
   it('should logged out', () => expectResult(['logout'], 'You logged out!'));
 });
 
-describe('Test GOOGLE command', () => {
+describe.skip('Test GOOGLE command', () => {
   before(() => {
     removeGoogleRc();
     // need at least an account connected
@@ -250,7 +250,7 @@ describe('Test SETUP command', () => {
   it('should setup the project', () => expectResult(['setup'], '\n Project setup succeed!', PROJECT_PATH));
 });
 
-describe('Test CONFIG command', () => {
+describe.skip('Test CONFIG command', () => {
   before(() => {
     // create a new project
     spawnSync(SHEETBASE, ['start', PROJECT_NAME, '--no-npm', '--no-setup']);
@@ -283,7 +283,7 @@ describe('Test CONFIG command', () => {
   });
 });
 
-describe('Test URLS command', () => {
+describe.skip('Test URLS command', () => {
   before(() => {
     // create a new project
     spawnSync(SHEETBASE, ['start', PROJECT_NAME, '--no-npm', '--no-setup']);
@@ -305,7 +305,7 @@ describe('Test URLS command', () => {
   });
 });
 
-describe('Test INFO command', () => {
+describe.skip('Test INFO command', () => {
   before(() => {
     // create a new project
     spawnSync(SHEETBASE, ['start', PROJECT_NAME, '--no-npm', '--no-setup']);
@@ -316,7 +316,7 @@ describe('Test INFO command', () => {
   it('should show project info', () => expectResult(['info'], 'Project information:', PROJECT_NAME));
 });
 
-describe('Test HOOKS command', () => {
+describe.skip('Test HOOKS command', () => {
   before(() => {
     writeJsonSync('sheetbase.json', {});
   });
@@ -335,16 +335,16 @@ describe('Test HOOKS command', () => {
   });
 });
 
-describe('Test DOCS command', () => {
+describe.skip('Test DOCS command', () => {
   it('should open docs', () => expectResult(['docs'], 'https://sheetbase.net/docs'));
 });
 
-describe('Test HELP command', () => {
+describe.skip('Test HELP command', () => {
   it('should show help', () => expectResult(['help'], 'Global commands:'));
   it('should show detail help', () => expectResult(['help', '--detail'], 'Command groups:'));
 });
 
-describe('Test project specific commands while not in a Sheetbase project', () => {
+describe.skip('Test project specific commands while not in a Sheetbase project', () => {
   const EXPECTED = '\n [ERROR] Not in a Sheetbase project.';
   it('should fail for setup', () => expectError(['setup'], EXPECTED));
   it('should fail for config', () => expectError(['config'], EXPECTED));
@@ -353,7 +353,7 @@ describe('Test project specific commands while not in a Sheetbase project', () =
   it('should fail for hooks', () => expectError(['hooks'], EXPECTED));
 });
 
-describe('Test commands while logged out', () => {
+describe.skip('Test commands while logged out', () => {
   // logout of Sheetbase
   before(() => {
     spawnSync(SHEETBASE, ['logout']);
@@ -362,7 +362,7 @@ describe('Test commands while logged out', () => {
   it('should fail for profile', () => expectError(['profile'], EXPECTED));
 });
 
-describe('Test commands while no Google account', () => {
+describe.skip('Test commands while no Google account', () => {
   // remove all google accounts
   before(() => {
     spawnSync(SHEETBASE, ['google', 'disconnect', 'all']);
@@ -380,19 +380,19 @@ describe('Test commands while no Google account', () => {
   it('should fail for google list', () => expectError(['google', 'list'], EXPECTED));
 });
 
-describe('Test variations of sheetbase help', () => {
+describe.skip('Test variations of sheetbase help', () => {
   const EXPECTED = `Usage: sheetbase <command> [<args>] [--help] [options]`;
   it('should show help for sheetbase help', () => expectResult(['help'], EXPECTED));
   it('should show help for sheetbase --help', () => expectResult(['--help'], EXPECTED));
   it('should show help for sheetbase -h', () => expectResult(['-h'], EXPECTED));
 });
 
-describe('Test variations of sheetbase --version', () => {
+describe.skip('Test variations of sheetbase --version', () => {
   const EXPECTED = require('./../package.json').version;
   it('should show version for sheetbase --version', () => expectResult(['--version'], EXPECTED));
   it('should show version for sheetbase -v', () => expectResult(['-v'], EXPECTED));
 });
 
-describe('Test unknown commands', () => {
+describe.skip('Test unknown commands', () => {
   it('should fail (unknown command)', () => expectError(['unknown'], `Unknown command`));
 });
