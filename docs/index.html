@@ -81,18 +81,23 @@
 				<p>My Drive &gt; Connect more apps &gt; (search for Google Apps Script) &gt; Connect</p>
 				<h2 id="develop-deploy">Develop &amp; deploy</h2>
 				<h3 id="backend">Backend</h3>
-				<p>After running <strong>sheetbase setup</strong> successfully.</p>
-				<p>Develop the backend in the ./backend folder. Run <em>npm run build</em> to build the distribution package. Run <em>npm run update</em> to update the backend.</p>
+				<p>After running <code>sheetbase setup</code> successfully.</p>
+				<p>Develop the backend in the <strong>backend/</strong> folder. Run <code>npm run build</code> to build the distribution package (this has security concern, see below). Run <code>npm run update</code> to update the backend.</p>
 				<p>To authorize the script:</p>
 				<ul>
-					<li>Run <strong>sheetbase urls open backend</strong>, to open the script in Google Apps Script editor.</li>
+					<li>Run <code>sheetbase urls open backend</code>, to open the script in Google Apps Script editor.</li>
 					<li>Publish &gt; Deploy as web app... &gt; Update</li>
 					<li>Follow the steps to authorize (ignore the warning)</li>
-					<li>Verify by <strong>sheetbase urls open backendUrl</strong></li>
+					<li>Verify by <code>sheetbase urls open backendUrl</code></li>
 				</ul>
 				<h3 id="frontend">Frontend</h3>
 				<p>Develop and build according to your framework of choice.</p>
 				<p>Deploy to a static hosting or build an hybrid app.</p>
+				<h2 id="security">Security</h2>
+				<p>Only start a project with themes that you trust. Bad people may put malicious code in CLI hooks and backend build script.</p>
+				<p>Add <code>--trusted</code> flag to project-related commands (<code>setup</code>, <code>config</code>, <code>urls</code>, ...) to allow the CLI to run sensitive actions, such as: <em>hooks</em>, <em>setup initial build</em>.</p>
+				<p>When starting a project with an original theme, the CLI auto add <code>--trusted</code> to the <code>setup</code> command to let it run setup hooks and <code>npm run build</code> before initial deploy the backend.</p>
+				<p>Please let us know if there is any vulnerable or how to improve the development.</p>
 				<h2 id="usage">Usage</h2>
 				<h3 id="account">Account</h3>
 				<p>Manage Sheetbase account.
@@ -151,6 +156,7 @@
 					<li><code>--no-setup</code>: (start) Do not run setup command.</li>
 					<li><code>--no-npm</code>: (start) Do not install packages.</li>
 					<li><code>--no-hook</code>: (start, setup, config, urls) Do not run hook.</li>
+					<li><code>--trusted</code>: (setup) Trusted to run sensitive actions.</li>
 				</ul>
 				<h3 id="start">Start</h3>
 				<p>Start a new project.
@@ -162,12 +168,14 @@
 					<li><code>--no-setup</code>: Do not run setup command.</li>
 					<li><code>--no-npm</code>: Do not install packages.</li>
 					<li><code>--no-hook</code>: Do not run setup hook.</li>
+					<li><code>--trusted</code>: Trusted to run setup sensitive actions.</li>
 				</ul>
 				<h3 id="setup">Setup</h3>
 				<p>Setup the project.
 				Proxy of <em>project setup</em></p>
 				<h4 id="options">Options</h4>
 				<ul>
+					<li><code>--trusted</code>: Trusted to run sensitive actions.</li>
 					<li><code>--no-hook</code>: Do not run hook.</li>
 				</ul>
 				<h3 id="config">Config</h3>

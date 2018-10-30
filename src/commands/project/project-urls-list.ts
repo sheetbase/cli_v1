@@ -27,7 +27,7 @@ export async function projectUrlsListCommand(options: Options) {
 
     // hook
     try {
-        if (options.hook) {
+        if (options.trusted && options.hook) {
             let customUrls: any;
             try {
                 customUrls = await urlsHook();

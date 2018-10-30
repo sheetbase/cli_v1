@@ -52,6 +52,10 @@ Deploy to a static hosting or build an hybrid app.
 
 Only start a project with themes that you trust. Bad people may put malicious code in CLI hooks and backend build script.
 
+Add `--trusted` flag to project-related commands (`setup`, `config`, `urls`, ...) to allow the CLI to run sensitive actions, such as: *hooks*, *setup initial build*.
+
+When starting a project with an original theme, the CLI auto add `--trusted` to the `setup` command to let it run setup hooks and `npm run build` before initial deploy the backend.
+
 Please let us know if there is any vulnerable or how to improve the development.
 
 ## Usage
@@ -127,6 +131,7 @@ Sub-commands: start, setup, config, urls, info, hooks.
 - `--no-setup`: (start) Do not run setup command.
 - `--no-npm`: (start) Do not install packages.
 - `--no-hook`: (start, setup, config, urls) Do not run hook.
+- `--trusted`: (setup) Trusted to run sensitive actions.
 
 ### Start
 
@@ -140,6 +145,7 @@ Proxy of _project start_
 - `--no-setup`: Do not run setup command.
 - `--no-npm`: Do not install packages.
 - `--no-hook`: Do not run setup hook.
+- `--trusted`: Trusted to run setup sensitive actions.
 
 ### Setup
 
@@ -148,6 +154,7 @@ Proxy of _project setup_
 
 #### Options
 
+- `--trusted`: Trusted to run sensitive actions.
 - `--no-hook`: Do not run hook.
 
 ### Config

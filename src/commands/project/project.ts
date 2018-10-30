@@ -13,6 +13,7 @@ export interface Options {
     setup?: boolean;
     hook?: boolean;
     npm?: boolean;
+    trusted?: boolean;
 }
 
 export async function projectCommand(command: string, params: string[] = [], options: Options = {}) {

@@ -22,7 +22,7 @@ export async function projectConfigImportCommand(params: string[], options: Opti
     }
     // hook
     try {
-        if (options.hook) {
+        if (options.trusted && options.hook) {
             await configHook();
         }
     } catch (error) {

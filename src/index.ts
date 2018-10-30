@@ -144,6 +144,7 @@ program
  * @param {string?} [--no-setup] (start) Do not run setup command.
  * @param {string?} [--no-npm] (start) Do not install packages.
  * @param {string?} [--no-hook] (start, setup, config, urls) Do not run hook.
+ * @param {string?} [--trusted] (setup) Trusted to run sensitive actions.
  */
 program
   .command('project [subCommand] [params...]')
@@ -152,6 +153,7 @@ program
   .option('--no-hook', '(' +
     `${chalk.green('start')}, ${chalk.green('setup')}, ${chalk.green('config')}, ${chalk.green('urls')}` +
   ') Do not run hook.')
+  .option('--trusted', `(${chalk.green('setup')}) Trusted to run sensitive actions.`)
   .description('Project general tasks.')
   .action(projectCommand);
 
@@ -164,12 +166,14 @@ program
  * @param {string?} [--no-setup] Do not run setup command.
  * @param {string?} [--no-npm] Do not install packages.
  * @param {string?} [--no-hook] Do not run setup hook.
+ * @param {string?} [--trusted] Trusted to run setup sensitive actions.
  */
 program
   .command('start [projectName] [theme]')
   .option('--no-setup', 'Do not run setup command.')
   .option('--no-npm', 'Do not install packages.')
   .option('--no-hook', 'Do not run setup hook.')
+  .option('--trusted', 'Trusted to run setup sensitive actions.')
   .description('Start a new project.')
   .action(async (projectName, theme, options) => projectCommand('start', [projectName, theme], options));
 
@@ -177,10 +181,12 @@ program
  * Setup the project.
  * Proxy of _project setup_
  * @name setup
+ * @param {string?} [--trusted] Trusted to run sensitive actions.
  * @param {string?} [--no-hook] Do not run hook.
  */
 program
   .command('setup')
+  .option('--trusted', 'Trusted to run sensitive actions.')
   .option('--no-hook', 'Do not run hook.')
   .description('Setup the project.')
   .action(async (options) => projectCommand('setup', [], { npm: false, ... options}));

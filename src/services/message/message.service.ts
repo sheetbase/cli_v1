@@ -93,5 +93,6 @@ export const LOG = {
         `\n   cd ${name}`,
     NPM_INSTALL_BEGIN: `Installing dependencies ... (could take several minutes)`,
     NPM_INSTALL_SUCCEED: `Dependencies installed.`,
-    PROJECT_SETUP: `Project setup succeed!`,
+    PROJECT_SETUP: (url: string) => `Project setup succeed!` +
+    `You can found backend code at: ${url}`,
 };

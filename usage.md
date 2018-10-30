@@ -71,6 +71,7 @@ Sub-commands: start, setup, config, urls, info, hooks.
 - `--no-setup`: (start) Do not run setup command.
 - `--no-npm`: (start) Do not install packages.
 - `--no-hook`: (start, setup, config, urls) Do not run hook.
+- `--trusted`: (setup) Trusted to run sensitive actions.
 
 ### Start
 
@@ -84,6 +85,7 @@ Proxy of _project start_
 - `--no-setup`: Do not run setup command.
 - `--no-npm`: Do not install packages.
 - `--no-hook`: Do not run setup hook.
+- `--trusted`: Trusted to run setup sensitive actions.
 
 ### Setup
 
@@ -92,6 +94,7 @@ Proxy of _project setup_
 
 #### Options
 
+- `--trusted`: Trusted to run sensitive actions.
 - `--no-hook`: Do not run hook.
 
 ### Config

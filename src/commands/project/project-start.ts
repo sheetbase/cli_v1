@@ -58,6 +58,10 @@ export async function projectStartCommand(params: string[], options?: Options) {
 
     // Run setup
     if (options.setup) {
+        // defautl trust to original theme
+        if (downloadUrl.includes('github.com/sheetbase/theme')) {
+            options.trusted = true;
+        }
         await runSetup(deployPath, options);
     } else {
         console.log('\n ' + LOG.PROJECT_START(name));
@@ -69,12 +73,12 @@ export async function projectStartCommand(params: string[], options?: Options) {
 async function installDependencies(path: string): Promise<void> {
     const NPM = (os.type() === 'Windows_NT') ? 'npm.cmd' : 'npm';
     console.log(`\n     Backend dependencies:`);
-    execSync(`${NPM} install`, {cwd: path + '/backend', stdio: 'inherit'});
+    execSync(`${NPM} install`, {cwd: path + './backend', stdio: 'inherit'});
     console.log(`\n     Frontend dependencies:`);
-    execSync(`${NPM} install`, {cwd: path + '/frontend', stdio: 'inherit'});
+    execSync(`${NPM} install`, {cwd: path + './frontend', stdio: 'inherit'});
     if (await hasHooks(path)) {
         console.log(`\n     Hook dependencies:`);
-        execSync(`${NPM} install`, {cwd: path + '/hooks', stdio: 'inherit'});
+        execSync(`${NPM} install`, {cwd: path + './hooks', stdio: 'inherit'});
     }
 }
 
@@ -82,6 +86,7 @@ async function runSetup(path: string, options: Options): Promise<void> {
     const SHEETBASE = (os.type() === 'Windows_NT') ? 'sheetbase.cmd' : 'sheetbase';
     let command =  `${SHEETBASE} setup`;
     if (!options.hook) command += ' --no-hook';
+    if (options.trusted) command += ' --trusted';
     execSync(command, {cwd: path, stdio: 'inherit'});
 }
 

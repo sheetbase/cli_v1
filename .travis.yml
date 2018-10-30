@@ -6,13 +6,14 @@ node_js:
 - '8'
 before_install:
 - openssl aes-256-cbc -K $encrypted_24f652ca329e_key -iv $encrypted_24f652ca329e_iv
-  -in ./tests/.sheetbaserc.json.enc -out .sheetbaserc.json -d || true
+  -in ./tests/.sheetbaserc.json.enc -out ./.sheetbaserc.json -d || true
 - openssl aes-256-cbc -K $encrypted_24f652ca329e_key -iv $encrypted_24f652ca329e_iv
-  -in ./tests/.googlerc.json.enc -out .googlerc.json -d || true
+  -in ./tests/.googlerc.json.enc -out ./.googlerc.json -d || true
 - npm install -g npm@latest
 install:
 - npm ci
 before_script:
+- ls
 - npm run build
 script:
 - npm run lint
