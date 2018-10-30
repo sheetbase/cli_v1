@@ -145,6 +145,7 @@ program
  * @param {string?} [--no-npm] (start) Do not install packages.
  * @param {string?} [--no-hook] (start, setup, config, urls) Do not run hook.
  * @param {string?} [--trusted] (setup) Trusted to run sensitive actions.
+ * @param {string?} [--no-backend-deploy] (setup) Do not initial deploy the backend.
  */
 program
   .command('project [subCommand] [params...]')
@@ -154,6 +155,7 @@ program
     `${chalk.green('start')}, ${chalk.green('setup')}, ${chalk.green('config')}, ${chalk.green('urls')}` +
   ') Do not run hook.')
   .option('--trusted', `(${chalk.green('setup')}) Trusted to run sensitive actions.`)
+  .option('--no-backend-deploy', `(${chalk.green('setup')}) Do not initial deploy the backend.`)
   .description('Project general tasks.')
   .action(projectCommand);
 
@@ -163,17 +165,20 @@ program
  * @name start
  * @param {string?} [projectName] Name of the project, auto default.
  * @param {string?} [theme] Theme to create the project with, default to _basic_angular_.
- * @param {string?} [--no-setup] Do not run setup command.
  * @param {string?} [--no-npm] Do not install packages.
+ * @param {string?} [--no-setup] Do not run setup command.
  * @param {string?} [--no-hook] Do not run setup hook.
  * @param {string?} [--trusted] Trusted to run setup sensitive actions.
+ * @param {string?} [--no-backend-deploy] Do not initial deploy the backend.
  */
 program
   .command('start [projectName] [theme]')
-  .option('--no-setup', 'Do not run setup command.')
   .option('--no-npm', 'Do not install packages.')
+  .option('--no-setup', 'Do not run setup command.')
+  /* setup options */
   .option('--no-hook', 'Do not run setup hook.')
   .option('--trusted', 'Trusted to run setup sensitive actions.')
+  .option('--no-backend-deploy', 'Do not initial deploy the backend.')
   .description('Start a new project.')
   .action(async (projectName, theme, options) => projectCommand('start', [projectName, theme], options));
 
@@ -183,11 +188,13 @@ program
  * @name setup
  * @param {string?} [--trusted] Trusted to run sensitive actions.
  * @param {string?} [--no-hook] Do not run hook.
+ * @param {string?} [--no-backend-deploy] Do not initial deploy the backend.
  */
 program
   .command('setup')
   .option('--trusted', 'Trusted to run sensitive actions.')
   .option('--no-hook', 'Do not run hook.')
+  .option('--no-backend-deploy', 'Do not initial deploy the backend.')
   .description('Setup the project.')
   .action(async (options) => projectCommand('setup', [], { npm: false, ... options}));
 

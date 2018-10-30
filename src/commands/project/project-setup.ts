@@ -54,16 +54,18 @@ export async function projectSetupCommand(options: Options) {
 
     // init deploy backend
     try {
-        // build backend app if trusted
-        if (options.trusted) {
-            execSync(
-                (options.npm ? '' : 'npm install && ') + 'npm run build',
-                { cwd: './backend', stdio: 'ignore' },
-            );
+        if (options.backendDeploy) {
+            // build backend app if trusted
+            if (options.trusted) {
+                execSync(
+                    (options.npm ? '' : 'npm install && ') + 'npm run build',
+                    { cwd: './backend', stdio: 'ignore' },
+                );
+            }
+            // init deploy the webapp
+            const { url } = await gasWebappInit(googleClient, scriptId, null, options.trusted);
+            await setConfigs({ backendUrl: url });
         }
-        // init deploy the webapp
-        const { url } = await gasWebappInit(googleClient, scriptId, null, options.trusted);
-        await setConfigs({ backendUrl: url });
     } catch (error) {
         return logError(error);
     }

@@ -14,6 +14,7 @@ export interface Options {
     hook?: boolean;
     npm?: boolean;
     trusted?: boolean;
+    backendDeploy?: boolean;
 }
 
 export async function projectCommand(command: string, params: string[] = [], options: Options = {}) {

@@ -225,7 +225,7 @@ describe('Test START command', () => {
 });
 
 describe('Test SETUP command', () => {
-  before(() => {
+  beforeEach(() => {
     // create a new project
     spawnSync(SHEETBASE, ['start', PROJECT_NAME, '--no-npm', '--no-setup']);
     // reset drive folder
@@ -238,7 +238,7 @@ describe('Test SETUP command', () => {
     copySync(GOOGLE_RC, PROJECT_PATH + '/' + GOOGLE_RC);
   });
 
-  after(async () => {
+  afterEach(async () => {
     const { driveFolder } = readJsonSync(`${PROJECT_PATH}/sheetbase.json`);
     // remove test folder
     removeSync(PROJECT_PATH);
@@ -250,7 +250,10 @@ describe('Test SETUP command', () => {
   const EXPECTED = 'https://script.google.com/';
 
   it('should setup the project', () => expectResult(['setup'], EXPECTED, PROJECT_PATH));
-  it('should setup (with --trusted)', () => expectResult(['setup', '--trusted'], EXPECTED, PROJECT_PATH));
+  it('should setup (--trusted)', () => expectResult(['setup', '--trusted'], EXPECTED, PROJECT_PATH));
+  it('should setup (--no-backend-deploy)', () => {
+    expectResult(['setup', '--no-backend-deploy'], EXPECTED, PROJECT_PATH);
+  });
 });
 
 describe('Test CONFIG command', () => {

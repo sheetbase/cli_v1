@@ -132,6 +132,7 @@ Sub-commands: start, setup, config, urls, info, hooks.
 - `--no-npm`: (start) Do not install packages.
 - `--no-hook`: (start, setup, config, urls) Do not run hook.
 - `--trusted`: (setup) Trusted to run sensitive actions.
+- `--no-backend-deploy`: (setup) Do not initial deploy the backend.
 
 ### Start
 
@@ -142,10 +143,11 @@ Proxy of _project start_
 
 - `projectName`: Name of the project, auto default.
 - `theme`: Theme to create the project with, default to _basic_angular_.
-- `--no-setup`: Do not run setup command.
 - `--no-npm`: Do not install packages.
+- `--no-setup`: Do not run setup command.
 - `--no-hook`: Do not run setup hook.
 - `--trusted`: Trusted to run setup sensitive actions.
+- `--no-backend-deploy`: Do not initial deploy the backend.
 
 ### Setup
 
@@ -156,6 +158,7 @@ Proxy of _project setup_
 
 - `--trusted`: Trusted to run sensitive actions.
 - `--no-hook`: Do not run hook.
+- `--no-backend-deploy`: Do not initial deploy the backend.
 
 ### Config
 
