@@ -2,18 +2,27 @@
   "name": "@sheetbase/cli",
   "version": "0.0.4",
   "description": "Official CLI for working with Sheetbase. ",
+  "author": "Sheetbase",
+  "homepage": "https://sheetbase.net",
+  "license": "Apache-2.0",
   "main": "./src/index.js",
-  "preferGlobal": true,
   "bin": {
     "sheetbase": "./src/index.js"
   },
+  "files": [
+    "src"
+  ],
+  "preferGlobal": true,
   "scripts": {
-    "compile": "tsc --project tsconfig.json",
-    "build": "npm run compile && npm i -g --loglevel=error",
+    "transpile": "tsc --project tsconfig.json",
+    "build": "npm run transpile && npm i -g --loglevel=error",
     "build-fresh": "npm cache clean --force && npm i && npm run build",
-    "docs-usage": "npm i --save-dev ucfirst extract-comments parse-comments && tsc src/usage.ts && node src/usage.js && npm un --save-dev ucfirst extract-comments parse-comments",
-    "docs-api": "typedoc ./src --out ./docs --mode modules --target ES5 --ignoreCompilerErrors",
-    "lint": "tslint --project tslint.json && echo 'No lint errors.'",
+    "before-docs": "npm i --save-dev ucfirst extract-comments parse-comments",
+    "after-docs": "npm un --save-dev ucfirst extract-comments parse-comments",
+    "docs-usage": "tsc src/usage.ts && node src/usage.js",
+    "docs-api": "typedoc ./src --out ./docs/api --mode file --target ES5 --ignoreCompilerErrors",
+    "docs": "npm run before-docs && npm run docs-usage && npm run docs-api && npm run after-docs",
+    "lint": "tslint --project tslint.json && echo 'All files pass linting.'",
     "test": "nyc --cache false mocha --timeout 100000 -- tests/*.js",
     "coverage": "nyc --cache false report --reporter=text-lcov | coveralls"
   },
@@ -29,8 +38,7 @@
     "google-apps-script",
     "web",
     "app",
-    "api",
-    "theme"
+    "api"
   ],
   "importSort": {
     ".ts": {
@@ -39,11 +47,8 @@
     },
     "on-save": false
   },
-  "author": "Sheetbase",
-  "license": "Apache-2.0",
-  "homepage": "https://sheetbase.net",
   "dependencies": {
-    "adm-zip": "^0.4.11",
+    "adm-zip": "^0.4.13",
     "axios": "^0.18.0",
     "chalk": "^2.4.1",
     "change-case": "^3.0.2",
@@ -51,10 +56,10 @@
     "commander": "^2.19.0",
     "configstore": "^4.0.0",
     "figlet": "^1.2.1",
-    "firebase": "^5.5.5",
-    "fs-extra": "^7.0.0",
+    "firebase": "^5.5.8",
+    "fs-extra": "^7.0.1",
     "fs-readdir-recursive": "^1.1.0",
-    "google-auth-library": "^2.0.0",
+    "google-auth-library": "^2.0.1",
     "inquirer": "^6.2.0",
     "opn": "^5.4.0",
     "querystring": "^0.2.0",
@@ -62,15 +67,15 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.6",
+    "@types/chai": "^4.1.7",
     "@types/fs-extra": "^5.0.4",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.0",
+    "@types/node": "^10.12.8",
     "chai": "^4.2.0",
     "coveralls": "^3.0.2",
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
     "tslint": "^5.11.0",
-    "typescript": "^3.1.3"
+    "typescript": "^3.1.6"
   }
 }

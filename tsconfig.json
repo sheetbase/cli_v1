@@ -1,19 +1,17 @@
 {
-  "compileOnSave": true,
   "compilerOptions": {
     "target": "es5",
-	"noImplicitAny": false,
-	"strictNullChecks": false,
+    "moduleResolution": "node",
+    "strict": true,
     "lib": [
-	  "dom",
-      "es2015",
+	    "dom",
       "es5",
-      "es6",
-      "es2017"
+      "es2015",
+      "es2018"
     ],
-    "strict": true
+    "noImplicitAny": false,
+    "strictNullChecks": false,
   },
-  "moduleResolution": "node",
   "files": [
     "src/index.ts",
     "tests/test.ts"

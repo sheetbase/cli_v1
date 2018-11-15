@@ -1,5 +1,12 @@
-*.js
 node_modules/
-.nyc_output
+
+# rc
 .googlerc.json
 .sheetbaserc.json
+
+# compiled js
+*.js
+
+# test
+.nyc_output/
+coverage/
