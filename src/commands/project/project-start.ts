@@ -59,7 +59,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
     // Run setup
     if (options.setup) {
         // defautl trust to original theme
-        if (downloadUrl.includes('github.com/sheetbase/theme')) {
+        if (downloadUrl.includes('github.com/sheetbase-themes/')) {
             options.trusted = true;
         }
         await runSetup(deployPath, options);
@@ -110,14 +110,14 @@ async function parseThemeString(theme = 'blank-angular@latest'): Promise<string>
             try {
                 const { data } = await axios({
                     method: 'GET',
-                    url: `https://api.github.com/repos/sheetbase/theme-${name}/releases/latest`,
+                    url: `https://api.github.com/repos/sheetbase-themes/${name}/releases/latest`,
                 });
                 downloadUrl = data.zipball_url;
             } catch (error) {
                 /** */
             }
         } else {
-            downloadUrl = `https://github.com/sheetbase/${name}/archive/${version}.zip`;
+            downloadUrl = `https://github.com/sheetbase-themes/${name}/archive/${version}.zip`;
         }
     }
     return downloadUrl;
