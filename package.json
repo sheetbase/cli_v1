@@ -1,6 +1,6 @@
 {
   "name": "@sheetbase/cli",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Official CLI for working with Sheetbase. ",
   "author": "Sheetbase",
   "homepage": "https://sheetbase.net",
@@ -10,7 +10,8 @@
     "sheetbase": "./src/index.js"
   },
   "files": [
-    "src"
+    "src",
+    "!**/*.ts"
   ],
   "preferGlobal": true,
   "scripts": {
