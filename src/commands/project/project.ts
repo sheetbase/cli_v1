@@ -10,9 +10,11 @@ import { projectUrlsCommand } from './project-urls';
 import { projectHooksCommand } from './project-hooks';
 
 export interface Options {
-    setup?: boolean;
-    hook?: boolean;
     npm?: boolean;
+    setup?: boolean;
+    app?: boolean;
+    module?: boolean;
+    hook?: boolean;
     trusted?: boolean;
     backendDeploy?: boolean;
 }

@@ -22,49 +22,58 @@ export async function projectStartCommand(params: string[], options?: Options) {
         return logError(ERROR.PROJECT_EXISTS);
     }
 
-    // parse theme string
-    const downloadUrl: string = await parseThemeString(params[1]);
-    if (!downloadUrl) {
-        return logError(ERROR.START_INVALID_THEME);
-    }
-
-    // start
-    try {
-        logWait(LOG.START_BEGIN);
-        // download the file
-        const downloadedPath = await download(downloadUrl, deployPath, 'theme.zip');
-        // upzip the archive
-        await unzip(downloadedPath, deployPath);
-        await remove(downloadedPath); // delete .zip file
-        // move file outside
-        if (!await pathExists(deployPath + '/sheetbase.json')) { // guest it is inside
-            await deflate(deployPath);
+    if (options.module) { // module
+        const gitUrl = 'https://github.com/sheetbase/blank-server-module.git';
+        execSync(`git clone ${gitUrl} ${name}`);
+    } else if (options.app) { // app
+        const gitUrl = 'https://github.com/sheetbase/blank-server-app.git';
+        execSync(`git clone ${gitUrl} ${name}`);
+    } else { // theme
+        // parse theme string
+        const downloadUrl: string = await parseThemeString(params[1]);
+        if (!downloadUrl) {
+            return logError(ERROR.START_INVALID_THEME);
         }
-        console.log('\n ' + LOG.START_SUCCEED(name));
-    } catch (error) {
-        return logError(ERROR.START_FAILED);
-    }
 
-    // install packages
-    try {
-        if (options.npm) {
-            logWait(LOG.NPM_INSTALL_BEGIN);
-            await installDependencies(deployPath);
-            console.log('\n ' + LOG.NPM_INSTALL_SUCCEED);
+        // start
+        try {
+            logWait(LOG.START_BEGIN);
+            // download the file
+            const downloadedPath = await download(downloadUrl, deployPath, 'theme.zip');
+            // upzip the archive
+            await unzip(downloadedPath, deployPath);
+            await remove(downloadedPath); // delete .zip file
+            // move file outside
+            if (!await pathExists(deployPath + '/sheetbase.json')) { // guest it is inside
+                await deflate(deployPath);
+            }
+            console.log('\n ' + LOG.START_SUCCEED(name));
+        } catch (error) {
+            return logError(ERROR.START_FAILED);
         }
-    } catch (error) {
-        console.error('\n ' + ERROR.NPM_INSTALL_FAILED);
-    }
 
-    // Run setup
-    if (options.setup) {
-        // defautl trust to original theme
-        if (downloadUrl.includes('github.com/sheetbase-themes/')) {
-            options.trusted = true;
+        // install packages
+        try {
+            if (options.npm) {
+                logWait(LOG.NPM_INSTALL_BEGIN);
+                await installDependencies(deployPath);
+                console.log('\n ' + LOG.NPM_INSTALL_SUCCEED);
+            }
+        } catch (error) {
+            console.error('\n ' + ERROR.NPM_INSTALL_FAILED);
         }
-        await runSetup(deployPath, options);
-    } else {
-        console.log('\n ' + LOG.PROJECT_START(name));
+
+        // Run setup
+        if (options.setup) {
+            // defautl trust to original theme
+            if (downloadUrl.includes('github.com/sheetbase-themes/')) {
+                options.trusted = true;
+            }
+            await runSetup(deployPath, options);
+        } else {
+            console.log('\n ' + LOG.PROJECT_START(name));
+        }
+
     }
 
     return process.exit();

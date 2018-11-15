@@ -142,16 +142,20 @@ program
  * @name project
  * @param {string?} [subCommand] Supported sub-commands.
  * @param {string?} [params] Command params, comma-separated.
- * @param {string?} [--no-setup] (start) Do not run setup command.
  * @param {string?} [--no-npm] (start) Do not install packages.
+ * @param {string?} [--no-setup] (start) Do not run setup command.
+ * @param {string?} [--app] (start) Start a backend app.
+ * @param {string?} [--module] (start) Start a backend module.
  * @param {string?} [--no-hook] (start, setup, config, urls) Do not run hook.
  * @param {string?} [--trusted] (setup) Trusted to run sensitive actions.
  * @param {string?} [--no-backend-deploy] (setup) Do not initial deploy the backend.
  */
 program
   .command('project [subCommand] [params...]')
-  .option('--no-setup', `(${chalk.green('start')}) Do not run setup command.`)
   .option('--no-npm', `(${chalk.green('start')}) Do not install packages.`)
+  .option('--no-setup', `(${chalk.green('start')}) Do not run setup command.`)
+  .option('--app', `(${chalk.green('start')}) Start a backend app.`)
+  .option('--module', `${chalk.green('start')}) Start a backend module.`)
   .option('--no-hook', '(' +
     `${chalk.green('start')}, ${chalk.green('setup')}, ${chalk.green('config')}, ${chalk.green('urls')}` +
   ') Do not run hook.')
@@ -168,6 +172,8 @@ program
  * @param {string?} [theme] Theme to create the project with, default to _basic_angular_.
  * @param {string?} [--no-npm] Do not install packages.
  * @param {string?} [--no-setup] Do not run setup command.
+ * @param {string?} [--app] Start a backend app.
+ * @param {string?} [--module] Start a backend module.
  * @param {string?} [--no-hook] Do not run setup hook.
  * @param {string?} [--trusted] Trusted to run setup sensitive actions.
  * @param {string?} [--no-backend-deploy] Do not initial deploy the backend.
@@ -176,6 +182,8 @@ program
   .command('start [projectName] [theme]')
   .option('--no-npm', 'Do not install packages.')
   .option('--no-setup', 'Do not run setup command.')
+  .option('--app', 'Start a backend app.')
+  .option('--module', 'Start a backend module.')
   /* setup options */
   .option('--no-hook', 'Do not run setup hook.')
   .option('--trusted', 'Trusted to run setup sensitive actions.')
