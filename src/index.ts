@@ -28,8 +28,10 @@ import * as clear from 'clear';
 import { accountCommand } from './commands/account/account';
 import { googleCommand } from './commands/google/google';
 import { projectCommand } from './commands/project/project';
-import { helpCommand } from './commands/help/help';
 import { docsCommand } from './commands/docs/docs';
+import { backendCommand } from './commands/backend/backend';
+import { frontendCommand } from './commands/frontend/frontend';
+import { helpCommand } from './commands/help/help';
 import { defaultCommand } from './commands/default/default';
 
 export const version = require('../package.json').version;
@@ -259,6 +261,24 @@ program
   .command('docs')
   .description('Open the documentation.')
   .action(docsCommand);
+
+/**
+ * Run backend related command.
+ * @name backend
+ */
+program
+  .command('backend [subCommand]')
+  .description('Run backend related command.')
+  .action(backendCommand);
+
+/**
+ * Run frontend related command.
+ * @name frontend
+ */
+program
+  .command('frontend [subCommand]')
+  .description('Run frontend related command.')
+  .action(frontendCommand);
 
 /**
  * Display help.
