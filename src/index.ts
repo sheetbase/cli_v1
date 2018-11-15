@@ -25,13 +25,12 @@ import chalk from 'chalk';
 import * as program from 'commander';
 import * as clear from 'clear';
 
-import { ERROR, logError } from './services/message/message.service';
-
 import { accountCommand } from './commands/account/account';
 import { googleCommand } from './commands/google/google';
 import { projectCommand } from './commands/project/project';
 import { helpCommand } from './commands/help/help';
 import { docsCommand } from './commands/docs/docs';
+import { defaultCommand } from './commands/default/default';
 
 export const version = require('../package.json').version;
 
@@ -276,14 +275,12 @@ program
   .on('--help', () => { clear(); return helpCommand(); });
 
 /**
- * Any other command is not supported.
+ * Any other command ends of running: npm run <cmd>.
  * @name *
  */
 program
-  .command('*', 'Any other command is not supported.')
-  .action((cmd) => {
-    return logError(ERROR.UNKNOWN_COMMAND(cmd));
-  });
+  .command('*', `Any other command ends of running: ${chalk.green('npm run <cmd>')}.`)
+  .action(defaultCommand);
 
 if (!process.argv.slice(2).length) {
   helpCommand();
