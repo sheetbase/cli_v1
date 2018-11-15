@@ -1,6 +1,6 @@
-import { isValid } from '../../services/project/project.service';
-import { projectHelp } from '../../services/help/help.service';
-import { ERROR, logError } from '../../services/message/message.service';
+import { isValid } from '../../services/project';
+import { projectHelp } from '../../services/help';
+import { ERROR, logError } from '../../services/message';
 
 import { projectConfigCommand } from './project-config';
 import { projectStartCommand } from './project-start';

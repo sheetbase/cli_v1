@@ -1,8 +1,20 @@
 import axios from 'axios';
 
-import { APP_API_OPTIONS } from './api.config';
-import { AxiosOptions, CustomOptions } from './api.type';
-import { GoogleAccount } from '../user/user.type';
+import { GoogleAccount } from './user';
+
+export const APP_API_OPTIONS = {
+    uri: 'https://us-central1-sheetbase-net.cloudfunctions.net/api/v1',
+    apiKey: 'tRE2Ri7ro63lfRoduswu05Me7rayEraG',
+};
+
+export interface AxiosOptions {
+    method?: string;
+    url?: string;
+    data?: any;
+}
+export interface CustomOptions {
+    idToken?: string;
+}
 
 export async function appApi(axiosOptions: AxiosOptions, options: CustomOptions = {}) {
     const { apiKey, uri } = APP_API_OPTIONS;

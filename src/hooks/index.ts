@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { pathExists } from 'fs-extra';
 
-import { getPath } from '../services/project/project.service';
+import { getPath } from '../services/project';
 
 export { setupHook } from './setup';
 export { configHook } from './config';

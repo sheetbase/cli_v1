@@ -5,9 +5,9 @@ import {
     removeGoogleAccount,
     removeDefaultGoogleAccount,
     removeLocalGoogleAccount,
-} from '../../services/google/google.service';
-import { GoogleAccounts } from '../../services/user/user.type';
-import { LOG, ERROR, logError } from '../../services/message/message.service';
+} from '../../services/google';
+import { GoogleAccounts } from '../../services/user';
+import { LOG, ERROR, logError } from '../../services/message';
 
 export async function googleDisconnectCommand(params: string[]) {
     const [ id ] = params;

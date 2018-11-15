@@ -1,7 +1,11 @@
-import { readJson, writeJson } from '../project/project.service';
+import { readJson, writeJson } from './project';
 
-import { CLASP_CONFIG_PATH } from './clasp.config';
-import { ClaspConfigs } from './clasp.type';
+export const CLASP_CONFIG_PATH = 'backend/.clasp.json';
+
+export interface ClaspConfigs {
+    scriptId: string;
+    projectId?: string;
+}
 
 export async function getClaspConfigs(): Promise<ClaspConfigs> {
     return await readJson(CLASP_CONFIG_PATH);

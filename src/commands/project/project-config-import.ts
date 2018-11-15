@@ -1,8 +1,8 @@
 import { pathExists, readJson } from 'fs-extra';
 
-import { setBackendConfigs, setFrontendConfigs } from '../../services/project/project.service';
+import { setBackendConfigs, setFrontendConfigs } from '../../services/project';
 import { configHook } from '../../hooks';
-import { LOG, ERROR, logError } from '../../services/message/message.service';
+import { LOG, ERROR, logError } from '../../services/message';
 
 import { Options } from './project';
 

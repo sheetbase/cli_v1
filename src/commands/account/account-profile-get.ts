@@ -1,8 +1,7 @@
 import chalk from 'chalk';
 
-import { getUserProfile, getUserSubscription } from '../../services/user/user.service';
-import { Profile, Subscription } from '../../services/user/user.type';
-import { ERROR, logError } from '../../services/message/message.service';
+import { getUserProfile, getUserSubscription, Profile, Subscription } from '../../services/user';
+import { ERROR, logError } from '../../services/message';
 
 import { Options } from './account';
 

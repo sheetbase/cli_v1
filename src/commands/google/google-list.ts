@@ -4,10 +4,10 @@ import {
     getAllGoogleAccounts,
     getLocalGoogleAccount,
     getDefaultGoogleAccountId,
-} from '../../services/google/google.service';
-import { GoogleAccount, GoogleAccounts } from '../../services/user/user.type';
-import { formatDate } from '../../services/utils/utils.service';
-import { LOG, ERROR, logError } from '../../services/message/message.service';
+} from '../../services/google';
+import { GoogleAccount, GoogleAccounts } from '../../services/user';
+import { formatDate } from '../../services/utils';
+import { LOG, ERROR, logError } from '../../services/message';
 
 import { Options } from './google';
 

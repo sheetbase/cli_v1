@@ -1,5 +1,5 @@
-import { setDefaultGoogleAccountId } from '../../services/google/google.service';
-import { LOG, ERROR, logError } from '../../services/message/message.service';
+import { setDefaultGoogleAccountId } from '../../services/google';
+import { LOG, ERROR, logError } from '../../services/message';
 
 import { googleListCommand } from './google-list';
 

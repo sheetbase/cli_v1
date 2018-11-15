@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import * as figlet from 'figlet';
 
-import { help, helpDetail } from '../../services/help/help.service';
+import { help, helpDetail } from '../../services/help';
 import { version } from '../../index';
 
 export interface Options {

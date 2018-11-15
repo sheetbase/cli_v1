@@ -1,7 +1,7 @@
-import { validateEmail, validatePassword } from '../../services/utils/utils.service';
-import { askForLogin } from '../../services/inquirer/inquirer.service';
-import { isSignedIn, login } from '../../services/user/user.service';
-import { ERROR, LOG, logError } from '../../services/message/message.service';
+import { validateEmail, validatePassword } from '../../services/utils';
+import { askForLogin } from '../../services/inquirer';
+import { isSignedIn, login } from '../../services/user';
+import { ERROR, LOG, logError } from '../../services/message';
 
 import { Options } from './account';
 

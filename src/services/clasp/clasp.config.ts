@@ -1,1 +1,0 @@
-export const CLASP_CONFIG_PATH = 'backend/.clasp.json';

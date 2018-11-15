@@ -1,6 +1,6 @@
 const opn = require('opn');
 
-import { LOG } from '../../services/message/message.service';
+import { LOG } from '../../services/message';
 
 export async function docsCommand() {
     const docsUrl = 'https://sheetbase.net/docs';

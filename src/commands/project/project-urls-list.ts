@@ -4,9 +4,9 @@ const ttyTable = require('tty-table');
 import {
     buildUrls,
     getSheetbaseDotJson, getFrontendConfigs,
-} from '../../services/project/project.service';
-import { getClaspConfigs } from '../../services/clasp/clasp.service';
-import { LOG, ERROR, logError } from '../../services/message/message.service';
+} from '../../services/project';
+import { getClaspConfigs } from '../../services/clasp';
+import { LOG, ERROR, logError } from '../../services/message';
 
 import { urlsHook } from '../../hooks';
 

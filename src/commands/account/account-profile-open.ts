@@ -1,7 +1,7 @@
 const opn = require('opn');
 
-import { getUserCustomToken } from '../../services/user/user.service';
-import { LOG } from '../../services/message/message.service';
+import { getUserCustomToken } from '../../services/user';
+import { LOG } from '../../services/message';
 
 export async function accountProfileOpenCommand() {
     let link = 'https://cloud.sheetbase.net/account/profile';

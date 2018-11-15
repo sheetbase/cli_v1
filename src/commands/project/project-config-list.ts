@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 const ttyTable = require('tty-table');
 
-import { getBackendConfigs, getFrontendConfigs } from '../../services/project/project.service';
-import { LOG } from '../../services/message/message.service';
+import { getBackendConfigs, getFrontendConfigs } from '../../services/project';
+import { LOG } from '../../services/message';
 
 export async function projectConfigListCommand() {
     const backendConfigs = await getBackendConfigs();

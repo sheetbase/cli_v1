@@ -1,5 +1,5 @@
-import { isSignedIn } from '../../services/user/user.service';
-import { ERROR, logError } from '../../services/message/message.service';
+import { isSignedIn } from '../../services/user';
+import { ERROR, logError } from '../../services/message';
 
 import { accountProfileGetCommand } from './account-profile-get';
 import { accountProfileUpdateCommand } from './account-profile-update';

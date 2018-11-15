@@ -4,8 +4,8 @@ import { execSync } from 'child_process';
 import { pathExists, remove } from 'fs-extra';
 import axios from 'axios';
 
-import { buildValidFileName, download, unzip, deflate } from '../../services/utils/utils.service';
-import { LOG, ERROR, logError, logWait } from '../../services/message/message.service';
+import { buildValidFileName, download, unzip, deflate } from '../../services/utils';
+import { LOG, ERROR, logError, logWait } from '../../services/message';
 
 import { hasHooks } from '../../hooks';
 

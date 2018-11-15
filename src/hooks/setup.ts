@@ -1,7 +1,7 @@
 import { getHook, CLIHook } from './index';
 
-import { getOAuth2Client } from '../services/google/google.service';
-import { driveCreateFolder, driveCreateFile } from '../services/drive/drive.service';
+import { getOAuth2Client } from '../services/google';
+import { driveCreateFolder, driveCreateFile } from '../services/drive';
 
 export async function setupHook(data?: {}) {
     const hook: CLIHook = await getHook('setup');

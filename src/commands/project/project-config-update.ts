@@ -1,6 +1,6 @@
-import { buildKeyValueFromParams } from '../../services/utils/utils.service';
-import { setConfigs } from '../../services/project/project.service';
-import { LOG, ERROR, logError } from '../../services/message/message.service';
+import { buildKeyValueFromParams } from '../../services/utils';
+import { setConfigs } from '../../services/project';
+import { LOG, ERROR, logError } from '../../services/message';
 
 import { configHook } from '../../hooks';
 

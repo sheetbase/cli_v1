@@ -7,15 +7,39 @@ import {
 } from 'fs-extra';
 import { merge } from 'lodash';
 
-import {
-    SHEETBASE_DOT_JSON_PATH,
-    PACKAGE_DOT_JSON_PATH,
-    BACKEND_CONFIG_PATH,
-    FRONTEND_CONFIG_PATH,
-} from './project.config';
-import { SheetbaseDotJson, PackageDotJson } from './project.type';
+export const SHEETBASE_DOT_JSON_PATH = 'sheetbase.json';
+export const PACKAGE_DOT_JSON_PATH = 'package.json';
+export const BACKEND_CONFIG_PATH = 'backend/src/sheetbase.config.ts';
+export const FRONTEND_CONFIG_PATH = 'frontend/src/sheetbase.config.ts';
 
-export { SheetbaseDotJson };
+export interface SheetbaseDotJson {
+    cloudId?: string;
+    driveFolder?: string;
+    configMaps?: {
+        frontend?: string[];
+        backend?: string[];
+    };
+    configs?: {
+        frontend?: {};
+        backend?: {};
+    };
+}
+
+export interface PackageDotJson {
+    name: string;
+    version?: string;
+    description?: string;
+    author?: string;
+    homepage?: string;
+    license?: string;
+    repository?: {
+        type: string;
+        url: string;
+    };
+    bugs?: {
+        url: string;
+    };
+}
 
 export async function readJson(file: string) {
     const projectPath: string = await getPath();

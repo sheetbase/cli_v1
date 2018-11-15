@@ -1,9 +1,14 @@
-import { initializeApp, database, auth, User } from 'firebase/app';
+import { initializeApp, database, auth } from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
 
-import { o2a } from '../utils/utils.service';
-import { PROJECT_SHEETBASE_NET_OPTIONS } from './firebase.config';
+import { o2a } from './utils';
+
+export const PROJECT_SHEETBASE_NET_OPTIONS = {
+    apiKey: 'AIzaSyC6Rpk_JAZLNc9cp5GxkixfazHdMoYZ8VU',
+    authDomain: 'sheetbase-net.firebaseapp.com',
+    databaseURL: 'https://sheetbase-net.firebaseio.com',
+};
 
 const defaultApp = initializeApp(PROJECT_SHEETBASE_NET_OPTIONS);
 

@@ -1,4 +1,4 @@
-const path = require('path');
+import { basename } from 'path';
 import { promisify } from 'util';
 import { readdir, createWriteStream, readFile } from 'fs';
 import { ensureDir, copy, remove } from 'fs-extra';
@@ -9,7 +9,7 @@ const readdirAsync = promisify(readdir);
 const readFileAsync = promisify(readFile);
 
 export function getCurrentDirectoryBase(): string {
-    return path.basename(process.cwd());
+    return basename(process.cwd());
 }
 
 export function isValidFileName(name: string): boolean {

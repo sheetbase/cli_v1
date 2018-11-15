@@ -1,8 +1,8 @@
 import { writeJson, ensureFile } from 'fs-extra';
 
-import { buildValidFileName } from '../../services/utils/utils.service';
-import { getSheetbaseDotJson } from '../../services/project/project.service';
-import { LOG, ERROR, logError } from '../../services/message/message.service';
+import { buildValidFileName } from '../../services/utils';
+import { getSheetbaseDotJson } from '../../services/project';
+import { LOG, ERROR, logError } from '../../services/message';
 
 export async function projectConfigExportCommand(params: string[]) {
     let [ jsonFilePath ] = params;

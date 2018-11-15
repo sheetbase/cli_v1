@@ -1,21 +1,89 @@
 import axios from 'axios';
 import { User } from 'firebase/app';
-const cfs = require('configstore');
-const configstore = new cfs('sheetbase_cli');
+const config = require('configstore');
+const configstore = new config('sheetbase_cli');
 
-import { timeDeltaByHour } from '../utils/utils.service';
-import { PROJECT_SHEETBASE_NET_OPTIONS } from '../firebase/firebase.config';
-import {
+import { timeDeltaByHour } from './utils';
+import { PROJECT_SHEETBASE_NET_OPTIONS,
     databaseObject, databaseUpdate, authLogin, authLoginUsingToken, authRegister, authLogout,
-} from '../firebase/firebase.service';
+} from './firebase';
 import {
     appApiGETUserToken, appApiPOSTUserSubscription, appApiPOSTUserGoogleAccounts,
-} from '../api/api.service';
+} from './api';
 
-import {
-    Profile, AdditionalProfile, Subscription, Settings, GoogleAccount, GoogleAccounts,
-} from './user.type';
-import { NATIVE_PROFILE_KEYS, CUSTOM_PROFILE_KEYS, MAX_SILENTLY_LOGIN_ATTEMPT } from './user.config';
+export const NATIVE_PROFILE_KEYS = ['displayName', 'photoURL'];
+export const CUSTOM_PROFILE_KEYS = ['pin'];
+export const MAX_SILENTLY_LOGIN_ATTEMPT = 3;
+
+export interface GoogleAccountProfile {
+    id: string;
+    email: string;
+    name?: string;
+    imageUrl?: string;
+}
+
+export interface GoogleAccount {
+    refreshToken: string;
+    profile: GoogleAccountProfile;
+    grantedAt?: number;
+}
+
+export interface GoogleAccounts {
+    [id: string]: GoogleAccount;
+}
+
+export interface GSuiteAccount {
+    email: string;
+    createdAt?: number;
+    name?: string;
+}
+
+export interface Settings {
+    lang?: string;
+    defaultGoogleAccount?: string;
+}
+
+export interface Transaction {
+    id: string;
+    amount: number;
+    currency: string;
+    createdAt?: number;
+}
+
+export interface SubscriptionItem {
+    id: string;
+    plan: string;
+    updatedAt?: number;
+    transaction?: Transaction;
+}
+export interface Subscription extends SubscriptionItem {
+    startedAt?: number;
+    previousPlans?: {
+        [id: string]: SubscriptionItem;
+    };
+}
+
+export interface NativeProfile {
+    uid: string;
+    email?: string;
+    emailVerified?: boolean;
+    displayName?: string;
+    photoUrl?: string;
+    providerId?: string;
+    providerData?: any[];
+}
+export interface AdditionalProfile {
+    updatedAt?: number;
+    pin?: number;
+    gsuiteAccount?: GSuiteAccount;
+}
+export interface Profile extends NativeProfile, AdditionalProfile {}
+
+export interface GoogleLoginResponse {
+    profile?: GoogleAccountProfile;
+    refreshToken?: string;
+    grantedAt?: number;
+}
 
 /**
  * auth basic actions

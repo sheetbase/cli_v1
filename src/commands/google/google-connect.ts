@@ -1,11 +1,11 @@
 import { writeJson } from 'fs-extra';
 
-import { askForGoogleOAuth2 } from '../../services/inquirer/inquirer.service';
+import { askForGoogleOAuth2 } from '../../services/inquirer';
 import {
     authorizeWithLocalhost,
     retrieveTemporaryRefeshToken,
-} from '../../services/google/google.service';
-import { LOG, ERROR, logError } from '../../services/message/message.service';
+} from '../../services/google';
+import { LOG, ERROR, logError } from '../../services/message';
 
 import { Options } from './google';
 

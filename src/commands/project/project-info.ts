@@ -1,6 +1,6 @@
 const ttyTable = require('tty-table');
 
-import { getPackageDotJson } from '../../services/project/project.service';
+import { getPackageDotJson } from '../../services/project';
 
 export async function projectInfoCommand() {
     const packageJson = await getPackageDotJson();

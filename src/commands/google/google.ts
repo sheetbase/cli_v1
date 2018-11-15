@@ -1,5 +1,5 @@
-import { googleHelp } from '../../services/help/help.service';
-import { ERROR } from '../../services/message/message.service';
+import { googleHelp } from '../../services/help';
+import { ERROR } from '../../services/message';
 
 import { googleConnectCommand } from './google-connect';
 import { googleDisconnectCommand } from './google-disconnect';

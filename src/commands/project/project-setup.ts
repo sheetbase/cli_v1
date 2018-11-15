@@ -2,13 +2,13 @@ import { execSync } from 'child_process';
 import { OAuth2Client } from 'google-auth-library';
 import { sentenceCase } from 'change-case';
 
-import { getCurrentDirectoryBase } from '../../services/utils/utils.service';
-import { driveCreateFolder } from '../../services/drive/drive.service';
-import { gasCreate, gasWebappInit } from '../../services/gas/gas.service';
-import { getOAuth2Client } from '../../services/google/google.service';
-import { setSheetbaseDotJson, setPackageDotJson, setConfigs } from '../../services/project/project.service';
-import { setClaspConfigs } from '../../services/clasp/clasp.service';
-import { warn, LOG, ERROR, logError, logWait } from '../../services/message/message.service';
+import { getCurrentDirectoryBase } from '../../services/utils';
+import { driveCreateFolder } from '../../services/drive';
+import { gasCreate, gasWebappInit } from '../../services/gas';
+import { getOAuth2Client } from '../../services/google';
+import { setSheetbaseDotJson, setPackageDotJson, setConfigs } from '../../services/project';
+import { setClaspConfigs } from '../../services/clasp';
+import { warn, LOG, ERROR, logError, logWait } from '../../services/message';
 
 import { setupHook } from '../../hooks/setup';
 

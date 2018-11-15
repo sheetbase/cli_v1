@@ -4,7 +4,7 @@ import {
     getConfigs,
     getBackendConfigs,
     getFrontendConfigs,
-} from '../services/project/project.service';
+} from '../services/project';
 
 export async function urlsHook(data?: {}) {
     const hook: CLIHook = await getHook('urls');

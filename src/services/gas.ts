@@ -2,9 +2,44 @@ import { pathExists, readFile } from 'fs-extra';
 import { OAuth2Client } from 'google-auth-library';
 import * as readDir from 'fs-readdir-recursive';
 
-import { FileCopyRequestBody } from '../drive/drive.type';
-import { CreationRequestBody, File } from './gas.type';
-import { DEPLOY_PATH, INIT_CONTENT } from './gas.config';
+import { FileCopyRequestBody } from './drive';
+
+export const DEPLOY_PATH = 'backend/dist';
+export const INIT_CONTENT = [
+    {
+        name: 'appsscript',
+        type: 'JSON',
+        source: `
+        {
+            "webapp": {
+              "access": "ANYONE_ANONYMOUS",
+              "executeAs": "USER_DEPLOYING"
+            },
+            "exceptionLogging": "STACKDRIVER"
+        }
+        `,
+    },
+    {
+        name: 'index',
+        type: 'SERVER_JS',
+        source: `
+        function doGet() {
+            return HtmlService.createHtmlOutput('Init webapp succeed.');
+        }
+        `,
+    },
+];
+
+export interface CreationRequestBody {
+    title: string;
+    parentId?: string;
+}
+
+export interface File {
+    name: string;
+    type: string;
+    source: string;
+}
 
 export async function gasCreate(
     client: OAuth2Client,

@@ -1,4 +1,4 @@
-import { LOG } from '../../services/message/message.service';
+import { LOG } from '../../services/message';
 
 export async function accountUpgradeCommand() {
     console.log(LOG.ACCOUNT_UPGRADE);

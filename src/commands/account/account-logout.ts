@@ -1,5 +1,5 @@
-import { logout } from '../../services/user/user.service';
-import { ERROR, LOG } from '../../services/message/message.service';
+import { logout } from '../../services/user';
+import { ERROR, LOG } from '../../services/message';
 
 export async function accountLogoutCommand() {
     try {

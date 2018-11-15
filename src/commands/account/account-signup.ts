@@ -1,7 +1,7 @@
-import { askForRegister } from '../../services/inquirer/inquirer.service';
-import { validateEmail, validatePassword } from '../../services/utils/utils.service';
-import { register } from '../../services/user/user.service';
-import { ERROR, LOG, logError } from '../../services/message/message.service';
+import { askForRegister } from '../../services/inquirer';
+import { validateEmail, validatePassword } from '../../services/utils';
+import { register } from '../../services/user';
+import { ERROR, LOG, logError } from '../../services/message';
 
 export async function accountSignupCommand() {
     try {

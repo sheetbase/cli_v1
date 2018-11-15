@@ -1,5 +1,5 @@
-import { accountHelp } from '../../services/help/help.service';
-import { ERROR } from '../../services/message/message.service';
+import { accountHelp } from '../../services/help';
+import { ERROR } from '../../services/message';
 
 import { accountLoginCommand } from './account-login';
 import { accountLogoutCommand } from './account-logout';

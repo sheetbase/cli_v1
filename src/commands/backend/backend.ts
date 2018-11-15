@@ -1,6 +1,6 @@
 import { execSync } from 'child_process';
 
-import { logError } from '../../services/message/message.service';
+import { logError } from '../../services/message';
 
 export async function backendCommand(command: string) {
     switch (command) {

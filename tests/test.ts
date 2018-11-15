@@ -13,8 +13,8 @@ import { spawnSync } from 'child_process';
 import * as cfs from 'configstore';
 const configstore = new cfs('sheetbase_cli');
 
-import { getOAuth2Client } from '../src/services/google/google.service';
-import { driveRemove } from '../src/services/drive/drive.service';
+import { getOAuth2Client } from '../src/services/google';
+import { driveRemove } from '../src/services/drive';
 
 const SHEETBASE = (os.type() === 'Windows_NT') ? 'sheetbase.cmd' : 'sheetbase';
 
