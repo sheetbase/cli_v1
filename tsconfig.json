@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "module": "commonjs",
     "moduleResolution": "node",
     "strict": true,
+    "skipLibCheck": true,
     "lib": [
 	    "dom",
-      "es5",
-      "es2015",
       "es2018"
     ],
     "noImplicitAny": false,

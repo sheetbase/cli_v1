@@ -1,6 +1,6 @@
 {
   "name": "@sheetbase/cli",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Official CLI for working with Sheetbase. ",
   "author": "Sheetbase",
   "homepage": "https://sheetbase.net",
@@ -15,7 +15,7 @@
   ],
   "preferGlobal": true,
   "scripts": {
-    "transpile": "tsc --project tsconfig.json",
+    "transpile": "tsc -p tsconfig.json",
     "build": "npm run transpile && npm i -g --loglevel=error",
     "build-fresh": "npm cache clean --force && npm i && npm run build",
     "before-usage": "npm i --save-dev ucfirst extract-comments parse-comments",

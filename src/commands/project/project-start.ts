@@ -22,13 +22,17 @@ export async function projectStartCommand(params: string[], options?: Options) {
         return logError(ERROR.PROJECT_EXISTS);
     }
 
-    if (options.module) { // module
+    if (options.module) {
+        // backend module
         const gitUrl = 'https://github.com/sheetbase/blank-server-module.git';
         execSync(`git clone ${gitUrl} ${name}`);
-    } else if (options.app) { // app
+    } else if (options.app) {
+        // backend app
         const gitUrl = 'https://github.com/sheetbase/blank-server-app.git';
         execSync(`git clone ${gitUrl} ${name}`);
-    } else { // theme
+    } else {
+        // theme
+
         // parse theme string
         const downloadUrl: string = await parseThemeString(params[1]);
         if (!downloadUrl) {
@@ -102,9 +106,9 @@ async function runSetup(path: string, options: Options): Promise<void> {
 async function parseThemeString(theme = 'blank-angular@latest'): Promise<string> {
     /**
      * Official:
-     * n/a > theme-blank-angular@latest
-     * name > theme-name@latest
-     * name@ver > theme-name@ver
+     * n/a > blank-angular@latest
+     * name > name@latest
+     * name@ver > name@ver
      *
      * Custom:
      * full zip url > full zip url
