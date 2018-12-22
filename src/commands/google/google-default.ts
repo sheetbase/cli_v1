@@ -1,5 +1,5 @@
 import { setDefaultGoogleAccountId } from '../../services/google';
-
+import { logOk } from '../../services/message';
 import { googleListCommand } from './google-list';
 
 export async function googleDefaultCommand(params: string[]) {
@@ -12,4 +12,7 @@ export async function googleDefaultCommand(params: string[]) {
 
     // set the default account by id
     await setDefaultGoogleAccountId(id);
+
+    // done
+    logOk('GOOGLE_DEFAULT__OK', true);
 }

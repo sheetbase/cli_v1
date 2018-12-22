@@ -18,8 +18,18 @@ import { driveRemove } from '../src/services/drive';
 const SHEETBASE = (os.type() === 'Windows_NT') ? 'sheetbase.cmd' : 'sheetbase';
 
 const PROJECT_NAME = 'test_project';
-
 const PROJECT_PATH = resolve(PROJECT_NAME);
+
+function createTestProject() {
+  spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
+}
+
+function removeTestProject() {
+  removeSync(PROJECT_PATH);
+}
+
+const GOOGLE_RC = '.googlerc.json';
+const GOOGLE_RC_BAK = '.googlerc.json.bak';
 
 const FAKE_GOOGLE_ACCOUNTS = [];
 [1, 2, 3].forEach(i => {
@@ -32,9 +42,6 @@ const FAKE_GOOGLE_ACCOUNTS = [];
       grantedAt: (new Date()).getTime(),
     });
 });
-
-const GOOGLE_RC = '.googlerc.json';
-const GOOGLE_RC_BAK = '.googlerc.json.bak';
 
 function removeGoogleRc() {
   if (pathExistsSync(GOOGLE_RC)) {
@@ -54,8 +61,8 @@ function expectResult(args: string[], expected: string, cwd = '.') {
   const result = spawnSync(
     SHEETBASE, args, { cwd, encoding : 'utf8' },
   );
-  expect(result.status).to.equal(0);
   expect(result.stdout).to.contain(expected);
+  // expect(result.status).to.equal(0);
 }
 
 function expectError(args: string[], expected: string, cwd = '.') {
@@ -63,8 +70,272 @@ function expectError(args: string[], expected: string, cwd = '.') {
     SHEETBASE, args, { cwd, encoding : 'utf8' },
   );
   expect(result.stderr).to.contain(expected);
-  expect(result.status).to.equal(1);
+  // expect(result.status).to.equal(1);
 }
+
+describe('Test command group when missing subcommands', () => {
+  it('should show google subcommands', () => {
+    expectResult(['google'], 'APP__INFO__INVALID_SUBCOMMAND');
+  });
+  it('should show project subcommands', () => {
+    expectResult(['project'], 'APP__INFO__INVALID_SUBCOMMAND');
+  });
+});
+
+describe('Test GOOGLE command', () => {
+
+  beforeEach(() => {
+    removeGoogleRc();
+    // need at least an account connected
+    const { id } = FAKE_GOOGLE_ACCOUNTS[0].profile;
+    FAKE_GOOGLE_ACCOUNTS.forEach(account => {
+      const { id } = account.profile;
+      configstore.set(`google_accounts.${id}`, account);
+    });
+    configstore.set(`google_accounts_default_id`, id);
+  });
+
+  const LISTING_EXPECTED = `${FAKE_GOOGLE_ACCOUNTS[0].profile.id} (default)`;
+  const DISCONNECTION_EXPECTED = 'GOOGLE_DISCONNECTED__OK';
+
+  it('should fail to disconnect (no id argument)', () => {
+    expectError(['google', 'disconnect'], 'GOOGLE_DISCONNECTED__ERROR__NO_ID');
+  });
+
+  it('should fail to disconnect (invalid id)', () => {
+    expectError(['google', 'disconnect', 'xxxxxxx'], 'Invalid id.');
+  });
+
+  it('should fail to disconnect local (no .googlerc.json)', () => {
+    expectError(['google', 'disconnect', 'local'], 'No local account.');
+  });
+
+  it('should fail to set default (invalid id)', () => {
+    expectError(['google', 'default', 'xxxxxxx'], 'Invalid id.');
+  });
+
+  // NOTE: manually test for
+  it.skip('(manually) google connect (answer NO)');
+  it.skip('(manually) google connect');
+  it.skip('(manually) google connect --yes');
+  it.skip('(manually) google connect --creds');
+  it.skip('(manually) google connect --full-drive');
+
+  it('should list', () => expectResult(['google', 'list'], LISTING_EXPECTED));
+
+  it('should show default account', () => expectResult(['google', 'default'], LISTING_EXPECTED));
+
+  it('should set default', () => {
+    const { id } = FAKE_GOOGLE_ACCOUNTS[1].profile;
+    expectResult(['google', 'default', id], `GOOGLE_DEFAULT__OK`);
+  });
+
+  it('should disconnect by id', () => {
+    expectResult(['google', 'disconnect', FAKE_GOOGLE_ACCOUNTS[2].profile.id], DISCONNECTION_EXPECTED);
+  });
+
+  it('should disconnect default', () => {
+    expectResult(['google', 'disconnect', 'default'], DISCONNECTION_EXPECTED);
+  });
+
+  it('should disconnect all', () => {
+    expectResult(['google', 'disconnect', 'all'], DISCONNECTION_EXPECTED);
+  });
+
+  it('should disconnect local', () => {
+    writeJsonSync(GOOGLE_RC, FAKE_GOOGLE_ACCOUNTS[0]); // create fake for removing
+    expectResult(['google', 'disconnect', 'local'], DISCONNECTION_EXPECTED);
+  });
+
+  it('should list (account from .googlerc.json)', () => {
+    restoreGoogleRc();
+    expectResult(['google', 'list'], `(local)`);
+  });
+
+});
+
+// describe('Test START command', () => {
+//   beforeEach(() => {
+//     removeSync(PROJECT_PATH);
+//   });
+//   after(() => {
+//     removeSync(PROJECT_PATH);
+//   });
+
+//   const EXPECTED = '\n New project created under "test_project".';
+
+//   it('should fail (project exists)', () => {
+//     ensureDirSync(PROJECT_NAME);
+//     expectError(['start', PROJECT_NAME], '\n [ERROR] Project exists, try different name.');
+//   });
+//   it('should fail (invalid theme string)',() => {
+//     expectError(['start', PROJECT_NAME, 'invalid-theme'], '\n [ERROR] Invalid theme argument.');
+//   });
+//   it('should fail (invalid theme, cannot download or extract file)', () => {
+//     expectError(['start', PROJECT_NAME, 'invalid-theme@1.0.0'], '\n [ERROR] Create project failed.');
+//   });
+
+//   it('should start a new project', () => {
+//     expectResult(['start', PROJECT_NAME], EXPECTED);
+//   });
+//   it('should start a new project with specific theme', () => {
+//     expectResult(['start', PROJECT_NAME, 'basic-angular'], EXPECTED);
+//     const { name } = readJsonSync(`${PROJECT_PATH}/package.json`);
+//     expect(name).to.equal('basic-angular');
+//   });
+// });
+
+// describe('Test SETUP command', () => {
+//   beforeEach(() => {
+//     // create a new project
+//     spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
+//     // reset drive folder
+//     // for not accidentally remove in "after all" hook
+//     const path = `${PROJECT_PATH}/sheetbase.json`;
+//     const sheetbaseJson = readJsonSync(path);
+//     sheetbaseJson.driveFolder = '';
+//     writeJsonSync(path, sheetbaseJson);
+//     // copy .googlerc.json (connect the tester account)
+//     copySync(GOOGLE_RC, PROJECT_PATH + '/' + GOOGLE_RC);
+//   });
+
+//   afterEach(async () => {
+//     const { driveFolder } = readJsonSync(`${PROJECT_PATH}/sheetbase.json`);
+//     // remove test folder
+//     removeSync(PROJECT_PATH);
+//     // remove drive folder
+//     const googleClient = await getOAuth2Client();
+//     await driveRemove(googleClient, driveFolder);
+//   });
+
+//   const EXPECTED = 'https://script.google.com/';
+
+//   it('should setup the project', () => expectResult(['setup'], EXPECTED, PROJECT_PATH));
+// });
+
+describe('Test CONFIG command', () => {
+
+  beforeEach(() => createTestProject());
+  afterEach(() => removeTestProject());
+
+  it('should fail to import (no or invalid file)', () => {
+    expectError(['config', 'import'], 'PROJECT_CONFIG_IMPORT__ERROR__NO_FILE', PROJECT_NAME);
+  });
+
+  it('should list configs (default)', () => {
+    expectResult(['config'], 'PROJECT_CONFIG_LIST__OK', PROJECT_NAME);
+  });
+
+  it('should list configs', () => {
+    expectResult(['config', 'list'], 'PROJECT_CONFIG_LIST__OK', PROJECT_NAME);
+  });
+
+  it('should update configs (no value argument)', () => {
+    expectResult(['config', 'update'], 'PROJECT_CONFIG_UPDATE__OK', PROJECT_NAME);
+  });
+
+  it('should set configs', () => {
+    expectResult(['config', 'update', 'a_key=a_value'], 'PROJECT_CONFIG_UPDATE__OK', PROJECT_NAME);
+  });
+
+  it('should list configs (has backend)', () => {
+    expectResult(['config'], 'Backend configs:', PROJECT_NAME);
+  });
+
+  it('should export configs', () => {
+    expectResult(['config', 'export'], 'PROJECT_CONFIG_EXPORT__OK', PROJECT_NAME);
+  });
+
+  it('should export configs (custom path)', () => {
+    const FILE = 'my-project-config.json';
+    expectResult(['config', 'export', FILE], 'PROJECT_CONFIG_EXPORT__OK', PROJECT_NAME);
+  });
+
+});
+
+describe('Test URLS command', () => {
+
+  beforeEach(() => createTestProject());
+  afterEach(() => removeTestProject());
+
+  it('should show urls list (default)', () => {
+    expectResult(['urls'], 'PROJECT_URLS_LIST__OK', PROJECT_NAME);
+  });
+
+  it('should show urls list', () => {
+    expectResult(['urls', 'list'], 'PROJECT_URLS_LIST__OK', PROJECT_NAME);
+  });
+
+  it('should open link in browser', () => {
+    expectResult(['urls', 'open'], 'APP_INFO_LINK_OPENED', PROJECT_NAME);
+  });
+
+  it('should open link in browser (by name)', () => {
+    expectResult(['urls', 'open', 'backend'], 'APP_INFO_LINK_OPENED', PROJECT_NAME);
+  });
+
+});
+
+describe('Test INFO command', () => {
+
+  beforeEach(() => createTestProject());
+  afterEach(() => removeTestProject());
+
+  it('should show project info', () => expectResult(['info'], 'A Sheetbase project', PROJECT_NAME));
+
+});
+
+describe('Test DOCS command', () => {
+  it('should open docs', () => expectResult(['docs'], 'APP__INFO__LINK_OPENED'));
+});
+
+describe('Test BACKEND command', () => {
+  it('should run backend cmd', () => expectError(['backend'], `Error: spawnSync`));
+});
+
+describe('Test FRONTEND command', () => {
+  it('should run frontend cmd', () => expectError(['frontend'], `Error: spawnSync`));
+});
+
+describe('Test HELP command', () => {
+  it('should show help', () => expectResult(['help'], 'Global commands:'));
+  it('should show detail help', () => expectResult(['help', '--detail'], 'Command groups:'));
+});
+
+describe('Test * commands', () => {
+  it('should run script unknown', () => {
+    expectError(['unknown'], `npm ERR! missing script: unknown`);
+  });
+});
+
+describe('Test project specific commands while not in a Sheetbase project', () => {
+  const EXPECTED = 'PROJECT__ERROR__INVALID';
+  it('should fail for setup', () => expectError(['setup'], EXPECTED));
+  it('should fail for config', () => expectError(['config'], EXPECTED));
+  it('should fail for info', () => expectError(['info'], EXPECTED));
+  it('should fail for urls', () => expectError(['urls'], EXPECTED));
+});
+
+describe('Test commands while no Google account', () => {
+
+  beforeEach(() => {
+    spawnSync(SHEETBASE, ['google', 'disconnect', 'all']);
+    removeGoogleRc();
+  });
+
+  afterEach(() => restoreGoogleRc());
+
+  it('should fail for setup', () => {
+    ensureFileSync('sheetbase.json'); // create fake sheetbase.json
+    expectError(['setup'], 'PROJECT_SETUP__ERROR__NO_GOOGLE_ACCOUNT');
+    removeSync('sheetbase.json'); // remove sheetbase.json
+  });
+
+  it('should show no google list', () => {
+    expectResult(['google', 'list'], 'GOOGLE_LIST__INFO__NO_ACCOUNT');
+  });
+
+});
 
 describe('Test --help for each command', () => {
   it('should google --help', () => expectResult(['google', '-h'], 'Manage Google accounts.'));
@@ -78,231 +349,6 @@ describe('Test --help for each command', () => {
   it('should help --help', () => expectResult(['help', '-h'], 'Display help.'));
 });
 
-describe('Test command group when missing subcommands', () => {
-  it('should show google subcommands', () => expectResult(['google'], 'Google subcommands:'));
-  it('should show project subcommands', () => expectResult(['project'], 'Project subcommands:'));
-});
-
-describe('Test GOOGLE command', () => {
-  before(() => {
-    removeGoogleRc();
-    // need at least an account connected
-    const { id } = FAKE_GOOGLE_ACCOUNTS[0].profile;
-    FAKE_GOOGLE_ACCOUNTS.forEach(account => {
-      const { id } = account.profile;
-      configstore.set(`google_accounts.${id}`, account);
-    });
-    configstore.set(`google_accounts_default_id`, id);
-  });
-
-  const LISTING_EXPECTED = `${FAKE_GOOGLE_ACCOUNTS[0].profile.id} (default)`;
-  const DISCONNECTION_EXPECTED = 'Google account disconnected!';
-
-  it('should fail to disconnect (no id argument)', () => {
-    expectError(['google', 'disconnect'], '\n [ERROR] No account <id>|default|all|local.');
-  });
-  it('should fail to disconnect (invalid id)', () => {
-    expectError(['google', 'disconnect', 'xxxxxxx'], '\n [ERROR] Google disconnect fails');
-  });
-  it('should fail to disconnect local (no .googlerc.json)', () => {
-    expectError(['google', 'disconnect', 'local'], '\n [ERROR] Google disconnect fails');
-  });
-  it('should fail to set default (invalid id)', () => {
-    expectError(['google', 'default', 'xxxxxxx'], '\n [ERROR] Errors updating default account');
-  });
-
-  // NOTE: manually test for
-  it.skip('(manually) google connect (answer NO)');
-  it.skip('(manually) google connect');
-  it.skip('(manually) google connect --yes');
-  it.skip('(manually) google connect --creds');
-  it.skip('(manually) google connect --full-drive');
-
-  it('should list', () => expectResult(['google', 'list'], LISTING_EXPECTED));
-  it('should show default account', () => expectResult(['google', 'default'], LISTING_EXPECTED));
-  it('should set default', () => {
-    const { id } = FAKE_GOOGLE_ACCOUNTS[1].profile;
-    expectResult(['google', 'default', id], `Default account set to: ${id}.`);
-  });
-  it('should disconnect by id', () => {
-    expectResult(['google', 'disconnect', FAKE_GOOGLE_ACCOUNTS[2].profile.id], DISCONNECTION_EXPECTED);
-  });
-  it('should disconnect default', () => {
-    expectResult(['google', 'disconnect', 'default'], DISCONNECTION_EXPECTED);
-  });
-  it('should disconnect all', () => {
-    expectResult(['google', 'disconnect', 'all'], DISCONNECTION_EXPECTED);
-  });
-  it('should disconnect local', () => {
-    writeJsonSync(GOOGLE_RC, FAKE_GOOGLE_ACCOUNTS[0]); // create fake for removing
-    expectResult(['google', 'disconnect', 'local'], DISCONNECTION_EXPECTED);
-  });
-  it('should list (account from .googlerc.json)', () => {
-    restoreGoogleRc();
-    expectResult(['google', 'list'], `(local)`);
-  });
-});
-
-describe('Test START command', () => {
-  beforeEach(() => {
-    removeSync(PROJECT_PATH);
-  });
-  after(() => {
-    removeSync(PROJECT_PATH);
-  });
-
-  const EXPECTED = '\n New project created under "test_project".';
-
-  it('should fail (project exists)', () => {
-    ensureDirSync(PROJECT_NAME);
-    expectError(['start', PROJECT_NAME], '\n [ERROR] Project exists, try different name.');
-  });
-  it('should fail (invalid theme string)',() => {
-    expectError(['start', PROJECT_NAME, 'invalid-theme'], '\n [ERROR] Invalid theme argument.');
-  });
-  it('should fail (invalid theme, cannot download or extract file)', () => {
-    expectError(['start', PROJECT_NAME, 'invalid-theme@1.0.0'], '\n [ERROR] Create project failed.');
-  });
-
-  it('should start a new project', () => {
-    expectResult(['start', PROJECT_NAME], EXPECTED);
-  });
-  it('should start a new project with specific theme', () => {
-    expectResult(['start', PROJECT_NAME, 'basic-angular'], EXPECTED);
-    const { name } = readJsonSync(`${PROJECT_PATH}/package.json`);
-    expect(name).to.equal('basic-angular');
-  });
-});
-
-describe('Test SETUP command', () => {
-  beforeEach(() => {
-    // create a new project
-    spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
-    // reset drive folder
-    // for not accidentally remove in "after all" hook
-    const path = `${PROJECT_PATH}/sheetbase.json`;
-    const sheetbaseJson = readJsonSync(path);
-    sheetbaseJson.driveFolder = '';
-    writeJsonSync(path, sheetbaseJson);
-    // copy .googlerc.json (connect the tester account)
-    copySync(GOOGLE_RC, PROJECT_PATH + '/' + GOOGLE_RC);
-  });
-
-  afterEach(async () => {
-    const { driveFolder } = readJsonSync(`${PROJECT_PATH}/sheetbase.json`);
-    // remove test folder
-    removeSync(PROJECT_PATH);
-    // remove drive folder
-    const googleClient = await getOAuth2Client();
-    await driveRemove(googleClient, driveFolder);
-  });
-
-  const EXPECTED = 'https://script.google.com/';
-
-  it('should setup the project', () => expectResult(['setup'], EXPECTED, PROJECT_PATH));
-});
-
-describe('Test CONFIG command', () => {
-  before(() => {
-    // create a new project
-    spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
-  });
-  after(() => {
-    removeSync(PROJECT_PATH);
-  });
-
-  it('should fail to update (no value argument)', () => {
-    expectError(['config', 'update'], '\n [ERROR] No configs value argument.', PROJECT_NAME);
-  });
-  it('should fail to import (no or invalid file)', () => {
-    expectError(['config', 'import'], '\n [ERROR] No config file.', PROJECT_NAME);
-  });
-
-  it('should list configs (default)', () => expectResult(['config'], 'Frontend configs:', PROJECT_NAME));
-  it('should list configs', () => expectResult(['config', 'list'], 'Frontend configs:', PROJECT_NAME));
-  it('should update configs', () => {
-    expectResult(['config', 'update', 'a_key=a_value'], 'Configs updated!', PROJECT_NAME);
-  });
-  it('should list configs (has backend)', () => {
-    expectResult(['config'], 'Backend configs:', PROJECT_NAME);
-  });
-  it('should export configs', () => {
-    expectResult(['config', 'export'], 'Configs exported to: exported/configs-exported-', PROJECT_NAME);
-  });
-  it('should export configs (custom path)', () => {
-    const FILE = 'my-project-config.json';
-    expectResult(['config', 'export', FILE], 'Configs exported to: ' + FILE, PROJECT_NAME);
-  });
-});
-
-describe('Test URLS command', () => {
-  before(() => {
-    // create a new project
-    spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
-  });
-  after(() => {
-    removeSync(PROJECT_PATH);
-  });
-  it('should show urls list (default)', () => {
-    expectResult(['urls'], 'Project urls:', PROJECT_NAME);
-  });
-  it('should show urls list', () => {
-    expectResult(['urls', 'list'], 'https://drive.google.com/drive/folders/', PROJECT_NAME);
-  });
-  it('should open link in browser', () => {
-    expectResult(['urls', 'open'], 'Link opened in browser:', PROJECT_NAME);
-  });
-  it('should open link in browser (by name)', () => {
-    expectResult(['urls', 'open', 'script'], 'https://script.google.com/', PROJECT_NAME);
-  });
-});
-
-describe('Test INFO command', () => {
-  before(() => {
-    // create a new project
-    spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
-  });
-  after(() => {
-    removeSync(PROJECT_PATH);
-  });
-  it('should show project info', () => expectResult(['info'], 'Project information:', PROJECT_NAME));
-});
-
-describe('Test DOCS command', () => {
-  it('should open docs', () => expectResult(['docs'], 'https://sheetbase.net/docs'));
-});
-
-describe('Test HELP command', () => {
-  it('should show help', () => expectResult(['help'], 'Global commands:'));
-  it('should show detail help', () => expectResult(['help', '--detail'], 'Command groups:'));
-});
-
-describe('Test project specific commands while not in a Sheetbase project', () => {
-  const EXPECTED = '\n [ERROR] Not in a Sheetbase project.';
-  it('should fail for setup', () => expectError(['setup'], EXPECTED));
-  it('should fail for config', () => expectError(['config'], EXPECTED));
-  it('should fail for info', () => expectError(['info'], EXPECTED));
-  it('should fail for urls', () => expectError(['urls'], EXPECTED));
-});
-
-describe('Test commands while no Google account', () => {
-  // remove all google accounts
-  before(() => {
-    spawnSync(SHEETBASE, ['google', 'disconnect', 'all']);
-    removeGoogleRc();
-  });
-  after(() => {
-    restoreGoogleRc();
-  });
-  const EXPECTED = '\n [ERROR] No account connected!';
-  it('should fail for setup', () => {
-    ensureFileSync('sheetbase.json'); // create fake sheetbase.json
-    expectError(['setup'], EXPECTED);
-    removeSync('sheetbase.json'); // remove sheetbase.json
-  });
-  it('should fail for google list', () => expectError(['google', 'list'], EXPECTED));
-});
-
 describe('Test variations of sheetbase help', () => {
   const EXPECTED = `Usage: sheetbase <command> [<args>] [--help] [options]`;
   it('should show help for sheetbase help', () => expectResult(['help'], EXPECTED));
@@ -314,8 +360,4 @@ describe('Test variations of sheetbase --version', () => {
   const EXPECTED = require('./../package.json').version;
   it('should show version for sheetbase --version', () => expectResult(['--version'], EXPECTED));
   it('should show version for sheetbase -v', () => expectResult(['-v'], EXPECTED));
-});
-
-describe('Test unknown commands', () => {
-  it('should fail (unknown command)', () => expectError(['unknown'], `Unknown command`));
 });

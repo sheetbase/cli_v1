@@ -18,7 +18,7 @@
  */
 
 /**
- * Sheetbase CLI – Official tool for working with Sheetbase.
+ * Sheetbase CLI – Official tool for working with Sheetbase project.
  */
 
 import chalk from 'chalk';
@@ -87,7 +87,7 @@ program
  * Proxy of _project start_
  * @name start
  * @param {string?} [projectName] Name of the project, auto default.
- * @param {string?} [resource] Theme to create the project with, default to theme _basic_angular_.
+ * @param {string?} [resource] Theme or template to create the project with, default to theme _blank_angular_.
  * @param {string?} [--npm] Install npm packages.
  * @param {string?} [--setup] Run setup command.
  */
@@ -96,7 +96,9 @@ program
   .option('--npm', 'Install npm packages.')
   .option('--setup', 'Run setup command.')
   .description('Start a new project.')
-  .action(async (projectName, theme, options) => projectCommand('start', [projectName, theme], options));
+  .action(async (projectName, theme, options) => projectCommand(
+    'start', [projectName, theme], options,
+  ));
 
 /**
  * Setup the project.
@@ -106,7 +108,7 @@ program
 program
   .command('setup')
   .description('Setup the project.')
-  .action(async (options) => projectCommand('setup', [], { npm: false, ... options}));
+  .action(async () => projectCommand('setup'));
 
 /**
  * Config backend & frontend.
@@ -119,8 +121,8 @@ program
 program
   .command('config [subCommand] [params...]')
   .description('Config backend & frontend.')
-  .action(async (subCommand, params, options) => await projectCommand(
-    'config', [subCommand, ... params], options,
+  .action(async (subCommand, params) => await projectCommand(
+    'config', [ subCommand, ... params ],
   ));
 
 /**
@@ -134,8 +136,8 @@ program
 program
   .command('urls [subCommand] [params...]')
   .description(`View project URLs.`)
-  .action(async (subCommand, params, options) => await projectCommand(
-    'urls', [subCommand, ... params], options,
+  .action(async (subCommand, params) => await projectCommand(
+    'urls', [ subCommand, ... params ],
   ));
 
 /**
@@ -194,7 +196,7 @@ program
  * @name *
  */
 program
-  .command('*', `Any other command ends of running: ${chalk.green('npm run <cmd>')}.`)
+  .command('*', `Any other command will run: ${chalk.green('npm run <cmd>')}.`)
   .action(defaultCommand);
 
 if (!process.argv.slice(2).length) {

@@ -12,8 +12,8 @@
     "noImplicitAny": false,
     "strictNullChecks": false,
   },
-  "files": [
-    "src/index.ts",
-    "tests/test.ts"
+  "include": [
+    "src/*.ts",
+    "tests/*.ts"
   ]
 }

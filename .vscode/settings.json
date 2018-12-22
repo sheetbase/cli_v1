@@ -4,6 +4,8 @@
 
         "**/*.js": true,
 		
-		"docs": true
+		"docs": true,
+		
+		"**/.nyc_output": true
     }
 }
