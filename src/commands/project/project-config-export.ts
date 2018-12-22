@@ -19,5 +19,5 @@ export async function projectConfigExportCommand(params: string[]) {
     await writeJson(jsonFilePath, configs, { spaces: 3 });
 
     // done
-    logOk('PROJECT_CONFIG_EXPORT', true, [ jsonFilePath ]);
+    logOk('PROJECT_CONFIG_EXPORT__OK', true, [ jsonFilePath ]);
 }

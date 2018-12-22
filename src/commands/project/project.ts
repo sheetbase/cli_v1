@@ -19,7 +19,7 @@ export async function projectCommand(command: string, params: string[] = [], opt
         !['start', 'new'].includes(command) &&
         !await isValid()
     ) {
-        return logError('INVALID_PROJECT');
+        return logError('PROJECT__ERROR__INVALID');
     }
 
     switch (command) {
@@ -45,7 +45,7 @@ export async function projectCommand(command: string, params: string[] = [], opt
         break;
 
         default:
-            logInfo('INVALID_SUBCOMMAND');
+            logInfo('APP__INFO__INVALID_SUBCOMMAND');
             console.log(projectHelp());
         break;
     }

@@ -20,8 +20,13 @@ export interface SheetbaseDotJson {
         backend?: string[];
     };
     configs?: {
-        frontend?: {};
-        backend?: {};
+        frontend?: {
+            backendUrl?: string;
+            [key: string]: any;
+        };
+        backend?: {
+            [key: string]: any;
+        };
     };
     urlMaps?: {
         [configKey: string]: string[];

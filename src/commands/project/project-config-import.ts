@@ -8,7 +8,7 @@ export async function projectConfigImportCommand(params: string[]) {
 
     // load data
     if (!jsonFilePath || !await pathExists(jsonFilePath)) {
-        return logError('PROJECT_CONFIG_IMPORT_NO_FILE');
+        return logError('PROJECT_CONFIG_IMPORT__ERROR__NO_FILE');
     }
 
     // set data
@@ -17,5 +17,5 @@ export async function projectConfigImportCommand(params: string[]) {
     await setFrontendConfigs(frontend);
 
     // done
-    logOk('PROJECT_CONFIG_IMPORT', true);
+    logOk('PROJECT_CONFIG_IMPORT__OK', true);
 }

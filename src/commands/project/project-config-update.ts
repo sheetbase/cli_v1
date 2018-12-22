@@ -17,5 +17,5 @@ export async function projectConfigUpdateCommand(params: string[]) {
     }
 
     // done
-    logOk('PROJECT_CONFIG_UPDATE', true);
+    logOk('PROJECT_CONFIG_UPDATE__OK', true);
 }

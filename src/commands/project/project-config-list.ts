@@ -35,5 +35,5 @@ export async function projectConfigListCommand() {
     }
 
     // done
-    logOk('PROJECT_CONFIG_LIST', true);
+    logOk('PROJECT_CONFIG_LIST__OK', true);
 }

@@ -19,7 +19,7 @@ export async function projectUrlsListCommand() {
     console.log(table.render());
 
     // done
-    logOk('PROJECT_URLS_LIST', true);
+    logOk('PROJECT_URLS_LIST__OK', true);
 }
 
 export async function buildUrls() {

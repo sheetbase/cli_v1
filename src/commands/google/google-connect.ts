@@ -18,6 +18,8 @@ export async function googleConnectCommand(options: Options = {}) {
     } else {
         loginConfirm = 'yes';
     }
+
+    // answer = NO
     if (!['y', 'yes'].includes(loginConfirm)) {
         return process.exit();
     }
@@ -29,9 +31,9 @@ export async function googleConnectCommand(options: Options = {}) {
     const account = await retrieveTemporaryRefeshToken();
     if (options.creds) {
         await writeJson('.googlerc.json', account);
-        logWarn('GOOGLE_CONNECT_CREDS', true);
+        logWarn('GOOGLE_CONNECT__WARN__CREDS', true);
     }
 
     // done
-    logOk('GOOGLE_CONNECT', true);
+    logOk('GOOGLE_CONNECT__OK', true);
 }

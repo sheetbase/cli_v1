@@ -67,23 +67,12 @@ export async function logAction(
     description: string,
     action: {(): Promise<any>},
     done?: string | {(result: any): string},
-    exitOnError: boolean | number = false,
 ) {
     console.log('\n - ' + description);
 
     // run the action
-    let result = null;
     const timeBegin = (new Date()).getTime();
-    try {
-        result = await action();
-    } catch (error) {
-        // log error
-        console.log('   ' + '... ' + green('ERROR'));
-        console.log('\n' + error);
-        if (!!exitOnError) {
-            return process.exit(typeof exitOnError === 'number' ? exitOnError as number : 1);
-        }
-    }
+    const result = await action();
     const spent = (new Date()).getTime() - timeBegin;
 
     // log done

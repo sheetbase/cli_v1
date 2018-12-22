@@ -12,6 +12,6 @@ export async function projectUrlsOpenCommand(params: string[]) {
     const urls = buildUrls();
 
     const linkToBeOpened = urls[name];
-    logInfo('PROJECT_URLS_OPEN', false, [ linkToBeOpened ]);
+    logInfo('APP_INFO_LINK_OPENED', false, [ linkToBeOpened ]);
     return opn(linkToBeOpened);
 }

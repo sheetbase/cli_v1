@@ -13,7 +13,7 @@ export async function googleDisconnectCommand(params: string[]) {
 
     // must have a valid id
     if (!id) {
-        return logError('GOOGLE_DISCONNECTED_NO_ID');
+        return logError('GOOGLE_DISCONNECTED__ERROR__NO_ID');
     }
 
     // remove accounts
@@ -36,5 +36,5 @@ export async function googleDisconnectCommand(params: string[]) {
             console.log(` + ${green(email)} ${name ? '(' + name + ')' : ''}`);
         }
     }
-    logOk('GOOGLE_DISCONNECTED', true);
+    logOk('GOOGLE_DISCONNECTED__OK', true);
 }

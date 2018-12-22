@@ -32,7 +32,7 @@ export async function googleCommand(command: string, params?: string[], options?
         break;
 
         default:
-            logInfo('INVALID_SUBCOMMAND');
+            logInfo('APP__INFO__INVALID_SUBCOMMAND');
             console.log(googleHelp());
         break;
     }

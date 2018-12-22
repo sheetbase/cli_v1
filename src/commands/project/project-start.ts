@@ -30,7 +30,8 @@ export async function projectStartCommand(params: string[], options?: Options) {
     // project files
     await logAction('Get the resource: ' + url, async () => {
         if (url.endsWith('.git')) {
-            gitClone(url, name); // clone the repo when has .git
+            // clone the repo when has .git url
+            execSync(`git clone ${url} ${name}`, { stdio: 'ignore' });
             await remove(deployPath + '/' + '.git'); // delete .git folder
         } else {
             const downloadedPath = await download(url, deployPath, 'resource.zip');
@@ -77,7 +78,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
 
         // install packages
         if (options.npm) {
-            await logAction('Install dependencies (please wait, could take minutes)', async () => {
+            await logAction('Install dependencies (could take minutes)', async () => {
                 const NPM = (os.type() === 'Windows_NT') ? 'npm.cmd' : 'npm';
                 execSync(`${NPM} install`, { cwd: deployPath + '/backend', stdio: 'inherit' });
                 execSync(`${NPM} install`, { cwd: deployPath + '/frontend', stdio: 'inherit' });
@@ -125,8 +126,4 @@ async function resolveResource(resource?: string) {
         resource = `https://github.com/${name}/archive/${version}.zip`;
     }
     return resource;
-}
-
-function gitClone(url: string, name: string) {
-    execSync(`git clone ${url} ${name}`, { stdio: 'ignore' });
 }
