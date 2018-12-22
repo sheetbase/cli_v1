@@ -1,19 +1,15 @@
 import { setDefaultGoogleAccountId } from '../../services/google';
-import { LOG, ERROR, logError } from '../../services/message';
 
 import { googleListCommand } from './google-list';
 
 export async function googleDefaultCommand(params: string[]) {
     const [ id ] = params;
+
+    // if no id provided, print out the default account
     if (!id) {
-        return googleListCommand({default: true});
-    } else {
-        try {
-            await setDefaultGoogleAccountId(id);
-        } catch (error) {
-            return logError(ERROR.GOOGLE_DEFAULT_FAILS);
-        }
-        console.log(LOG.GOOGLE_DEFAULT(id));
+        return googleListCommand({ default: true });
     }
-    return process.exit();
+
+    // set the default account by id
+    await setDefaultGoogleAccountId(id);
 }

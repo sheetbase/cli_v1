@@ -8,7 +8,22 @@ const opn = require('opn');
 const config = require('configstore');
 const configstore = new config('sheetbase_cli');
 
-import { GoogleAccount, GoogleAccounts, GoogleAccountProfile } from './user';
+export interface GoogleAccountProfile {
+    id: string;
+    email: string;
+    name?: string;
+    imageUrl?: string;
+}
+
+export interface GoogleAccount {
+    refreshToken: string;
+    profile: GoogleAccountProfile;
+    grantedAt?: number;
+}
+
+export interface GoogleAccounts {
+    [id: string]: GoogleAccount;
+}
 
 export const GOOGLE_RC = '.googlerc.json';
 export const OAUHT2_CLIENT_SETTINGS = {

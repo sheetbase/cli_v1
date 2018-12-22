@@ -5,7 +5,6 @@ import {
   removeSync, copySync,
   ensureDirSync, ensureFileSync,
   readJsonSync, writeJsonSync,
-  outputFileSync,
 } from 'fs-extra';
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
@@ -68,11 +67,6 @@ function expectError(args: string[], expected: string, cwd = '.') {
 }
 
 describe('Test --help for each command', () => {
-  it('should account --help', () => expectResult(['account', '-h'], 'Manage Sheetbase account.'));
-  it('should login --help', () => expectResult(['login', '-h'], 'Login to Sheetbase Cloud account.'));
-  it('should logout --help', () => expectResult(['logout', '-h'], 'Logout of your Sheetbase Cloud account.'));
-  it('should signup --help', () => expectResult(['signup', '-h'], 'Create a Sheetbase Cloud account.'));
-  it('should profile --help', () => expectResult(['profile', '-h'], 'Manage Sheetbase account profile.'));
   it('should google --help', () => expectResult(['google', '-h'], 'Manage Google accounts.'));
   it('should project --help', () => expectResult(['project', '-h'], 'Project general tasks.'));
   it('should start --help', () => expectResult(['start', '-h'], 'Start a new project.'));
@@ -80,54 +74,13 @@ describe('Test --help for each command', () => {
   it('should config --help', () => expectResult(['config', '-h'], 'Config backend & frontend.'));
   it('should urls --help', () => expectResult(['urls', '-h'], 'View project URLs.'));
   it('should info --help', () => expectResult(['info', '-h'], 'Output project info.'));
-  it('should hooks --help', () => expectResult(['hooks', '-h'], 'Output list of hooks.'));
   it('should docs --help', () => expectResult(['docs', '-h'], 'Open the documentation.'));
   it('should help --help', () => expectResult(['help', '-h'], 'Display help.'));
 });
 
 describe('Test command group when missing subcommands', () => {
-  it('should show account subcommands', () => expectResult(['account'], 'Account subcommands:'));
   it('should show google subcommands', () => expectResult(['google'], 'Google subcommands:'));
   it('should show project subcommands', () => expectResult(['project'], 'Project subcommands:'));
-});
-
-describe('Test ACCOUNT command', () => {
-  before(() => {
-    // log user in
-    const sheetbaseRc = readJsonSync('.sheetbaserc.json');
-    configstore.set('user_credentials', sheetbaseRc);
-  });
-
-  it('should fail to login (already)', () => {
-    // add --web workaround for now, or inquirer will give no stderr
-    expectError(['login', '--web'], '\n [ERROR] You have logged in already!');
-  });
-  it('should fail to update profile (no values)', () => {
-    expectError(['profile', 'update'], '\n [ERROR] No profile value argument.');
-  });
-
-  it.skip('(manually) login (wrong credentials)');
-  it.skip('(manually) login');
-  it.skip('(manually) login --web');
-  it.skip('(manually) register (wrong credentials)');
-  it.skip('(manually) register');
-
-  it('should show upgrade instruction', () => {
-    expectResult(['account', 'upgrade'], 'https://cloud.sheetbase.net');
-  });
-  it('should get profile', () => {
-    expectResult(['profile', 'get'], 'My profile:');
-  });
-  it('should open profile', () => {
-    expectResult(['profile', 'open'], 'https://cloud.sheetbase.net');
-  });
-  it('should update profile', () => {
-    expectResult(
-      ['profile', 'update', 'pin=1111'],
-      'Profile updated!',
-    );
-  });
-  it('should logged out', () => expectResult(['logout'], 'You logged out!'));
 });
 
 describe('Test GOOGLE command', () => {
@@ -211,14 +164,11 @@ describe('Test START command', () => {
     expectError(['start', PROJECT_NAME, 'invalid-theme@1.0.0'], '\n [ERROR] Create project failed.');
   });
 
-  // NOTES:
-  // --no-npm to reduce execution time
-  // --no-setup to test later at it own suite
   it('should start a new project', () => {
-    expectResult(['start', PROJECT_NAME, '--no-npm', '--no-setup'], EXPECTED);
+    expectResult(['start', PROJECT_NAME], EXPECTED);
   });
   it('should start a new project with specific theme', () => {
-    expectResult(['start', PROJECT_NAME, 'basic-angular', '--no-npm', '--no-setup'], EXPECTED);
+    expectResult(['start', PROJECT_NAME, 'basic-angular'], EXPECTED);
     const { name } = readJsonSync(`${PROJECT_PATH}/package.json`);
     expect(name).to.equal('basic-angular');
   });
@@ -227,7 +177,7 @@ describe('Test START command', () => {
 describe('Test SETUP command', () => {
   beforeEach(() => {
     // create a new project
-    spawnSync(SHEETBASE, ['start', PROJECT_NAME, '--no-npm', '--no-setup']);
+    spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
     // reset drive folder
     // for not accidentally remove in "after all" hook
     const path = `${PROJECT_PATH}/sheetbase.json`;
@@ -250,16 +200,12 @@ describe('Test SETUP command', () => {
   const EXPECTED = 'https://script.google.com/';
 
   it('should setup the project', () => expectResult(['setup'], EXPECTED, PROJECT_PATH));
-  it('should setup (--trusted)', () => expectResult(['setup', '--trusted'], EXPECTED, PROJECT_PATH));
-  it('should setup (--no-backend-deploy)', () => {
-    expectResult(['setup', '--no-backend-deploy'], EXPECTED, PROJECT_PATH);
-  });
 });
 
 describe('Test CONFIG command', () => {
   before(() => {
     // create a new project
-    spawnSync(SHEETBASE, ['start', PROJECT_NAME, '--no-npm', '--no-setup']);
+    spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
   });
   after(() => {
     removeSync(PROJECT_PATH);
@@ -292,7 +238,7 @@ describe('Test CONFIG command', () => {
 describe('Test URLS command', () => {
   before(() => {
     // create a new project
-    spawnSync(SHEETBASE, ['start', PROJECT_NAME, '--no-npm', '--no-setup']);
+    spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
   });
   after(() => {
     removeSync(PROJECT_PATH);
@@ -314,31 +260,12 @@ describe('Test URLS command', () => {
 describe('Test INFO command', () => {
   before(() => {
     // create a new project
-    spawnSync(SHEETBASE, ['start', PROJECT_NAME, '--no-npm', '--no-setup']);
+    spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
   });
   after(() => {
     removeSync(PROJECT_PATH);
   });
   it('should show project info', () => expectResult(['info'], 'Project information:', PROJECT_NAME));
-});
-
-describe('Test HOOKS command', () => {
-  before(() => {
-    writeJsonSync('sheetbase.json', {});
-  });
-  after(() => {
-    removeSync('./hooks');
-    removeSync('sheetbase.json');
-  });
-  it('should show no hooks', () => {
-    expectResult(['hooks'], 'No hooks.');
-  });
-  it('should show hooks list', () => {
-    outputFileSync('./hooks/index.js', `
-      module.exports = { config: () => true, setup: () => true };
-    `);
-    expectResult(['hooks'], 'Project hooks:');
-  });
 });
 
 describe('Test DOCS command', () => {
@@ -356,16 +283,6 @@ describe('Test project specific commands while not in a Sheetbase project', () =
   it('should fail for config', () => expectError(['config'], EXPECTED));
   it('should fail for info', () => expectError(['info'], EXPECTED));
   it('should fail for urls', () => expectError(['urls'], EXPECTED));
-  it('should fail for hooks', () => expectError(['hooks'], EXPECTED));
-});
-
-describe('Test commands while logged out', () => {
-  // logout of Sheetbase
-  before(() => {
-    spawnSync(SHEETBASE, ['logout']);
-  });
-  const EXPECTED = '\n [ERROR] You have not logged in yet!';
-  it('should fail for profile', () => expectError(['profile'], EXPECTED));
 });
 
 describe('Test commands while no Google account', () => {

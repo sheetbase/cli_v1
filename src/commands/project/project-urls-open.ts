@@ -1,47 +1,17 @@
 const opn = require('opn');
 
-import {
-    buildUrls, getSheetbaseDotJson, getFrontendConfigs,
-} from '../../services/project';
-import { getClaspConfigs } from '../../services/clasp';
-import { LOG, ERROR, logError } from '../../services/message';
+import { logInfo } from '../../services/message';
 
-import { urlsHook } from '../../hooks';
+import { buildUrls } from './project-urls-list';
 
-import { Options } from './project';
+export async function projectUrlsOpenCommand(params: string[]) {
+    // open driveFolder url by default
+    const [ name = 'driveFolder' ] = params;
 
-export async function projectUrlsOpenCommand(params: string[], options: Options) {
-    let [ name ] = params;
-    name = name || 'driveFolder';
-    let projectUrls: any;
-    try {
-        const { driveFolder } = await getSheetbaseDotJson();
-        const { backendUrl } = await getFrontendConfigs() as any;
-        const { scriptId, projectId } = await getClaspConfigs();
-        projectUrls = buildUrls({
-            driveFolder, backendUrl, scriptId, projectId,
-        });
-    } catch (error) {
-        return logError(ERROR.URLS_OPEN_FAILS);
-    }
+    // build urls
+    const urls = buildUrls();
 
-    // hook
-    try {
-        if (options.trusted && options.hook) {
-            let customUrls: any;
-            try {
-                customUrls = await urlsHook();
-            } catch (error) {
-                return logError(ERROR.HOOK_ERROR(error));
-            }
-            projectUrls = { ...projectUrls, ...customUrls };
-        }
-    } catch (error) {
-        return logError(ERROR.HOOK_ERROR(error));
-    }
-
-    const linkToBeOpened = projectUrls[name];
-    console.log(LOG.LINK_OPENED(linkToBeOpened));
-    console.log(LOG.URLS_OPEN);
+    const linkToBeOpened = urls[name];
+    logInfo('PROJECT_URLS_OPEN', false, [ linkToBeOpened ]);
     return opn(linkToBeOpened);
 }

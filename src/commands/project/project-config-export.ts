@@ -2,21 +2,22 @@ import { writeJson, ensureFile } from 'fs-extra';
 
 import { buildValidFileName } from '../../services/utils';
 import { getSheetbaseDotJson } from '../../services/project';
-import { LOG, ERROR, logError } from '../../services/message';
+import { logOk } from '../../services/message';
 
 export async function projectConfigExportCommand(params: string[]) {
+    // get the path
     let [ jsonFilePath ] = params;
     jsonFilePath = buildValidFileName(
-        (jsonFilePath ||  `configs-exported-${(new Date()).toISOString()}.json`).replace('.json', ''),
+        // tslint:disable-next-line:max-line-length
+        (jsonFilePath ||  `sheetbase-configs-exported-${(new Date()).toISOString()}.json`).replace('.json', ''),
     );
     jsonFilePath = (!params[0] ? 'exported/' : '') + jsonFilePath + '.json';
-    try {
-        await ensureFile(jsonFilePath);
-        const { configs } = await getSheetbaseDotJson();
-        await writeJson(jsonFilePath, configs, { spaces: '\t' });
-    } catch (error) {
-        return logError(ERROR.CONFIG_EXPORT_FAILS);
-    }
-    console.log(LOG.CONFIG_EXPORT(jsonFilePath));
-    return process.exit();
+
+    // export data
+    const { configs } = await getSheetbaseDotJson();
+    await ensureFile(jsonFilePath);
+    await writeJson(jsonFilePath, configs, { spaces: 3 });
+
+    // done
+    logOk('PROJECT_CONFIG_EXPORT', true, [ jsonFilePath ]);
 }

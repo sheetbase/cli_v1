@@ -4,20 +4,25 @@ import {
     getAllGoogleAccounts,
     getLocalGoogleAccount,
     getDefaultGoogleAccountId,
+
+    GoogleAccounts,
 } from '../../services/google';
-import { GoogleAccount, GoogleAccounts } from '../../services/user';
 import { formatDate } from '../../services/utils';
-import { LOG, ERROR, logError } from '../../services/message';
+import { logOk, logError } from '../../services/message';
 
 import { Options } from './google';
 
 export async function googleListCommand(options: Options) {
+
+    // load accounts, default id and rc account
     const googleAccounts: GoogleAccounts = await getAllGoogleAccounts();
     const defaultGoogleAccountId: string = getDefaultGoogleAccountId();
     const rcAccount = await getLocalGoogleAccount();
     if (!googleAccounts && !rcAccount) {
-        return logError(ERROR.GOOGLE_NO_ACCOUNT);
+        return logError('GOOGLE_LIST__NO_ACCOUNT');
     }
+
+    // print out layout
     const table = ttyTable([
         {value: 'ID', width: 100},
         {value: 'Name', width: 100},
@@ -27,15 +32,19 @@ export async function googleListCommand(options: Options) {
     const row = (id, name, email, at) => {
         return [id, name || '?', email || '?', formatDate(new Date(at))];
     };
+
+    // print out data
     if (googleAccounts) {
         if (options.default) {
-            const defaultGoogleAccount: GoogleAccount = googleAccounts[defaultGoogleAccountId];
+            // only the default account
+            const { [defaultGoogleAccountId]: defaultGoogleAccount } = googleAccounts;
             const { id, name, email } = defaultGoogleAccount.profile;
             const grantedAt: string = formatDate(new Date(defaultGoogleAccount.grantedAt));
             table.push(
                 row(`${id} (default)`, name, email, grantedAt),
             );
         } else {
+            // all accounts
             for (const key of Object.keys(googleAccounts)) {
                 let { id } = googleAccounts[key].profile;
                 const { name, email } = googleAccounts[key].profile;
@@ -57,6 +66,5 @@ export async function googleListCommand(options: Options) {
         );
     }
     console.log(table.render());
-    console.log(LOG.GOOGLE_LIST);
-    return process.exit();
+    logOk('GOOGLE_LIST', true);
 }

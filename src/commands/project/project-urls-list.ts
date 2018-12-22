@@ -1,55 +1,59 @@
-import chalk from 'chalk';
 const ttyTable = require('tty-table');
 
-import {
-    buildUrls,
-    getSheetbaseDotJson, getFrontendConfigs,
-} from '../../services/project';
+import { getConfigs, getSheetbaseDotJson } from '../../services/project';
 import { getClaspConfigs } from '../../services/clasp';
-import { LOG, ERROR, logError } from '../../services/message';
+import { green, logOk } from '../../services/message';
 
-import { urlsHook } from '../../hooks';
+export async function projectUrlsListCommand() {
+    // build urls
+    const urls = buildUrls();
 
-import { Options } from './project';
-
-export async function projectUrlsListCommand(options: Options) {
-    let projectUrls: any;
-    try {
-        const { driveFolder } = await getSheetbaseDotJson();
-        const { backendUrl } = await getFrontendConfigs() as any;
-        const { scriptId, projectId } = await getClaspConfigs();
-        projectUrls = buildUrls({
-            driveFolder, backendUrl, scriptId, projectId,
-        });
-    } catch (error) {
-        return logError(ERROR.URLS_LIST_FAILS);
-    }
-
-    // hook
-    try {
-        if (options.trusted && options.hook) {
-            let customUrls: any;
-            try {
-                customUrls = await urlsHook();
-            } catch (error) {
-                return logError(ERROR.HOOK_ERROR(error));
-            }
-            projectUrls = { ...projectUrls, ...customUrls };
-        }
-    } catch (error) {
-        return logError(ERROR.HOOK_ERROR(error));
-    }
-
-    // output
+    // print out result
     const table = ttyTable([
         {value: 'Name', width: 100, align: 'left'},
         {value: 'Value', width: 500, align: 'left'},
     ], []);
-    for(const key of Object.keys(projectUrls)) {
-        table.push([key, chalk.green(projectUrls[key] || 'n/a')]);
+    for(const key of Object.keys(urls)) {
+        table.push([ key, green(urls[key] || 'n/a') ]);
     }
-    console.log('Project urls:\n');
     console.log(table.render());
-    console.log(LOG.URLS_LIST);
-    return process.exit();
+
+    // done
+    logOk('PROJECT_URLS_LIST', true);
+}
+
+export async function buildUrls() {
+    // load all properties
+    const { driveFolder, urlMaps } = await getSheetbaseDotJson();
+    const { scriptId, projectId } = await getClaspConfigs();
+    const { backend, frontend } = await getConfigs();
+    const properties = {
+        ... backend,
+        ... frontend,
+        driveFolder,
+        scriptId,
+        projectId,
+    };
+
+    // load url mapping
+    const allUrlMaps = {
+        ... urlMaps,
+        driveFolder: ['drive', 'https://drive.google.com/drive/folders/'],
+        scriptId: ['backend', 'https://script.google.com/d/', '/edit'],
+        projectId: ['gcp', 'https://console.cloud.google.com/home/dashboard?project='],
+        backendUrl: [],
+    };
+
+    // build urls
+    const urls = {};
+    for (const key of Object.keys(properties)) {
+        const map = allUrlMaps[key];
+        if (!!map) {
+            const value = properties[key];
+            const [ name, prefix, suffix ] = map;
+            urls[name || key] = !!prefix ? (prefix + value + (suffix || '')) : value;
+        }
+    }
+
+    return urls;
 }

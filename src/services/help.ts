@@ -17,22 +17,17 @@ export function help(): string {
 `
  Global commands:
 
-    ${green('help')} .................... Display help.
-    ${green('docs')} .................... Open the documentation.
-    ${green('login')} ................... ${exp()} Login to Sheetbase Cloud account.
-    ${green('logout')} .................. ${exp()} Logout of your Sheetbase Cloud account.
-    ${green('signup')} .................. ${exp()} Create a Sheetbase Cloud account.
-    ${green('profile [subcommand]')} .... ${exp()} Manage Sheetbase account profile.
-    ${green('google [subcommand]')} ..... ${beta()} Manage Google accounts.
-    ${green('start [name] [theme]')} .... Start a new project.
+    ${green('help')} ....................... Display help.
+    ${green('docs')} ....................... Open the documentation.
+    ${green('google [subcommand]')} ........ ${beta()} Manage Google accounts.
+    ${green('start [name] [resource]')} .... Start a new project.
 
  Project commands:
 
     ${green('setup')} ................... Setup the project.
     ${green('config [subcommand]')} ..... Config backend & frontend.
     ${green('info')} .................... Output project info.
-    ${green('urls')} .................... View project URLs.
-    ${green('hooks')} ................... ${exp()} Output list of hooks.`;
+    ${green('urls')} .................... View project URLs.`;
 }
 
 export function helpDetail(): string {
@@ -40,12 +35,6 @@ export function helpDetail(): string {
 `
  Command groups:
 
-    ${green('account [subcommand]')} .... ${(
-        exp() + ' ' +
-        'Manage Sheetbase account ' +
-        `(subcommands: ${green('login')}, ${green('logout')}, ${green('signup')}, ` +
-        `${green('profile')}, ${green('upgrade')})`
-    )}
     ${green('google [subcommand]')} ..... ${(
         beta() + ' ' +
         'Manage Google accounts ' +
@@ -55,26 +44,14 @@ export function helpDetail(): string {
     ${green('project [subcommand]')} .... ${(
         'Project general tasks ' +
         `(subcommands: ${green('start')}, ${green('setup')}, ` +
-        `${green('config')}, ${green('urls')}, ${green('info')}, ${green('hooks')})`
+        `${green('config')}, ${green('urls')}, ${green('info')})`
     )}
-
- Account subcommands:
-${accountHelp()}
 
  Google subcommands:
 ${googleHelp()}
 
  Project subcommands:
 ${projectHelp()}`;
-}
-
-export function accountHelp(): string {
-    return '' +
-    `
-    ${green('login')} ................... Login to Sheetbase Cloud account.
-    ${green('logout')} .................. Logout of your Sheetbase Cloud account.
-    ${green('signup')} .................. Create a Sheetbase Cloud account.
-    ${green('profile [subcommand]')} .... Manage Sheetbase account profile.`;
 }
 
 export function googleHelp(): string {
@@ -89,10 +66,9 @@ export function googleHelp(): string {
 export function projectHelp(): string {
     return '' +
     `
-    ${green('start [name] [theme]')} .... Start a new project.
-    ${green('setup')} ................... Setup the project.
-    ${green('config [subcommand]')} ..... Config backend & frontend.
-    ${green('urls')} .................... View project URLs.
-    ${green('info')} .................... Output project info.
-    ${green('hooks')} ................... Output list of hooks.`;
+    ${green('start [name] [resource]')} .... Start a new project.
+    ${green('setup')} ...................... Setup the project.
+    ${green('config [subcommand]')} ........ Config backend & frontend.
+    ${green('urls')} ....................... View project URLs.
+    ${green('info')} ....................... Output project info.`;
 }

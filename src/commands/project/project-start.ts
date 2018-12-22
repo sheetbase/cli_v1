@@ -4,134 +4,129 @@ import { execSync } from 'child_process';
 import { pathExists, remove } from 'fs-extra';
 import axios from 'axios';
 
-import { buildValidFileName, download, unzip, deflate } from '../../services/utils';
-import { LOG, ERROR, logError, logWait } from '../../services/message';
-
-import { hasHooks } from '../../hooks';
+import { buildValidFileName, download, unzip, unwrap } from '../../services/utils';
+import { setPackageDotJson, setSheetbaseDotJson } from '../../services/project';
+import { logError, logOk, logAction } from '../../services/message';
 
 import { Options } from './project';
 
 export async function projectStartCommand(params: string[], options?: Options) {
-    const name = buildValidFileName(
-        params[0] || `sheetbase-project-${(new Date()).getTime()}`,
-    );
-    const deployPath: string = resolve(name);
+    // project name and path
+    let [name, url ] = params;
+    name = buildValidFileName(name || `sheetbase-project-${(new Date()).getTime()}`);
+    const deployPath = resolve(name);
 
-    // check if exists
+    // check if a project exists
     if (await pathExists(name)) {
-        return logError(ERROR.PROJECT_EXISTS);
+        return logError('PROJECT_START__ERROR__EXISTS');
     }
 
-    if (options.module) {
-        // backend module
-        const gitUrl = 'https://github.com/sheetbase/blank-server-module.git';
-        execSync(`git clone ${gitUrl} ${name}`);
-    } else if (options.app) {
-        // backend app
-        const gitUrl = 'https://github.com/sheetbase/blank-server-app.git';
-        execSync(`git clone ${gitUrl} ${name}`);
-    } else {
-        // theme
+    // prepare the resource url
+    url = await resolveResource(url);
+    if (!url || (!url.endsWith('.git') && !url.endsWith('.zip'))) {
+        return logError('PROJECT_START__ERROR__INVALID_RESOURCE');
+    }
 
-        // parse theme string
-        const downloadUrl: string = await parseThemeString(params[1]);
-        if (!downloadUrl) {
-            return logError(ERROR.START_INVALID_THEME);
-        }
-
-        // start
-        try {
-            logWait(LOG.START_BEGIN);
-            // download the file
-            const downloadedPath = await download(downloadUrl, deployPath, 'theme.zip');
-            // upzip the archive
+    // project files
+    await logAction('Get the resource: ' + url, async () => {
+        if (url.endsWith('.git')) {
+            gitClone(url, name); // clone the repo when has .git
+            await remove(deployPath + '/' + '.git'); // delete .git folder
+        } else {
+            const downloadedPath = await download(url, deployPath, 'resource.zip');
             await unzip(downloadedPath, deployPath);
-            await remove(downloadedPath); // delete .zip file
-            // move file outside
-            if (!await pathExists(deployPath + '/sheetbase.json')) { // guest it is inside
-                await deflate(deployPath);
-            }
-            console.log('\n ' + LOG.START_SUCCEED(name));
-        } catch (error) {
-            return logError(ERROR.START_FAILED);
+            await remove(downloadedPath);
+            await unwrap(deployPath); // if wrapped in a folder
         }
+    });
+
+    // finalize for theme
+    if (await pathExists(deployPath + '/sheetbase.json')) {
+
+        // reset theme configs
+        await logAction('Initial config the project', async () => {
+            // package.json
+            await setPackageDotJson(
+                {
+                    name,
+                    version: '1.0.0',
+                    description: 'A Sheetbase project',
+                },
+                (currentData, data) => {
+                    // keep these fields
+                    const { author, homepage, scripts } = currentData;
+                    return { ... data, author, homepage, scripts };
+                },
+                deployPath,
+            );
+
+            // sheetbase.json
+            await setSheetbaseDotJson(
+                {
+                    driveFolder: '',
+                    configs: {
+                        backend: {},
+                        frontend: {},
+                    },
+                },
+                // override above fields and keep the rest
+                (currentData, data) => ({ ... currentData, ... data }),
+                deployPath,
+            );
+        });
 
         // install packages
-        try {
-            if (options.npm) {
-                logWait(LOG.NPM_INSTALL_BEGIN);
-                await installDependencies(deployPath);
-                console.log('\n ' + LOG.NPM_INSTALL_SUCCEED);
-            }
-        } catch (error) {
-            console.error('\n ' + ERROR.NPM_INSTALL_FAILED);
+        if (options.npm) {
+            await logAction('Install dependencies (please wait, could take minutes)', async () => {
+                const NPM = (os.type() === 'Windows_NT') ? 'npm.cmd' : 'npm';
+                execSync(`${NPM} install`, { cwd: deployPath + '/backend', stdio: 'inherit' });
+                execSync(`${NPM} install`, { cwd: deployPath + '/frontend', stdio: 'inherit' });
+            });
         }
 
-        // Run setup
+        // run setup
         if (options.setup) {
-            // defautl trust to original theme
-            if (downloadUrl.includes('github.com/sheetbase-themes/')) {
-                options.trusted = true;
-            }
-            await runSetup(deployPath, options);
+            const SHEETBASE = (os.type() === 'Windows_NT') ? 'sheetbase.cmd' : 'sheetbase';
+            execSync(`${SHEETBASE} setup`, { cwd: deployPath, stdio: 'inherit' });
         } else {
-            console.log('\n ' + LOG.PROJECT_START(name));
+            logOk('PROJECT_START__OK__THEME', true);
         }
 
+    } else {
+        logOk('PROJECT_START__OK__NOT_THEME', true);
     }
 
-    return process.exit();
 }
 
-async function installDependencies(path: string): Promise<void> {
-    const NPM = (os.type() === 'Windows_NT') ? 'npm.cmd' : 'npm';
-    console.log(`\n     Backend dependencies:`);
-    execSync(`${NPM} install`, {cwd: path + './backend', stdio: 'inherit'});
-    console.log(`\n     Frontend dependencies:`);
-    execSync(`${NPM} install`, {cwd: path + './frontend', stdio: 'inherit'});
-    if (await hasHooks(path)) {
-        console.log(`\n     Hook dependencies:`);
-        execSync(`${NPM} install`, {cwd: path + './hooks', stdio: 'inherit'});
-    }
-}
-
-async function runSetup(path: string, options: Options): Promise<void> {
-    const SHEETBASE = (os.type() === 'Windows_NT') ? 'sheetbase.cmd' : 'sheetbase';
-    let command =  `${SHEETBASE} setup`;
-    if (!options.hook) command += ' --no-hook';
-    if (options.trusted) command += ' --trusted';
-    execSync(command, {cwd: path, stdio: 'inherit'});
-}
-
-async function parseThemeString(theme = 'blank-angular@latest'): Promise<string> {
+async function resolveResource(resource?: string) {
     /**
-     * Official:
      * n/a > blank-angular@latest
      * name > name@latest
      * name@ver > name@ver
-     *
-     * Custom:
+     * <name>/<repo>@ver
      * full zip url > full zip url
-     * TODO: Github <name>/<repo>@ver
      */
-    let downloadUrl: string;
-    if (!theme.endsWith('.zip')) {
-        const themeSplit = theme.split('@');
-        const [ name ] = themeSplit;
-        const version = themeSplit[1];
-        if (!version || version === 'latest') {
-            try {
-                const { data } = await axios({
-                    method: 'GET',
-                    url: `https://api.github.com/repos/sheetbase-themes/${name}/releases/latest`,
-                });
-                downloadUrl = data.zipball_url;
-            } catch (error) {
-                /** */
-            }
-        } else {
-            downloadUrl = `https://github.com/sheetbase-themes/${name}/archive/${version}.zip`;
+    resource = (resource || 'sheetbase-themes/blank-angular').replace('@latest', '');
+    if (!resource.endsWith('.git') && !resource.endsWith('.zip')) {
+        // add repo org
+        if (resource.indexOf('/') < 0) {
+            resource = 'sheetbase-themes/' + resource;
         }
+        // add version
+        if (resource.indexOf('@') < 0) {
+            const { data } = await axios({
+                method: 'GET',
+                url: `https://api.github.com/repos/${resource}/releases/latest`,
+            });
+            resource = resource + '@' + data.name;
+        }
+        // final resource = <org>/<repo>@<version>
+        const [ name, version ] = resource.split('@');
+        resource = `https://github.com/${name}/archive/${version}.zip`;
     }
-    return downloadUrl;
+    return resource;
+}
+
+function gitClone(url: string, name: string) {
+    execSync(`git clone ${url} ${name}`, { stdio: 'ignore' });
 }

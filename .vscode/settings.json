@@ -4,6 +4,6 @@
 
         "**/*.js": true,
 		
-		"**/docs": true
+		"docs": true
     }
 }

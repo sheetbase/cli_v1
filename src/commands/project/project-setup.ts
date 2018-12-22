@@ -1,4 +1,3 @@
-import { execSync } from 'child_process';
 import { OAuth2Client } from 'google-auth-library';
 import { sentenceCase } from 'change-case';
 
@@ -6,70 +5,72 @@ import { getCurrentDirectoryBase } from '../../services/utils';
 import { driveCreateFolder } from '../../services/drive';
 import { gasCreate, gasWebappInit } from '../../services/gas';
 import { getOAuth2Client } from '../../services/google';
-import { setSheetbaseDotJson, setPackageDotJson, setConfigs } from '../../services/project';
+import {
+    getSheetbaseDotJson,
+    setSheetbaseDotJson,
+    setConfigs,
+} from '../../services/project';
 import { setClaspConfigs } from '../../services/clasp';
-import { warn, LOG, ERROR, logError, logWait } from '../../services/message';
+import { logError, logWarn, logOk } from '../../services/message';
 
-import { setupHook } from '../../hooks/setup';
+import { BuiltinHooks } from '../../hooks';
 
-import { Options } from './project';
+export async function projectSetupCommand() {
+    const name = getCurrentDirectoryBase();
+    const nameSentenceCase = sentenceCase(name);
 
-export async function projectSetupCommand(options: Options) {
-    const name: string = getCurrentDirectoryBase();
-
+    // load default google account
     const googleClient: OAuth2Client = await getOAuth2Client();
     if (!googleClient) {
-        return logError(ERROR.GOOGLE_NO_ACCOUNT);
+        return logError('PROJECT_SETUP_NO_GOOGLE_ACCOUNT');
     }
 
-    // trust warning
-    console.log(`${warn} Only apply --trusted flag to original and trusted theme.`);
+    /**
+     * system configs
+     */
+    // generate  system configs
+    const driveFolder = await driveCreateFolder(
+        googleClient,
+        `Sheetbase Project: ${nameSentenceCase}`,
+    );
+    const scriptId = await gasCreate(
+        googleClient,
+        `${nameSentenceCase} Backend`,
+        driveFolder,
+    );
 
-    let driveFolder: string;
-    let scriptId: string;
-    try {
-        // generate configs
-        logWait(`Setup the project`);
-        driveFolder = await driveCreateFolder(
-            googleClient, `Sheetbase Project: ${sentenceCase(name)}`,
-        );
-        scriptId = await gasCreate(
-            googleClient, `${sentenceCase(name)} Backend`, driveFolder,
-        );
-        await setPackageDotJson({ name, version: '1.0.0', description: 'A Sheetbase project' }, true);
-        await setSheetbaseDotJson({ cloudId: '', driveFolder });
-        await setClaspConfigs({ scriptId }, true);
-    } catch (error) {
-        return logError(error);
-    }
+    // save system configs
+    await setSheetbaseDotJson({ driveFolder });
+    await setClaspConfigs({ scriptId }, true);
 
-    // hook
-    try {
-        if (options.trusted && options.hook) {
-            await setupHook();
-        }
-    } catch (error) {
-        return logError(ERROR.HOOK_ERROR(error));
-    }
+    /**
+     * app configs
+     */
+    const configs = {};
 
     // init deploy backend
-    try {
-        if (options.backendDeploy) {
-            // build backend app if trusted
-            if (options.trusted) {
-                execSync(
-                    (options.npm ? '' : 'npm install && ') + 'npm run build',
-                    { cwd: './backend', stdio: 'ignore' },
-                );
+    const { url: backendUrl } = await gasWebappInit(googleClient, scriptId);
+    configs[backendUrl] = backendUrl;
+
+    // run hooks
+    const { setupHooks } = await getSheetbaseDotJson();
+    if (!!setupHooks) {
+        // create new hooks instance
+        const builtinHooks = new BuiltinHooks({ googleClient, driveFolder });
+        // run hook
+        for (const key of Object.keys(setupHooks)) {
+            const [ hookName, ... args ] = setupHooks[key];
+            try {
+                configs[key] = await builtinHooks[hookName](... args);
+            } catch (error) {
+                logWarn(`Error running hook "${hookName}": ` + error);
             }
-            // init deploy the webapp
-            const { url } = await gasWebappInit(googleClient, scriptId, null, options.trusted);
-            await setConfigs({ backendUrl: url });
         }
-    } catch (error) {
-        return logError(error);
     }
 
-    console.log('\n ' + LOG.PROJECT_SETUP(`https://script.google.com/d/${scriptId}/edit?usp=drive_web`));
-    return process.exit();
+    // save configs
+    await setConfigs(configs);
+
+    // done
+    logOk('PROJECT_SETUP', true, [`https://script.google.com/d/${scriptId}/edit?usp=drive_web`]);
 }

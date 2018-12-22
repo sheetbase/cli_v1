@@ -1,5 +1,5 @@
 import { googleHelp } from '../../services/help';
-import { ERROR } from '../../services/message';
+import { logInfo } from '../../services/message';
 
 import { googleConnectCommand } from './google-connect';
 import { googleDisconnectCommand } from './google-disconnect';
@@ -32,15 +32,8 @@ export async function googleCommand(command: string, params?: string[], options?
         break;
 
         default:
-            console.log(`\n ` + ERROR.INVALID_SUBCOMMAND(command));
-            await outputHelp();
+            logInfo('INVALID_SUBCOMMAND');
+            console.log(googleHelp());
         break;
     }
-}
-
-async function outputHelp() {
-    console.log('\n' +
-` Google subcommands:
-${googleHelp()}`);
-    return process.exit();
 }

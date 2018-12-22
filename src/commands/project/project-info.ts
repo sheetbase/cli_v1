@@ -11,7 +11,6 @@ export async function projectInfoCommand() {
     for (const key of Object.keys(packageJson)) {
         table.push([key, packageJson[key]]);
     }
-    console.log('Project information:\n');
     console.log(table.render());
     return process.exit();
 }

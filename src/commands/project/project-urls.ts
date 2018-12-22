@@ -1,17 +1,16 @@
-import { Options } from './project';
-
 import { projectUrlsOpenCommand } from './project-urls-open';
 import { projectUrlsListCommand } from './project-urls-list';
 
-export async function projectUrlsCommand(command: string, params: string[], options?: Options) {
+export async function projectUrlsCommand(command: string, params: string[]) {
     switch (command) {
         case 'open':
-            await projectUrlsOpenCommand(params, options);
+        case 'o':
+            await projectUrlsOpenCommand(params);
         break;
 
         case 'list':
         default:
-            await projectUrlsListCommand(options);
+            await projectUrlsListCommand();
         break;
     }
 }

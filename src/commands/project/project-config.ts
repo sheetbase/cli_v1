@@ -1,18 +1,17 @@
-import { Options } from './project';
-
 import { projectConfigUpdateCommand } from './project-config-update';
 import { projectConfigImportCommand } from './project-config-import';
 import { projectConfigExportCommand } from './project-config-export';
 import { projectConfigListCommand } from './project-config-list';
 
-export async function projectConfigCommand(command: string, params: string[], options: Options) {
+export async function projectConfigCommand(command: string, params: string[]) {
     switch (command) {
+        case 'set':
         case 'update':
-            await projectConfigUpdateCommand(params, options);
+            await projectConfigUpdateCommand(params);
         break;
 
         case 'import':
-            await projectConfigImportCommand(params, options);
+            await projectConfigImportCommand(params);
         break;
 
         case 'export':

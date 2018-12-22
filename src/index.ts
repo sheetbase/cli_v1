@@ -25,7 +25,6 @@ import chalk from 'chalk';
 import * as program from 'commander';
 import * as clear from 'clear';
 
-import { accountCommand } from './commands/account/account';
 import { googleCommand } from './commands/google/google';
 import { projectCommand } from './commands/project/project';
 import { docsCommand } from './commands/docs/docs';
@@ -43,75 +42,6 @@ program
   .version(version, '-v, --version')
   .description('Sheetbase CLI')
   .usage('sheetbase <command> [<args>] [--help] [options]');
-
-/**
- * Manage Sheetbase account.
- * Sub-commands: login, logout, signup, profile, upgrade.
- * @name account
- * @param {string?} [subCommand] Supported sub-commands.
- * @param {string?} [params] Command params, comma-separated.
- * @param {string?} [--web] (login) Login using web UI.
- * @param {string?} [--force] (login) Force login again.
- * @param {string?} [--no-cache] (profile) Do not caching user-related info.
- */
-program
-  .command('account [subCommand] [params...]')
-  .option('-w, --web', `(${chalk.green('login')}) Login using web UI.`)
-  .option('-f, --force', `(${chalk.green('login')}) Force login again.`)
-  .option('--no-cache', `(${chalk.green('profile')}) Do not caching user-related info.`)
-  .description('Manage Sheetbase account.')
-  .action(accountCommand);
-
-/**
- * Login to Sheetbase Cloud account.
- * Proxy of _account login_
- * @name login
- * @param {string?} [--web] Using web UI.
- * @param {string?} [--force] Force login again.
- */
-program
-  .command('login')
-  .option('-w, --web', 'Using web UI.')
-  .option('-f, --force', 'Force login again.')
-  .description('Login to Sheetbase Cloud account.')
-  .action(async (options) => await accountCommand('login', [], options));
-
-/**
- * Logout of your Sheetbase Cloud account.
- * Proxy of _account logout_
- * @name logout
- */
-program
-  .command('logout')
-  .description('Logout of your Sheetbase Cloud account.')
-  .action(async () => await accountCommand('logout'));
-
-/**
- * Create a Sheetbase Cloud account.
- * Proxy of _account signup_
- * @name signup
- */
-program
-  .command('signup')
-  .description('Create a Sheetbase Cloud account.')
-  .action(async () => await accountCommand('signup'));
-
-/**
- * Manage Sheetbase account profile.
- * Proxy of _account profile_
- * Sub-commands: get, open, update
- * @name profile
- * @param {string?} [subCommand] Optional supported sub-commands, default: _get_.
- * @param {string?} [params] Command params, comma-separated.
- * @param {string?} [--no-cache] Do not cache user-related info.
- */
-program
-  .command('profile [subCommand] [params...]')
-  .option('--no-cache', `Do not cache user-related info.`)
-  .description('Manage Sheetbase account profile.')
-  .action(async (subCommand, params, options) => await accountCommand(
-    'profile', [subCommand, ... params], options,
-  ));
 
 /**
  * Manage Google accounts.
@@ -142,25 +72,13 @@ program
  * @name project
  * @param {string?} [subCommand] Supported sub-commands.
  * @param {string?} [params] Command params, comma-separated.
- * @param {string?} [--no-npm] (start) Do not install packages.
- * @param {string?} [--no-setup] (start) Do not run setup command.
- * @param {string?} [--app] (start) Start a backend app.
- * @param {string?} [--module] (start) Start a backend module.
- * @param {string?} [--no-hook] (start, setup, config, urls) Do not run hook.
- * @param {string?} [--trusted] (setup) Trusted to run sensitive actions.
- * @param {string?} [--no-backend-deploy] (setup) Do not initial deploy the backend.
+ * @param {string?} [--npm] (start) Install npm packages.
+ * @param {string?} [--setup] (start) Run setup command.
  */
 program
   .command('project [subCommand] [params...]')
-  .option('--no-npm', `(${chalk.green('start')}) Do not install packages.`)
-  .option('--no-setup', `(${chalk.green('start')}) Do not run setup command.`)
-  .option('--app', `(${chalk.green('start')}) Start a backend app.`)
-  .option('--module', `${chalk.green('start')}) Start a backend module.`)
-  .option('--no-hook', '(' +
-    `${chalk.green('start')}, ${chalk.green('setup')}, ${chalk.green('config')}, ${chalk.green('urls')}` +
-  ') Do not run hook.')
-  .option('--trusted', `(${chalk.green('setup')}) Trusted to run sensitive actions.`)
-  .option('--no-backend-deploy', `(${chalk.green('setup')}) Do not initial deploy the backend.`)
+  .option('--npm', `(${chalk.green('start')}) Install npm packages.`)
+  .option('--setup', `(${chalk.green('start')}) Run setup command.`)
   .description('Project general tasks.')
   .action(projectCommand);
 
@@ -169,25 +87,14 @@ program
  * Proxy of _project start_
  * @name start
  * @param {string?} [projectName] Name of the project, auto default.
- * @param {string?} [theme] Theme to create the project with, default to _basic_angular_.
- * @param {string?} [--no-npm] Do not install packages.
- * @param {string?} [--no-setup] Do not run setup command.
- * @param {string?} [--app] Start a backend app.
- * @param {string?} [--module] Start a backend module.
- * @param {string?} [--no-hook] Do not run setup hook.
- * @param {string?} [--trusted] Trusted to run setup sensitive actions.
- * @param {string?} [--no-backend-deploy] Do not initial deploy the backend.
+ * @param {string?} [resource] Theme to create the project with, default to theme _basic_angular_.
+ * @param {string?} [--npm] Install npm packages.
+ * @param {string?} [--setup] Run setup command.
  */
 program
-  .command('start [projectName] [theme]')
-  .option('--no-npm', 'Do not install packages.')
-  .option('--no-setup', 'Do not run setup command.')
-  .option('--app', 'Start a backend app.')
-  .option('--module', 'Start a backend module.')
-  /* setup options */
-  .option('--no-hook', 'Do not run setup hook.')
-  .option('--trusted', 'Trusted to run setup sensitive actions.')
-  .option('--no-backend-deploy', 'Do not initial deploy the backend.')
+  .command('start [projectName] [resource]')
+  .option('--npm', 'Install npm packages.')
+  .option('--setup', 'Run setup command.')
   .description('Start a new project.')
   .action(async (projectName, theme, options) => projectCommand('start', [projectName, theme], options));
 
@@ -195,15 +102,9 @@ program
  * Setup the project.
  * Proxy of _project setup_
  * @name setup
- * @param {string?} [--trusted] Trusted to run sensitive actions.
- * @param {string?} [--no-hook] Do not run hook.
- * @param {string?} [--no-backend-deploy] Do not initial deploy the backend.
  */
 program
   .command('setup')
-  .option('--trusted', 'Trusted to run sensitive actions.')
-  .option('--no-hook', 'Do not run hook.')
-  .option('--no-backend-deploy', 'Do not initial deploy the backend.')
   .description('Setup the project.')
   .action(async (options) => projectCommand('setup', [], { npm: false, ... options}));
 
@@ -214,11 +115,9 @@ program
  * @name config
  * @param {string?} [subCommand] Optional supported sub-commands, default: _list_.
  * @param {string?} [params] Command params, comma-separated.
- * @param {string?} [--no-hook] Do not run hook.
  */
 program
   .command('config [subCommand] [params...]')
-  .option('--no-hook', 'Don not run hook.')
   .description('Config backend & frontend.')
   .action(async (subCommand, params, options) => await projectCommand(
     'config', [subCommand, ... params], options,
@@ -231,11 +130,9 @@ program
  * @name urls
  * @param {string?} [subCommand] Optional supported sub-commands, default: _list_.
  * @param {string?} [params] Command params, comma-separated.
- * @param {string?} [--no-hook] Do not run hook.
  */
 program
   .command('urls [subCommand] [params...]')
-  .option('--no-hook', 'Don not run hook.')
   .description(`View project URLs.`)
   .action(async (subCommand, params, options) => await projectCommand(
     'urls', [subCommand, ... params], options,
@@ -250,16 +147,6 @@ program
   .command('info')
   .description(`Output project info.`)
   .action(async () => await projectCommand('info'));
-
-/**
- * Output list of hooks.
- * Proxy of _project hooks_
- * @name hooks
- */
-program
-  .command('hooks')
-  .description(`Output list of hooks.`)
-  .action(async () => await projectCommand('hooks'));
 
 /**
  * Open the documentation.

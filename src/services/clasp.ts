@@ -12,7 +12,8 @@ export async function getClaspConfigs(): Promise<ClaspConfigs> {
 }
 
 export async function setClaspConfigs(
-    data: ClaspConfigs, override?: boolean,
-): Promise<ClaspConfigs> {
-    return await writeJson(CLASP_CONFIG_PATH, data, override);
+    data: ClaspConfigs,
+    modifier?: boolean | { (currentData: {}, data: {}): {} },
+) {
+    await writeJson(CLASP_CONFIG_PATH, data, modifier);
 }

@@ -1,44 +1,49 @@
-import { resolve } from 'path';
-import { pathExists } from 'fs-extra';
+const randomstring = require('randomstring');
+import { OAuth2Client } from 'google-auth-library';
 
-import { getPath } from '../services/project';
+import { driveCreateFolder, driveCreateFile, copyFile } from '../services/drive';
 
-export { setupHook } from './setup';
-export { configHook } from './config';
-export { urlsHook } from './urls';
-
-export interface CLIHook {
-    (data?: any, vendors?: any): any;
+interface System {
+    googleClient: OAuth2Client;
+    driveFolder: string;
 }
 
-export interface CLIHooks {
-    [name: string]: CLIHook;
-}
+export class BuiltinHooks {
 
-export async function hasHooks(path?: string): Promise<boolean> {
-    const hooks = await getHooks(path);
-    if (hooks && Object.keys(hooks).length > 0) {
-        return true;
+    private system: System;
+
+    constructor(system: System) {
+        this.system = system;
     }
-    return false;
-}
 
-export async function getHooks(path?: string): Promise<CLIHooks> {
-    let hooks: CLIHooks;
-    try {
-        const projectPath: string = await getPath(path);
-        const hooksPath = `${projectPath}/hooks/index.js`;
-        if (!await pathExists(hooksPath)) {
-            throw new Error('No hooks');
-        }
-        hooks = require(resolve('.', hooksPath));
-    } catch (error) {
-        hooks = {};
+    async randomStr(length = 32, punctuation = false) {
+        const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        return randomstring.generate({
+            length,
+            charset: charset + (punctuation ? '-_!@#$%&*' : ''),
+        });
     }
-    return hooks;
-}
 
-export async function getHook(name: string): Promise<CLIHook> {
-    const hooks: CLIHooks = await getHooks();
-    return hooks[name];
+    async driveCreateFolder(name: string) {
+        if (!name) { throw new Error('Missing args.'); }
+        const { googleClient, driveFolder } = this.system;
+        return await driveCreateFolder(googleClient, name, [driveFolder]);
+    }
+
+    async driveCreateFile(name: string, mimeType: string) {
+        if (!name || !mimeType) { throw new Error('Missing args.'); }
+        const { googleClient, driveFolder } = this.system;
+        return await driveCreateFile(googleClient, name, mimeType, [driveFolder]);
+    }
+
+    async driveCreateSheets(name: string) {
+        return await this.driveCreateFile(name, 'application/vnd.google-apps.spreadsheet');
+    }
+
+    async driveCopyFile(fileId: string, name: string) {
+        if (!fileId || !name) { throw new Error('Missing args.'); }
+        const { googleClient, driveFolder } = this.system;
+        return await copyFile(googleClient, fileId, name, [driveFolder]);
+    }
+
 }
