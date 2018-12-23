@@ -1,10 +1,9 @@
-import * as os from 'os';
 import { resolve } from 'path';
 import { execSync } from 'child_process';
 import { pathExists, remove } from 'fs-extra';
 import axios from 'axios';
 
-import { buildValidFileName, download, unzip, unwrap } from '../../services/utils';
+import { buildValidFileName, download, unzip, unwrap, cmd } from '../../services/utils';
 import { setPackageDotJson, setSheetbaseDotJson } from '../../services/project';
 import { setClaspConfigs } from '../../services/clasp';
 import { logError, logOk, logAction } from '../../services/message';
@@ -45,7 +44,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
     // finalize for theme
     if (await pathExists(deployPath + '/sheetbase.json')) {
 
-        // reset theme configs
+        // reset configs
         await logAction('Initial config the project', async () => {
             // package.json
             await setPackageDotJson(
@@ -55,13 +54,12 @@ export async function projectStartCommand(params: string[], options?: Options) {
                     description: 'A Sheetbase project',
                 },
                 (currentData, data) => {
-                    // keep these fields
+                    // keep only these fields
                     const { author, homepage, scripts } = currentData;
                     return { ... data, author, homepage, scripts };
                 },
                 deployPath,
             );
-
             // sheetbase.json
             await setSheetbaseDotJson(
                 {
@@ -75,29 +73,32 @@ export async function projectStartCommand(params: string[], options?: Options) {
                 (currentData, data) => ({ ... currentData, ... data }),
                 deployPath,
             );
-
             // backend/.clasp.json
-            await setClaspConfigs({ scriptId: '' }, true, deployPath);
+            await setClaspConfigs({ scriptId: '', projectId: '' }, true, deployPath);
         });
 
         // install packages
         if (options.npm) {
-            await logAction('Install dependencies (could take minutes)', async () => {
-                const NPM = (os.type() === 'Windows_NT') ? 'npm.cmd' : 'npm';
-                execSync(`${NPM} install`, { cwd: deployPath + '/backend', stdio: 'inherit' });
-                execSync(`${NPM} install`, { cwd: deployPath + '/frontend', stdio: 'inherit' });
+            const NPM = cmd('npm');
+            await logAction('Install backend dependencies', async () => {
+                execSync(`${NPM} install`, { cwd: deployPath + '/backend' });
+            });
+            await logAction('Install frontend dependencies', async () => {
+                execSync(`${NPM} install`, { cwd: deployPath + '/frontend' });
             });
         }
 
         // run setup
         if (options.setup) {
-            const SHEETBASE = (os.type() === 'Windows_NT') ? 'sheetbase.cmd' : 'sheetbase';
-            execSync(`${SHEETBASE} setup`, { cwd: deployPath, stdio: 'inherit' });
+            execSync(`${cmd('sheetbase')} setup`, { cwd: deployPath });
         } else {
-            logOk('PROJECT_START__OK__THEME', true);
+            logOk('PROJECT_START__OK__THEME', true, [options]);
         }
 
     } else {
+        await logAction('Install dependencies', async () => {
+            execSync(`${cmd('npm')} install`, { cwd: deployPath });
+        });
         logOk('PROJECT_START__OK__NOT_THEME', true);
     }
 
