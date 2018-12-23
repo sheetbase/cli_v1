@@ -1,5 +1,4 @@
 import * as os from 'os';
-import { basename } from 'path';
 import { promisify } from 'util';
 import { readdir, createWriteStream } from 'fs';
 import { ensureDir, copy, remove, lstatSync } from 'fs-extra';
@@ -7,10 +6,6 @@ import axios from 'axios';
 import * as zipper from 'adm-zip';
 
 const readdirAsync = promisify(readdir);
-
-export function getCurrentDirectoryBase(): string {
-    return basename(process.cwd());
-}
 
 export function buildValidFileName(name) {
 return name.replace(/\ /g, '-')

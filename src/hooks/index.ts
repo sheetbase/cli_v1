@@ -69,7 +69,7 @@ export class BuiltinHooks {
         return await copyFile(
             googleClient,
             fileId,
-            this.buildName(name, (projectName) => `${projectName} Copied File (${fileId})`),
+            this.buildName(name, (projectName) => `${projectName} Copied (${fileId})`),
             [driveFolder],
         );
     }

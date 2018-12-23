@@ -139,13 +139,15 @@ export async function getConfigs(customRoot?: string) {
 export async function setConfigs(data: {}, customRoot?: string) {
     // load configs and config maps
     const { backend, frontend } = await getConfigs(customRoot);
-    const { configMaps } = await getSheetbaseDotJson(customRoot);
-    const { backend: backendFields, frontend: frontendFields } = configMaps;
+    const {
+        configMaps: { backend: backendFields = [], frontend: frontendFields = [] } = {},
+    } = await getSheetbaseDotJson(customRoot);
     // sort out configs
     for (const key of Object.keys(data)) {
         if ((backendFields || []).includes(key)) {
             backend[key] = data[key];
-        } else if ((frontendFields || []).includes(key)) {
+        }
+        if ((frontendFields || []).includes(key)) {
             frontend[key] = data[key];
         }
     }

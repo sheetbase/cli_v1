@@ -1,6 +1,6 @@
+import { basename } from 'path';
 import { sentenceCase } from 'change-case';
 
-import { getCurrentDirectoryBase } from '../../services/utils';
 import { driveCreateFolder } from '../../services/drive';
 import { gasCreate, gasWebappInit } from '../../services/gas';
 import { getOAuth2Client } from '../../services/google';
@@ -11,8 +11,8 @@ import { logError, logWarn, logOk, logAction } from '../../services/message';
 import { BuiltinHooks } from '../../hooks';
 
 export async function projectSetupCommand() {
-    const name = getCurrentDirectoryBase();
-    const nameSentenceCase = sentenceCase(name);
+    const name = basename(process.cwd());
+    const namePretty = sentenceCase(name);
 
     // load default google account
     const googleClient = await getOAuth2Client();
@@ -32,7 +32,7 @@ export async function projectSetupCommand() {
     // drive folder
     if (!driveFolder) {
         await logAction('Create drive folder', async () => {
-            driveFolder = await driveCreateFolder(googleClient, `Sheetbase Project: ${nameSentenceCase}`);
+            driveFolder = await driveCreateFolder(googleClient, `Sheetbase Project: ${namePretty}`);
             await setSheetbaseDotJson({ driveFolder });
         });
     }
@@ -40,7 +40,7 @@ export async function projectSetupCommand() {
     // backend
     if (!scriptId) {
         await logAction('Create backend script', async () => {
-            scriptId = await gasCreate(googleClient, `${nameSentenceCase} Backend`, driveFolder);
+            scriptId = await gasCreate(googleClient, `${namePretty} Backend`, driveFolder);
             await setClaspConfigs({ scriptId }, true);
         });
 

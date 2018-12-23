@@ -6,7 +6,7 @@ import { green, logOk } from '../../services/message';
 
 export async function projectUrlsListCommand() {
     // build urls
-    const urls = buildUrls();
+    const urls = await buildUrls();
 
     // print out result
     const table = ttyTable([
@@ -39,9 +39,9 @@ export async function buildUrls() {
     const allUrlMaps = {
         ... urlMaps,
         driveFolder: ['drive', 'https://drive.google.com/drive/folders/'],
-        scriptId: ['backend', 'https://script.google.com/d/', '/edit'],
+        scriptId: ['script', 'https://script.google.com/d/', '/edit'],
         projectId: ['gcp', 'https://console.cloud.google.com/home/dashboard?project='],
-        backendUrl: [],
+        backendUrl: ['backend'],
     };
 
     // build urls
