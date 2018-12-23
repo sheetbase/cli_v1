@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;commands/project/project-info&quot; | @sheetbase/cli</title>
+	<title>&quot;services/spreadsheet&quot; | @sheetbase/cli</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="_commands_project_project_info_.html">&quot;commands/project/project-info&quot;</a>
+					<a href="_services_spreadsheet_.html">&quot;services/spreadsheet&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;commands/project/project-info&quot;</h1>
+			<h1>External module &quot;services/spreadsheet&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -70,50 +70,52 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Variables</h3>
+						<section class="tsd-index-section ">
+							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_commands_project_project_info_.html#ttytable" class="tsd-kind-icon">tty<wbr>Table</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_services_spreadsheet_.itemschema.html" class="tsd-kind-icon">Item<wbr>Schema</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_commands_project_project_info_.html#projectinfocommand" class="tsd-kind-icon">project<wbr>Info<wbr>Command</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_services_spreadsheet_.html#createsheetbyschema" class="tsd-kind-icon">create<wbr>Sheet<wbr>BySchema</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
-				<h2>Variables</h2>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="ttytable" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> tty<wbr>Table</h3>
-					<div class="tsd-signature tsd-kind-icon">tty<wbr>Table<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;tty-table&#x27;)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/51ce509/src/commands/project/project-info.ts#L1">commands/project/project-info.ts:1</a></li>
-						</ul>
-					</aside>
-				</section>
-			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="projectinfocommand" class="tsd-anchor"></a>
-					<h3>project<wbr>Info<wbr>Command</h3>
+					<a name="createsheetbyschema" class="tsd-anchor"></a>
+					<h3>create<wbr>Sheet<wbr>BySchema</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">project<wbr>Info<wbr>Command<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Sheet<wbr>BySchema<span class="tsd-signature-symbol">(</span>client<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">OAuth2Client</span>, spreadsheetId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, sheetName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, schema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_services_spreadsheet_.itemschema.html" class="tsd-signature-type">ItemSchema</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/51ce509/src/commands/project/project-info.ts#L5">commands/project/project-info.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/51ce509/src/services/spreadsheet.ts#L10">services/spreadsheet.ts:10</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>client: <span class="tsd-signature-type">OAuth2Client</span></h5>
+								</li>
+								<li>
+									<h5>spreadsheetId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>sheetName: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>schema: <a href="../interfaces/_services_spreadsheet_.itemschema.html" class="tsd-signature-type">ItemSchema</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -126,17 +128,17 @@
 						<a href="../index.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_commands_project_project_info_.html">"commands/project/project-<wbr>info"</a>
+						<a href="_services_spreadsheet_.html">"services/spreadsheet"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_commands_project_project_info_.html#ttytable" class="tsd-kind-icon">tty<wbr>Table</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_services_spreadsheet_.itemschema.html" class="tsd-kind-icon">Item<wbr>Schema</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_commands_project_project_info_.html#projectinfocommand" class="tsd-kind-icon">project<wbr>Info<wbr>Command</a>
+						<a href="_services_spreadsheet_.html#createsheetbyschema" class="tsd-kind-icon">create<wbr>Sheet<wbr>BySchema</a>
 					</li>
 				</ul>
 			</nav>

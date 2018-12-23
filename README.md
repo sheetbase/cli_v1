@@ -35,10 +35,10 @@ My Drive > Connect more apps > (search for Google Apps Script) > Connect
 Develop the backend in the **backend/** folder.
 
 To authorize the script:
-- Run `sheetbase urls o script`, to open the script in Google Apps Script editor.
+- Run `sheetbase url -o script`, to open the script in Google Apps Script editor.
 - Publish > Deploy as web app... > Update
 - Follow the steps to authorize (ignore the warning)
-- Verify by `sheetbase urls o backend`
+- Verify by `sheetbase url -o backend`
 
 ### Frontend
 
@@ -73,6 +73,8 @@ Sub-commands: start, setup, config, urls, info, hooks.
 - `params`: Command params, comma-separated.
 - `--npm`: (start) Install npm packages.
 - `--setup`: (start) Run setup command.
+- `--open`: (url) Open the url in browser.
+- `--database`: (model) Custom database.
 
 ### Start
 
@@ -91,6 +93,11 @@ Proxy of _project start_
 Setup the project.
 Proxy of _project setup_
 
+### Configs
+
+View project configs.
+Proxy of _project configs_
+
 ### Config
 
 Config backend & frontend.
@@ -106,12 +113,29 @@ Sub-commands: list, update, import, export
 
 View project URLs.
 Proxy of _project urls_
-Sub-commands: list, open
+
+### Url
+
+View or open a project URL.
+Proxy of _project url_
 
 #### Options
 
-- `subCommand`: Optional supported sub-commands, default: _list_.
-- `params`: Command params, comma-separated.
+- `--open`: Open the url in browser.
+
+### Models
+
+View project models.
+Proxy of _project models_
+
+### Model
+
+Create model.
+Proxy of _project model_
+
+#### Options
+
+- `--database`: Custom database.
 
 ### Info
 
