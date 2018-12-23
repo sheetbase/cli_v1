@@ -32,15 +32,13 @@ My Drive > Connect more apps > (search for Google Apps Script) > Connect
 
 ### Backend
 
-After running `sheetbase setup` successfully.
-
-Develop the backend in the **backend/** folder. Run `npm run build` to build the distribution package (this has security concern, see below). Run `npm run update` to update the backend.
+Develop the backend in the **backend/** folder.
 
 To authorize the script:
-- Run `sheetbase urls open backend`, to open the script in Google Apps Script editor.
+- Run `sheetbase urls o script`, to open the script in Google Apps Script editor.
 - Publish > Deploy as web app... > Update
 - Follow the steps to authorize (ignore the warning)
-- Verify by `sheetbase urls open backendUrl`
+- Verify by `sheetbase urls o backend`
 
 ### Frontend
 
@@ -48,62 +46,7 @@ Develop and build according to your framework of choice.
 
 Deploy to a static hosting or build an hybrid app.
 
-## Security
-
-Only start a project with themes that you trust. Bad people may put malicious code in CLI hooks and backend build script.
-
-Add `--trusted` flag to project-related commands (`setup`, `config`, `urls`, ...) to allow the CLI to run sensitive actions, such as: *hooks*, *setup initial build*.
-
-When starting a project with an original theme, the CLI auto add `--trusted` to the `setup` command to let it run setup hooks and `npm run build` before initial deploy the backend.
-
-Please let us know if there is any vulnerable or how to improve the development.
-
 ## Usage
-
-### Account
-
-Manage Sheetbase account.
-Sub-commands: login, logout, signup, profile, upgrade.
-
-#### Options
-
-- `subCommand`: Supported sub-commands.
-- `params`: Command params, comma-separated.
-- `--web`: (login) Login using web UI.
-- `--force`: (login) Force login again.
-- `--no-cache`: (profile) Do not caching user-related info.
-
-### Login
-
-Login to Sheetbase Cloud account.
-Proxy of _account login_
-
-#### Options
-
-- `--web`: Using web UI.
-- `--force`: Force login again.
-
-### Logout
-
-Logout of your Sheetbase Cloud account.
-Proxy of _account logout_
-
-### Signup
-
-Create a Sheetbase Cloud account.
-Proxy of _account signup_
-
-### Profile
-
-Manage Sheetbase account profile.
-Proxy of _account profile_
-Sub-commands: get, open, update
-
-#### Options
-
-- `subCommand`: Optional supported sub-commands, default: _get_.
-- `params`: Command params, comma-separated.
-- `--no-cache`: Do not cache user-related info.
 
 ### Google
 
@@ -128,13 +71,8 @@ Sub-commands: start, setup, config, urls, info, hooks.
 
 - `subCommand`: Supported sub-commands.
 - `params`: Command params, comma-separated.
-- `--no-npm`: (start) Do not install packages.
-- `--no-setup`: (start) Do not run setup command.
-- `--app`: (start) Start a backend app.
-- `--module`: (start) Start a backend module.
-- `--no-hook`: (start, setup, config, urls) Do not run hook.
-- `--trusted`: (setup) Trusted to run sensitive actions.
-- `--no-backend-deploy`: (setup) Do not initial deploy the backend.
+- `--npm`: (start) Install npm packages.
+- `--setup`: (start) Run setup command.
 
 ### Start
 
@@ -144,25 +82,14 @@ Proxy of _project start_
 #### Options
 
 - `projectName`: Name of the project, auto default.
-- `theme`: Theme to create the project with, default to _basic_angular_.
-- `--no-npm`: Do not install packages.
-- `--no-setup`: Do not run setup command.
-- `--app`: Start a backend app.
-- `--module`: Start a backend module.
-- `--no-hook`: Do not run setup hook.
-- `--trusted`: Trusted to run setup sensitive actions.
-- `--no-backend-deploy`: Do not initial deploy the backend.
+- `resource`: Theme or template to create the project with, default to theme _blank_angular_.
+- `--npm`: Install npm packages.
+- `--setup`: Run setup command.
 
 ### Setup
 
 Setup the project.
 Proxy of _project setup_
-
-#### Options
-
-- `--trusted`: Trusted to run sensitive actions.
-- `--no-hook`: Do not run hook.
-- `--no-backend-deploy`: Do not initial deploy the backend.
 
 ### Config
 
@@ -174,7 +101,6 @@ Sub-commands: list, update, import, export
 
 - `subCommand`: Optional supported sub-commands, default: _list_.
 - `params`: Command params, comma-separated.
-- `--no-hook`: Do not run hook.
 
 ### Urls
 
@@ -186,17 +112,11 @@ Sub-commands: list, open
 
 - `subCommand`: Optional supported sub-commands, default: _list_.
 - `params`: Command params, comma-separated.
-- `--no-hook`: Do not run hook.
 
 ### Info
 
 Output project info.
 Proxy of _project info_
-
-### Hooks
-
-Output list of hooks.
-Proxy of _project hooks_
 
 ### Docs
 
@@ -224,7 +144,7 @@ Any other command ends of running: npm run <cmd>.
 
 ## Development
 
-Reference: https://sheetbase.github.io/cli
+API Reference: https://sheetbase.github.io/cli/api/
 
 ## Lisence
 

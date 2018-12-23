@@ -53,7 +53,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
 					<a href="_services_clasp_.html">&quot;services/clasp&quot;</a>
@@ -100,7 +100,7 @@
 					<div class="tsd-signature tsd-kind-icon">CLASP_<wbr>CONFIG_<wbr>PATH<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"backend/.clasp.json"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;backend/.clasp.json&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d8d8381/src/services/clasp.ts#L3">services/clasp.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d270fc9/src/services/clasp.ts#L3">services/clasp.ts:3</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -111,15 +111,21 @@
 					<a name="getclaspconfigs" class="tsd-anchor"></a>
 					<h3>get<wbr>Clasp<wbr>Configs</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Clasp<wbr>Configs<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_services_clasp_.claspconfigs.html" class="tsd-signature-type">ClaspConfigs</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Clasp<wbr>Configs<span class="tsd-signature-symbol">(</span>customRoot<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_services_clasp_.claspconfigs.html" class="tsd-signature-type">ClaspConfigs</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d8d8381/src/services/clasp.ts#L10">services/clasp.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d270fc9/src/services/clasp.ts#L10">services/clasp.ts:10</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> customRoot: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_services_clasp_.claspconfigs.html" class="tsd-signature-type">ClaspConfigs</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -128,13 +134,13 @@
 					<a name="setclaspconfigs" class="tsd-anchor"></a>
 					<h3>set<wbr>Clasp<wbr>Configs</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Clasp<wbr>Configs<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_services_clasp_.claspconfigs.html" class="tsd-signature-type">ClaspConfigs</a>, override<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_services_clasp_.claspconfigs.html" class="tsd-signature-type">ClaspConfigs</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Clasp<wbr>Configs<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_services_clasp_.claspconfigs.html" class="tsd-signature-type">ClaspConfigs</a>, modifier<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span>, customRoot<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d8d8381/src/services/clasp.ts#L14">services/clasp.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d270fc9/src/services/clasp.ts#L14">services/clasp.ts:14</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -143,10 +149,13 @@
 									<h5>data: <a href="../interfaces/_services_clasp_.claspconfigs.html" class="tsd-signature-type">ClaspConfigs</a></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> override: <span class="tsd-signature-type">boolean</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> modifier: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> customRoot: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_services_clasp_.claspconfigs.html" class="tsd-signature-type">ClaspConfigs</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -156,7 +165,7 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+						<a href="../index.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="_services_clasp_.html">"services/clasp"</a>

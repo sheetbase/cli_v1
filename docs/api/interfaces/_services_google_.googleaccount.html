@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>NativeProfile | @sheetbase/cli</title>
+	<title>GoogleAccount | @sheetbase/cli</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -53,16 +53,16 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_services_user_.html">&quot;services/user&quot;</a>
+					<a href="../modules/_services_google_.html">&quot;services/google&quot;</a>
 				</li>
 				<li>
-					<a href="_services_user_.nativeprofile.html">NativeProfile</a>
+					<a href="_services_google_.googleaccount.html">GoogleAccount</a>
 				</li>
 			</ul>
-			<h1>Interface NativeProfile</h1>
+			<h1>Interface GoogleAccount</h1>
 		</div>
 	</div>
 </header>
@@ -73,12 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">NativeProfile</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="_services_user_.profile.html" class="tsd-signature-type">Profile</a>
-							</li>
-						</ul>
+						<span class="target">GoogleAccount</span>
 					</li>
 				</ul>
 			</section>
@@ -89,13 +84,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_user_.nativeprofile.html#displayname" class="tsd-kind-icon">display<wbr>Name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_user_.nativeprofile.html#email" class="tsd-kind-icon">email</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_user_.nativeprofile.html#emailverified" class="tsd-kind-icon">email<wbr>Verified</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_user_.nativeprofile.html#photourl" class="tsd-kind-icon">photo<wbr>Url</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_user_.nativeprofile.html#providerdata" class="tsd-kind-icon">provider<wbr>Data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_user_.nativeprofile.html#providerid" class="tsd-kind-icon">provider<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_user_.nativeprofile.html#uid" class="tsd-kind-icon">uid</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_google_.googleaccount.html#grantedat" class="tsd-kind-icon">granted<wbr>At</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_google_.googleaccount.html#profile" class="tsd-kind-icon">profile</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_google_.googleaccount.html#refreshtoken" class="tsd-kind-icon">refresh<wbr>Token</a></li>
 							</ul>
 						</section>
 					</div>
@@ -104,72 +95,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="displayname" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> display<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">display<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="grantedat" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> granted<wbr>At</h3>
+					<div class="tsd-signature tsd-kind-icon">granted<wbr>At<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d8d8381/src/services/user.ts#L70">services/user.ts:70</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d270fc9/src/services/google.ts#L21">services/google.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="email" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> email</h3>
-					<div class="tsd-signature tsd-kind-icon">email<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="profile" class="tsd-anchor"></a>
+					<h3>profile</h3>
+					<div class="tsd-signature tsd-kind-icon">profile<span class="tsd-signature-symbol">:</span> <a href="_services_google_.googleaccountprofile.html" class="tsd-signature-type">GoogleAccountProfile</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d8d8381/src/services/user.ts#L68">services/user.ts:68</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d270fc9/src/services/google.ts#L20">services/google.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="emailverified" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> email<wbr>Verified</h3>
-					<div class="tsd-signature tsd-kind-icon">email<wbr>Verified<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="refreshtoken" class="tsd-anchor"></a>
+					<h3>refresh<wbr>Token</h3>
+					<div class="tsd-signature tsd-kind-icon">refresh<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d8d8381/src/services/user.ts#L69">services/user.ts:69</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="photourl" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> photo<wbr>Url</h3>
-					<div class="tsd-signature tsd-kind-icon">photo<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d8d8381/src/services/user.ts#L71">services/user.ts:71</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="providerdata" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> provider<wbr>Data</h3>
-					<div class="tsd-signature tsd-kind-icon">provider<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d8d8381/src/services/user.ts#L73">services/user.ts:73</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="providerid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> provider<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">provider<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d8d8381/src/services/user.ts#L72">services/user.ts:72</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="uid" class="tsd-anchor"></a>
-					<h3>uid</h3>
-					<div class="tsd-signature tsd-kind-icon">uid<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d8d8381/src/services/user.ts#L67">services/user.ts:67</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d270fc9/src/services/google.ts#L19">services/google.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -179,10 +130,10 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+						<a href="../index.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_services_user_.html">"services/user"</a>
+						<a href="../modules/_services_google_.html">"services/google"</a>
 					</li>
 				</ul>
 			</nav>
@@ -191,33 +142,108 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_services_user_.nativeprofile.html" class="tsd-kind-icon">Native<wbr>Profile</a>
+						<a href="_services_google_.googleaccount.html" class="tsd-kind-icon">Google<wbr>Account</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_user_.nativeprofile.html#displayname" class="tsd-kind-icon">display<wbr>Name</a>
+								<a href="_services_google_.googleaccount.html#grantedat" class="tsd-kind-icon">granted<wbr>At</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_user_.nativeprofile.html#email" class="tsd-kind-icon">email</a>
+								<a href="_services_google_.googleaccount.html#profile" class="tsd-kind-icon">profile</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_user_.nativeprofile.html#emailverified" class="tsd-kind-icon">email<wbr>Verified</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_user_.nativeprofile.html#photourl" class="tsd-kind-icon">photo<wbr>Url</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_user_.nativeprofile.html#providerdata" class="tsd-kind-icon">provider<wbr>Data</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_user_.nativeprofile.html#providerid" class="tsd-kind-icon">provider<wbr>Id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_user_.nativeprofile.html#uid" class="tsd-kind-icon">uid</a>
+								<a href="_services_google_.googleaccount.html#refreshtoken" class="tsd-kind-icon">refresh<wbr>Token</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_services_google_.googleaccountprofile.html" class="tsd-kind-icon">Google<wbr>Account<wbr>Profile</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_services_google_.googleaccounts.html" class="tsd-kind-icon">Google<wbr>Accounts</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#google_rc" class="tsd-kind-icon">GOOGLE_<wbr>RC</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_services_google_.html#config" class="tsd-kind-icon">config</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_services_google_.html#configstore" class="tsd-kind-icon">configstore</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_services_google_.html#opn" class="tsd-kind-icon">opn</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#oauth2_url_opts" class="tsd-kind-icon">OAUTH2_<wbr>URL_<wbr>OPTS</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#authorizewithlocalhost" class="tsd-kind-icon">authorize<wbr>With<wbr>Localhost</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#getallgoogleaccounts" class="tsd-kind-icon">get<wbr>All<wbr>Google<wbr>Accounts</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#getdefaultgoogleaccount" class="tsd-kind-icon">get<wbr>Default<wbr>Google<wbr>Account</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#getdefaultgoogleaccountid" class="tsd-kind-icon">get<wbr>Default<wbr>Google<wbr>Account<wbr>Id</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#getgoogleaccount" class="tsd-kind-icon">get<wbr>Google<wbr>Account</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#getlocalgoogleaccount" class="tsd-kind-icon">get<wbr>Local<wbr>Google<wbr>Account</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#getoauth2client" class="tsd-kind-icon">getOAuth2<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_services_google_.html#getoauth2clientbyid" class="tsd-kind-icon">getOAuth2<wbr>Client<wbr>ById</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_services_google_.html#getoauth2clientbyrefreshtoken" class="tsd-kind-icon">getOAuth2<wbr>Client<wbr>ByRefresh<wbr>Token</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_services_google_.html#gettemporaryrefeshtoken" class="tsd-kind-icon">get<wbr>Temporary<wbr>Refesh<wbr>Token</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_services_google_.html#getuserprofile" class="tsd-kind-icon">get<wbr>User<wbr>Profile</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_services_google_.html#message" class="tsd-kind-icon">message</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#removeallgoogleaccounts" class="tsd-kind-icon">remove<wbr>All<wbr>Google<wbr>Accounts</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#removedefaultgoogleaccount" class="tsd-kind-icon">remove<wbr>Default<wbr>Google<wbr>Account</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_services_google_.html#removedefaultgoogleaccountid" class="tsd-kind-icon">remove<wbr>Default<wbr>Google<wbr>Account<wbr>Id</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#removegoogleaccount" class="tsd-kind-icon">remove<wbr>Google<wbr>Account</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#removelocalgoogleaccount" class="tsd-kind-icon">remove<wbr>Local<wbr>Google<wbr>Account</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_services_google_.html#removetemporaryrefeshtoken" class="tsd-kind-icon">remove<wbr>Temporary<wbr>Refesh<wbr>Token</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#retrievetemporaryrefeshtoken" class="tsd-kind-icon">retrieve<wbr>Temporary<wbr>Refesh<wbr>Token</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#setdefaultgoogleaccountid" class="tsd-kind-icon">set<wbr>Default<wbr>Google<wbr>Account<wbr>Id</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#setgoogleaccount" class="tsd-kind-icon">set<wbr>Google<wbr>Account</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module">
+						<a href="../modules/_services_google_.html#oauht2_client_settings" class="tsd-kind-icon">OAUHT2_<wbr>CLIENT_<wbr>SETTINGS</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

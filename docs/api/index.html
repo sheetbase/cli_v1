@@ -53,7 +53,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="globals.html">Globals</a>
+					<a href="index.html">Globals</a>
 				</li>
 			</ul>
 			<h1> @sheetbase/cli</h1>
@@ -63,208 +63,58 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<h1 id="sheetbase-cli">Sheetbase CLI</h1>
-				<p>Official CLI for working with Sheetbase.</p>
-				<!-- <block:header> -->
-				<p><a href="https://travis-ci.org/sheetbase/cli"><img src="https://travis-ci.org/sheetbase/cli.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/sheetbase/cli?branch=master"><img src="https://coveralls.io/repos/github/sheetbase/cli/badge.svg?branch=master" alt="Coverage Status"></a> <a href="https://www.npmjs.com/package/@sheetbase/cli"><img src="https://img.shields.io/npm/v/@sheetbase/cli.svg" alt="NPM"></a> <a href="https://github.com/sheetbase/cli/blob/master/LICENSE"><img src="https://img.shields.io/hexpm/l/plug.svg" alt="License"></a> <a href="https://www.patreon.com/lamnhan"><img src="https://lamnhan.github.io/assets/images/badges/patreon.svg" alt="Support me on Patreon"></a> <a href="https://www.paypal.me/lamnhan"><img src="https://lamnhan.github.io/assets/images/badges/paypal_donate.svg" alt="PayPal"></a> <a href="https://m.me/sheetbase"><img src="https://img.shields.io/badge/ask/me-anything-1abc9c.svg" alt="Ask me anything"></a></p>
-				<!-- </block:header> -->
-				<h2 id="install">Install</h2>
-				<p><code>npm install -g @sheetbase/cli</code></p>
-				<h2 id="additional-steps">Additional steps</h2>
-				<h3 id="install-google-clasp">Install <a href="https://github.com/google/clasp">@google/clasp</a></h3>
-				<p>Recommended for developing Google Apps Script.</p>
-				<p><code>npm install -g @google/clasp</code></p>
-				<h3 id="enable-apps-script-api">Enable Apps Script API</h3>
-				<p>Go to <a href="https://script.google.com/home/usersettings">https://script.google.com/home/usersettings</a>, then enable the API.</p>
-				<h3 id="connect-apps-script-in-drive">Connect Apps Script in Drive</h3>
-				<p>My Drive &gt; Connect more apps &gt; (search for Google Apps Script) &gt; Connect</p>
-				<h2 id="develop-deploy">Develop &amp; deploy</h2>
-				<h3 id="backend">Backend</h3>
-				<p>After running <code>sheetbase setup</code> successfully.</p>
-				<p>Develop the backend in the <strong>backend/</strong> folder. Run <code>npm run build</code> to build the distribution package (this has security concern, see below). Run <code>npm run update</code> to update the backend.</p>
-				<p>To authorize the script:</p>
-				<ul>
-					<li>Run <code>sheetbase urls open backend</code>, to open the script in Google Apps Script editor.</li>
-					<li>Publish &gt; Deploy as web app... &gt; Update</li>
-					<li>Follow the steps to authorize (ignore the warning)</li>
-					<li>Verify by <code>sheetbase urls open backendUrl</code></li>
-				</ul>
-				<h3 id="frontend">Frontend</h3>
-				<p>Develop and build according to your framework of choice.</p>
-				<p>Deploy to a static hosting or build an hybrid app.</p>
-				<h2 id="security">Security</h2>
-				<p>Only start a project with themes that you trust. Bad people may put malicious code in CLI hooks and backend build script.</p>
-				<p>Add <code>--trusted</code> flag to project-related commands (<code>setup</code>, <code>config</code>, <code>urls</code>, ...) to allow the CLI to run sensitive actions, such as: <em>hooks</em>, <em>setup initial build</em>.</p>
-				<p>When starting a project with an original theme, the CLI auto add <code>--trusted</code> to the <code>setup</code> command to let it run setup hooks and <code>npm run build</code> before initial deploy the backend.</p>
-				<p>Please let us know if there is any vulnerable or how to improve the development.</p>
-				<h2 id="usage">Usage</h2>
-				<h3 id="account">Account</h3>
-				<p>Manage Sheetbase account.
-				Sub-commands: login, logout, signup, profile, upgrade.</p>
-				<h4 id="options">Options</h4>
-				<ul>
-					<li><code>subCommand</code>: Supported sub-commands.</li>
-					<li><code>params</code>: Command params, comma-separated.</li>
-					<li><code>--web</code>: (login) Login using web UI.</li>
-					<li><code>--force</code>: (login) Force login again.</li>
-					<li><code>--no-cache</code>: (profile) Do not caching user-related info.</li>
-				</ul>
-				<h3 id="login">Login</h3>
-				<p>Login to Sheetbase Cloud account.
-				Proxy of <em>account login</em></p>
-				<h4 id="options">Options</h4>
-				<ul>
-					<li><code>--web</code>: Using web UI.</li>
-					<li><code>--force</code>: Force login again.</li>
-				</ul>
-				<h3 id="logout">Logout</h3>
-				<p>Logout of your Sheetbase Cloud account.
-				Proxy of <em>account logout</em></p>
-				<h3 id="signup">Signup</h3>
-				<p>Create a Sheetbase Cloud account.
-				Proxy of <em>account signup</em></p>
-				<h3 id="profile">Profile</h3>
-				<p>Manage Sheetbase account profile.
-					Proxy of <em>account profile</em>
-				Sub-commands: get, open, update</p>
-				<h4 id="options">Options</h4>
-				<ul>
-					<li><code>subCommand</code>: Optional supported sub-commands, default: <em>get</em>.</li>
-					<li><code>params</code>: Command params, comma-separated.</li>
-					<li><code>--no-cache</code>: Do not cache user-related info.</li>
-				</ul>
-				<h3 id="google">Google</h3>
-				<p>Manage Google accounts.
-				Sub-commands: list, connect, disconnect, default.</p>
-				<h4 id="options">Options</h4>
-				<ul>
-					<li><code>subCommand</code>: Supported sub-commands.</li>
-					<li><code>params</code>: Command params, comma-separated.</li>
-					<li><code>--yes</code>: (connect) Agree on account connection.</li>
-					<li><code>--creds</code>: (connect) Save credential to .googlerc.json.</li>
-					<li><code>--full-drive</code>: (connect) Not recommended, grant full access to Drive.</li>
-					<li><code>--default</code>: (list) Show default account only.</li>
-				</ul>
-				<h3 id="project">Project</h3>
-				<p>Project general tasks.
-				Sub-commands: start, setup, config, urls, info, hooks.</p>
-				<h4 id="options">Options</h4>
-				<ul>
-					<li><code>subCommand</code>: Supported sub-commands.</li>
-					<li><code>params</code>: Command params, comma-separated.</li>
-					<li><code>--no-npm</code>: (start) Do not install packages.</li>
-					<li><code>--no-setup</code>: (start) Do not run setup command.</li>
-					<li><code>--app</code>: (start) Start a backend app.</li>
-					<li><code>--module</code>: (start) Start a backend module.</li>
-					<li><code>--no-hook</code>: (start, setup, config, urls) Do not run hook.</li>
-					<li><code>--trusted</code>: (setup) Trusted to run sensitive actions.</li>
-					<li><code>--no-backend-deploy</code>: (setup) Do not initial deploy the backend.</li>
-				</ul>
-				<h3 id="start">Start</h3>
-				<p>Start a new project.
-				Proxy of <em>project start</em></p>
-				<h4 id="options">Options</h4>
-				<ul>
-					<li><code>projectName</code>: Name of the project, auto default.</li>
-					<li><code>theme</code>: Theme to create the project with, default to <em>basic</em>angular_.</li>
-					<li><code>--no-npm</code>: Do not install packages.</li>
-					<li><code>--no-setup</code>: Do not run setup command.</li>
-					<li><code>--app</code>: Start a backend app.</li>
-					<li><code>--module</code>: Start a backend module.</li>
-					<li><code>--no-hook</code>: Do not run setup hook.</li>
-					<li><code>--trusted</code>: Trusted to run setup sensitive actions.</li>
-					<li><code>--no-backend-deploy</code>: Do not initial deploy the backend.</li>
-				</ul>
-				<h3 id="setup">Setup</h3>
-				<p>Setup the project.
-				Proxy of <em>project setup</em></p>
-				<h4 id="options">Options</h4>
-				<ul>
-					<li><code>--trusted</code>: Trusted to run sensitive actions.</li>
-					<li><code>--no-hook</code>: Do not run hook.</li>
-					<li><code>--no-backend-deploy</code>: Do not initial deploy the backend.</li>
-				</ul>
-				<h3 id="config">Config</h3>
-				<p>Config backend &amp; frontend.
-					Proxy of <em>project config</em>
-				Sub-commands: list, update, import, export</p>
-				<h4 id="options">Options</h4>
-				<ul>
-					<li><code>subCommand</code>: Optional supported sub-commands, default: <em>list</em>.</li>
-					<li><code>params</code>: Command params, comma-separated.</li>
-					<li><code>--no-hook</code>: Do not run hook.</li>
-				</ul>
-				<h3 id="urls">Urls</h3>
-				<p>View project URLs.
-					Proxy of <em>project urls</em>
-				Sub-commands: list, open</p>
-				<h4 id="options">Options</h4>
-				<ul>
-					<li><code>subCommand</code>: Optional supported sub-commands, default: <em>list</em>.</li>
-					<li><code>params</code>: Command params, comma-separated.</li>
-					<li><code>--no-hook</code>: Do not run hook.</li>
-				</ul>
-				<h3 id="info">Info</h3>
-				<p>Output project info.
-				Proxy of <em>project info</em></p>
-				<h3 id="hooks">Hooks</h3>
-				<p>Output list of hooks.
-				Proxy of <em>project hooks</em></p>
-				<h3 id="docs">Docs</h3>
-				<p>Open the documentation.</p>
-				<h3 id="backend">Backend</h3>
-				<p>Run backend related command.</p>
-				<h3 id="frontend">Frontend</h3>
-				<p>Run frontend related command.</p>
-				<h3 id="help">Help</h3>
-				<p>Display help.</p>
-				<h4 id="options">Options</h4>
-				<ul>
-					<li><code>--detail</code>: Detail help.</li>
-				</ul>
-				<h3 id="-">*</h3>
-				<p>Any other command ends of running: npm run <cmd>.</p>
-				<h2 id="development">Development</h2>
-				<p>Reference: <a href="https://sheetbase.github.io/cli">https://sheetbase.github.io/cli</a></p>
-				<h2 id="lisence">Lisence</h2>
-				<p>Sheetbase CLI is released under the <a href="https://github.com/sheetbase/cli/blob/master/LICENSE">Apache-2.0</a> license.</p>
-				<!-- <block:footer> -->
-				<!-- </block:footer> -->
-			</div>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>External modules</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-external-module"><a href="modules/_commands_backend_backend_.html" class="tsd-kind-icon">"commands/backend/backend"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_default_default_.html" class="tsd-kind-icon">"commands/default/default"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_docs_docs_.html" class="tsd-kind-icon">"commands/docs/docs"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_frontend_frontend_.html" class="tsd-kind-icon">"commands/frontend/frontend"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_google_google_.html" class="tsd-kind-icon">"commands/google/google"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_google_google_connect_.html" class="tsd-kind-icon">"commands/google/google-<wbr>connect"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_google_google_default_.html" class="tsd-kind-icon">"commands/google/google-<wbr>default"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_google_google_disconnect_.html" class="tsd-kind-icon">"commands/google/google-<wbr>disconnect"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_google_google_list_.html" class="tsd-kind-icon">"commands/google/google-<wbr>list"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_help_help_.html" class="tsd-kind-icon">"commands/help/help"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_.html" class="tsd-kind-icon">"commands/project/project"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_config_.html" class="tsd-kind-icon">"commands/project/project-<wbr>config"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_config_export_.html" class="tsd-kind-icon">"commands/project/project-<wbr>config-<wbr>export"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_config_import_.html" class="tsd-kind-icon">"commands/project/project-<wbr>config-<wbr>import"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_config_list_.html" class="tsd-kind-icon">"commands/project/project-<wbr>config-<wbr>list"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_config_update_.html" class="tsd-kind-icon">"commands/project/project-<wbr>config-<wbr>update"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_info_.html" class="tsd-kind-icon">"commands/project/project-<wbr>info"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_setup_.html" class="tsd-kind-icon">"commands/project/project-<wbr>setup"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_start_.html" class="tsd-kind-icon">"commands/project/project-<wbr>start"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_urls_.html" class="tsd-kind-icon">"commands/project/project-<wbr>urls"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_urls_list_.html" class="tsd-kind-icon">"commands/project/project-<wbr>urls-<wbr>list"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_commands_project_project_urls_open_.html" class="tsd-kind-icon">"commands/project/project-<wbr>urls-<wbr>open"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_hooks_index_.html" class="tsd-kind-icon">"hooks/index"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_index_.html" class="tsd-kind-icon">"index"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_services_clasp_.html" class="tsd-kind-icon">"services/clasp"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_services_drive_.html" class="tsd-kind-icon">"services/drive"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_services_gas_.html" class="tsd-kind-icon">"services/gas"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_services_google_.html" class="tsd-kind-icon">"services/google"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_services_help_.html" class="tsd-kind-icon">"services/help"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_services_inquirer_.html" class="tsd-kind-icon">"services/inquirer"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_services_message_.html" class="tsd-kind-icon">"services/message"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_services_project_.html" class="tsd-kind-icon">"services/project"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_services_utils_.html" class="tsd-kind-icon">"services/utils"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_usage_.html" class="tsd-kind-icon">"usage"</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_commands_account_account_.html">"commands/account/account"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_commands_account_account_login_.html">"commands/account/account-<wbr>login"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_commands_account_account_logout_.html">"commands/account/account-<wbr>logout"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_commands_account_account_profile_.html">"commands/account/account-<wbr>profile"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_commands_account_account_profile_get_.html">"commands/account/account-<wbr>profile-<wbr>get"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_commands_account_account_profile_open_.html">"commands/account/account-<wbr>profile-<wbr>open"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_commands_account_account_profile_update_.html">"commands/account/account-<wbr>profile-<wbr>update"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_commands_account_account_signup_.html">"commands/account/account-<wbr>signup"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_commands_account_account_upgrade_.html">"commands/account/account-<wbr>upgrade"</a>
+					<li class="globals current ">
+						<a href="index.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_commands_backend_backend_.html">"commands/backend/backend"</a>
@@ -315,9 +165,6 @@
 						<a href="modules/_commands_project_project_config_update_.html">"commands/project/project-<wbr>config-<wbr>update"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_commands_project_project_hooks_.html">"commands/project/project-<wbr>hooks"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="modules/_commands_project_project_info_.html">"commands/project/project-<wbr>info"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -336,31 +183,16 @@
 						<a href="modules/_commands_project_project_urls_open_.html">"commands/project/project-<wbr>urls-<wbr>open"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_hooks_config_.html">"hooks/config"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="modules/_hooks_index_.html">"hooks/index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_hooks_setup_.html">"hooks/setup"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_hooks_urls_.html">"hooks/urls"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="modules/_index_.html">"index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_services_api_.html">"services/api"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_services_clasp_.html">"services/clasp"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_services_drive_.html">"services/drive"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_services_firebase_.html">"services/firebase"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_services_gas_.html">"services/gas"</a>
@@ -379,9 +211,6 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_services_project_.html">"services/project"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_services_user_.html">"services/user"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_services_utils_.html">"services/utils"</a>
