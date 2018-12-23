@@ -225,21 +225,25 @@ describe.skip('Test SETUP command', () => {
 
 });
 
-describe('Test CONFIG command', () => {
+describe('Test CONFIG(S) command', () => {
 
   beforeEach(() => createTestProject());
   afterEach(() => removeTestProject());
+
+  it('should list configs', () => {
+    expectResult(['configs'], 'PROJECT_CONFIGS__OK', PROJECT_NAME);
+  });
 
   it('should fail to import (no or invalid file)', () => {
     expectError(['config', 'import'], 'PROJECT_CONFIG_IMPORT__ERROR__NO_FILE', PROJECT_NAME);
   });
 
   it('should list configs (default)', () => {
-    expectResult(['config'], 'PROJECT_CONFIG_LIST__OK', PROJECT_NAME);
+    expectResult(['config'], 'PROJECT_CONFIGS__OK', PROJECT_NAME);
   });
 
   it('should list configs', () => {
-    expectResult(['config', 'list'], 'PROJECT_CONFIG_LIST__OK', PROJECT_NAME);
+    expectResult(['config', 'list'], 'PROJECT_CONFIGS__OK', PROJECT_NAME);
   });
 
   it('should update configs (no value argument)', () => {
@@ -265,25 +269,25 @@ describe('Test CONFIG command', () => {
 
 });
 
-describe('Test URLS command', () => {
+describe('Test URL(S) command', () => {
 
   beforeEach(() => createTestProject());
   afterEach(() => removeTestProject());
 
   it('should show urls list (default)', () => {
-    expectResult(['urls'], 'PROJECT_URLS_LIST__OK', PROJECT_NAME);
+    expectResult(['urls'], 'PROJECT_URLS__OK', PROJECT_NAME);
   });
 
-  it('should show urls list', () => {
-    expectResult(['urls', 'list'], 'PROJECT_URLS_LIST__OK', PROJECT_NAME);
+  it('should show url', () => {
+    expectResult(['url'], 'PROJECT_URL__OK', PROJECT_NAME);
   });
 
   it('should open link in browser', () => {
-    expectResult(['urls', 'open'], 'APP_INFO_LINK_OPENED', PROJECT_NAME);
+    expectResult(['url', '-o'], 'APP_INFO_LINK_OPENED', PROJECT_NAME);
   });
 
   it('should open link in browser (by name)', () => {
-    expectResult(['urls', 'open', 'backend'], 'APP_INFO_LINK_OPENED', PROJECT_NAME);
+    expectResult(['url', 'backend', '-o'], 'APP_INFO_LINK_OPENED', PROJECT_NAME);
   });
 
 });

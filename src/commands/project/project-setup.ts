@@ -1,6 +1,8 @@
+import { execSync } from 'child_process';
 import { basename } from 'path';
 import { sentenceCase } from 'change-case';
 
+import { cmd } from '../../services/utils';
 import { driveCreateFolder } from '../../services/drive';
 import { gasCreate, gasWebappInit } from '../../services/gas';
 import { getOAuth2Client } from '../../services/google';
@@ -54,9 +56,7 @@ export async function projectSetupCommand() {
         }
     }
 
-    /**
-     * app configs
-     */
+    // hooks
     if (!!setupHooks) {
         const builtinHooks = new BuiltinHooks({
             googleClient,
@@ -65,7 +65,7 @@ export async function projectSetupCommand() {
         });
         const newConfigs = {};
         for (const key of Object.keys(setupHooks)) {
-            if (!backend[key] && !frontend[key]) { // not exists in both config objects
+            if (!backend[key] && !frontend[key]) { // not exists in configs
                 const [ description, hookName, ... args ] = setupHooks[key];
                 await logAction(description, async () => {
                     try {
@@ -78,6 +78,9 @@ export async function projectSetupCommand() {
         }
         await setConfigs(newConfigs);
     }
+
+    // create table models
+    execSync(`${cmd('sheetbase')} model`);
 
     // done
     logOk('PROJECT_SETUP__OK', true);

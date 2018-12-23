@@ -24,10 +24,14 @@ export function help(): string {
 
  Project commands:
 
-    ${green('setup')} ................... Setup the project.
-    ${green('config [subcommand]')} ..... Config backend & frontend.
-    ${green('info')} .................... Output project info.
-    ${green('urls')} .................... View project URLs.`;
+    ${green('setup')} ......................... Setup the project.
+    ${green('configs')} ....................... View project configs.
+    ${green('config [subcommand]')} ........... Config backend & frontend.
+    ${green('info')} .......................... Output project info.
+    ${green('urls')} .......................... View project URLs.
+    ${green('url [name]')} .................... View or open a project URL.
+    ${green('models')} ........................ View project models.
+    ${green('model [id]')} .................... Create model.`;
 }
 
 export function helpDetail(): string {
@@ -66,9 +70,13 @@ export function googleHelp(): string {
 export function projectHelp(): string {
     return '' +
     `
-    ${green('start [name] [resource]')} .... Start a new project.
-    ${green('setup')} ...................... Setup the project.
-    ${green('config [subcommand]')} ........ Config backend & frontend.
-    ${green('urls')} ....................... View project URLs.
-    ${green('info')} ....................... Output project info.`;
+    ${green('start [name] [resource]')} ....... Start a new project.
+    ${green('setup')} ......................... Setup the project.
+    ${green('configs')} ....................... View project configs.
+    ${green('config [subcommand]')} ........... Config backend & frontend.
+    ${green('info')} .......................... Output project info.
+    ${green('urls')} .......................... View project URLs.
+    ${green('url [name]')} .................... View or open a project URL.
+    ${green('models')} ........................ View project models.
+    ${green('model [id]')} .................... Create model.`;
 }

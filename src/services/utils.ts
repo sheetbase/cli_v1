@@ -5,7 +5,7 @@ import { ensureDir, copy, remove, lstatSync } from 'fs-extra';
 import axios from 'axios';
 import * as zipper from 'adm-zip';
 
-const readdirAsync = promisify(readdir);
+export const readdirAsync = promisify(readdir);
 
 export function buildValidFileName(name) {
 return name.replace(/\ /g, '-')

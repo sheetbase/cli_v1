@@ -1,7 +1,7 @@
 import { projectConfigUpdateCommand } from './project-config-update';
 import { projectConfigImportCommand } from './project-config-import';
 import { projectConfigExportCommand } from './project-config-export';
-import { projectConfigListCommand } from './project-config-list';
+import { projectConfigsCommand } from './project-configs';
 
 export async function projectConfigCommand(command: string, params: string[]) {
     switch (command) {
@@ -20,7 +20,7 @@ export async function projectConfigCommand(command: string, params: string[]) {
 
         case 'list':
         default:
-            await projectConfigListCommand();
+            await projectConfigsCommand();
         break;
     }
 }

@@ -74,11 +74,15 @@ program
  * @param {string?} [params] Command params, comma-separated.
  * @param {string?} [--npm] (start) Install npm packages.
  * @param {string?} [--setup] (start) Run setup command.
+ * @param {string?} [--open] (url) Open the url in browser.
+ * @param {string?} [--database] (model) Custom database.
  */
 program
   .command('project [subCommand] [params...]')
-  .option('--npm', `(${chalk.green('start')}) Install npm packages.`)
-  .option('--setup', `(${chalk.green('start')}) Run setup command.`)
+  .option('-n, --npm', `(${chalk.green('start')}) Install npm packages.`)
+  .option('-s, --setup', `(${chalk.green('start')}) Run setup command.`)
+  .option('-o, --open', `(${chalk.green('url')}) Open the url in browser.`)
+  .option('-d, --database [value]', `(${chalk.green('model')}) Custom database.`)
   .description('Project general tasks.')
   .action(projectCommand);
 
@@ -111,6 +115,16 @@ program
   .action(async () => projectCommand('setup'));
 
 /**
+ * View project configs.
+ * Proxy of _project configs_
+ * @name configs
+ */
+program
+  .command('configs')
+  .description('View project configs.')
+  .action(async () => await projectCommand('configs'));
+
+/**
  * Config backend & frontend.
  * Proxy of _project config_
  * Sub-commands: list, update, import, export
@@ -122,23 +136,52 @@ program
   .command('config [subCommand] [params...]')
   .description('Config backend & frontend.')
   .action(async (subCommand, params) => await projectCommand(
-    'config', [ subCommand, ... params ],
+    'config', [subCommand, ... params],
   ));
 
 /**
  * View project URLs.
  * Proxy of _project urls_
- * Sub-commands: list, open
  * @name urls
- * @param {string?} [subCommand] Optional supported sub-commands, default: _list_.
- * @param {string?} [params] Command params, comma-separated.
  */
 program
-  .command('urls [subCommand] [params...]')
+  .command('urls')
   .description(`View project URLs.`)
-  .action(async (subCommand, params) => await projectCommand(
-    'urls', [ subCommand, ... params ],
-  ));
+  .action(async () => await projectCommand('urls'));
+
+/**
+ * View or open a project URL.
+ * Proxy of _project url_
+ * @name url
+ * @param {string?} [--open] Open the url in browser.
+ */
+program
+  .command('url [name]')
+  .option('-o, --open', `Open the url in browser.`)
+  .description(`View or open a project URL.`)
+  .action(async (name, options) => await projectCommand('url', [name], options));
+
+/**
+ * View project models.
+ * Proxy of _project models_
+ * @name models
+ */
+program
+  .command('models')
+  .description(`View project models.`)
+  .action(async () => await projectCommand('models'));
+
+/**
+ * Create model.
+ * Proxy of _project model_
+ * @name model
+ * @param {string?} [--database] Custom database.
+ */
+program
+  .command('model [files...]')
+  .option('-d, --database [value]', `Custom database.`)
+  .description(`Create model.`)
+  .action(async (files, options) => await projectCommand('model', files, options));
 
 /**
  * Output project info.

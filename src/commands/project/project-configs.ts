@@ -3,7 +3,7 @@ const ttyTable = require('tty-table');
 import { getBackendConfigs, getFrontendConfigs } from '../../services/project';
 import { green, logOk } from '../../services/message';
 
-export async function projectConfigListCommand() {
+export async function projectConfigsCommand() {
     // load configs
     const backendConfigs = await getBackendConfigs();
     const frontendConfigs = await getFrontendConfigs();
@@ -35,5 +35,5 @@ export async function projectConfigListCommand() {
     }
 
     // done
-    logOk('PROJECT_CONFIG_LIST__OK', true);
+    logOk('PROJECT_CONFIGS__OK', true);
 }
