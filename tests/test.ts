@@ -96,6 +96,8 @@ describe('Test GOOGLE command', () => {
     configstore.set(`google_accounts_default_id`, id);
   });
 
+  afterEach(() => restoreGoogleRc());
+
   const LISTING_EXPECTED = `${FAKE_GOOGLE_ACCOUNTS[0].profile.id} (default)`;
   const DISCONNECTION_EXPECTED = 'GOOGLE_DISCONNECTED__OK';
 
@@ -157,6 +159,7 @@ describe('Test GOOGLE command', () => {
 
 describe('Test START command', () => {
 
+  beforeEach(() => removeTestProject());
   afterEach(() => removeTestProject());
 
   const EXPECTED = 'PROJECT_START__OK__THEME';
@@ -201,10 +204,10 @@ describe.skip('Test SETUP command', () => {
 
   afterEach(async () => {
     const { driveFolder } = readJsonSync(`${PROJECT_PATH}/sheetbase.json`);
-    // remove test project
-    removeTestProject();
     // remove drive folder
     await driveRemove(await getOAuth2Client(), driveFolder);
+    // remove test project
+    removeTestProject();
   });
 
   const EXPECTED = 'PROJECT_SETUP__OK';
