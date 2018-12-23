@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import { buildValidFileName, download, unzip, unwrap } from '../../services/utils';
 import { setPackageDotJson, setSheetbaseDotJson } from '../../services/project';
+import { setClaspConfigs } from '../../services/clasp';
 import { logError, logOk, logAction } from '../../services/message';
 
 import { Options } from './project';
@@ -74,6 +75,9 @@ export async function projectStartCommand(params: string[], options?: Options) {
                 (currentData, data) => ({ ... currentData, ... data }),
                 deployPath,
             );
+
+            // backend/.clasp.json
+            await setClaspConfigs({ scriptId: '' }, true, deployPath);
         });
 
         // install packages

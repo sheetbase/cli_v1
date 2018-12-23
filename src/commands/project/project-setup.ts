@@ -37,43 +37,46 @@ export async function projectSetupCommand() {
         });
     }
 
-    // backend script
+    // backend
     if (!scriptId) {
         await logAction('Create backend script', async () => {
             scriptId = await gasCreate(googleClient, `${nameSentenceCase} Backend`, driveFolder);
             await setClaspConfigs({ scriptId }, true);
         });
-    }
 
-    // deploy backend
-    if (!backendUrl) {
-        await logAction('Initial deploy the backend', async () => {
-            const { url } = await gasWebappInit(googleClient, scriptId);
-            backendUrl = url;
-            await setConfigs({ backendUrl });
-        });
+        // deploy backend
+        if (!backendUrl) {
+            await logAction('Initial deploy the backend', async () => {
+                const { url } = await gasWebappInit(googleClient, scriptId);
+                backendUrl = url;
+                await setConfigs({ backendUrl });
+            });
+        }
     }
 
     /**
      * app configs
      */
     if (!!setupHooks) {
-        const builtinHooks = new BuiltinHooks({ googleClient, driveFolder });
-        const currentConfigs = { ... backend, ... frontend };
+        const builtinHooks = new BuiltinHooks({
+            googleClient,
+            driveFolder,
+            projectName: name,
+        });
         const newConfigs = {};
-        await logAction('Run hooks', async () => {
-            for (const key of Object.keys(setupHooks)) {
-                if (!currentConfigs[key]) {
-                    const [ hookName, ... args ] = setupHooks[key];
+        for (const key of Object.keys(setupHooks)) {
+            if (!backend[key] && !frontend[key]) { // not exists in both config objects
+                const [ description, hookName, ... args ] = setupHooks[key];
+                await logAction(description, async () => {
                     try {
                         newConfigs[key] = await builtinHooks[hookName](... args);
                     } catch (error) {
                         logWarn('PROJECT_SETUP__WARN__HOOK_ERROR', false, [error]);
                     }
-                }
+                });
             }
-            await setConfigs(newConfigs);
-        });
+        }
+        await setConfigs(newConfigs);
     }
 
     // done

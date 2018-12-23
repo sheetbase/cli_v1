@@ -7,13 +7,14 @@ export interface ClaspConfigs {
     projectId?: string;
 }
 
-export async function getClaspConfigs(): Promise<ClaspConfigs> {
-    return await readJson(CLASP_CONFIG_PATH);
+export async function getClaspConfigs(customRoot?: string): Promise<ClaspConfigs> {
+    return await readJson(CLASP_CONFIG_PATH, customRoot);
 }
 
 export async function setClaspConfigs(
     data: ClaspConfigs,
     modifier?: boolean | { (currentData: {}, data: {}): {} },
+    customRoot?: string,
 ) {
-    await writeJson(CLASP_CONFIG_PATH, data, modifier);
+    await writeJson(CLASP_CONFIG_PATH, data, modifier, customRoot);
 }

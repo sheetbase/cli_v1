@@ -24,7 +24,7 @@ export const INIT_CONTENT = [
         type: 'SERVER_JS',
         source: `
         function doGet() {
-            return HtmlService.createHtmlOutput('Init webapp succeed.');
+            return HtmlService.createHtmlOutput('Sheetbase backend, init succeed ...');
         }
         `,
     },

@@ -32,8 +32,9 @@ const GOOGLE_RC = '.googlerc.json';
 const GOOGLE_RC_BAK = '.googlerc.json.bak';
 
 const FAKE_GOOGLE_ACCOUNTS = [];
+// build fake google accounts
 [1, 2, 3].forEach(i => {
-    FAKE_GOOGLE_ACCOUNTS.push({
+  FAKE_GOOGLE_ACCOUNTS.push({
       refreshToken: Math.random().toString(36).substr(2),
       profile: {
         id: Math.random().toString(12).substr(2),
@@ -62,7 +63,7 @@ function expectResult(args: string[], expected: string, cwd = '.') {
     SHEETBASE, args, { cwd, encoding : 'utf8' },
   );
   expect(result.stdout).to.contain(expected);
-  // expect(result.status).to.equal(0);
+  expect(result.status).to.equal(0);
 }
 
 function expectError(args: string[], expected: string, cwd = '.') {
@@ -154,64 +155,72 @@ describe('Test GOOGLE command', () => {
 
 });
 
-// describe('Test START command', () => {
-//   beforeEach(() => {
-//     removeSync(PROJECT_PATH);
-//   });
-//   after(() => {
-//     removeSync(PROJECT_PATH);
-//   });
+describe('Test START command', () => {
 
-//   const EXPECTED = '\n New project created under "test_project".';
+  afterEach(() => removeTestProject());
 
-//   it('should fail (project exists)', () => {
-//     ensureDirSync(PROJECT_NAME);
-//     expectError(['start', PROJECT_NAME], '\n [ERROR] Project exists, try different name.');
-//   });
-//   it('should fail (invalid theme string)',() => {
-//     expectError(['start', PROJECT_NAME, 'invalid-theme'], '\n [ERROR] Invalid theme argument.');
-//   });
-//   it('should fail (invalid theme, cannot download or extract file)', () => {
-//     expectError(['start', PROJECT_NAME, 'invalid-theme@1.0.0'], '\n [ERROR] Create project failed.');
-//   });
+  const EXPECTED = 'PROJECT_START__OK__THEME';
 
-//   it('should start a new project', () => {
-//     expectResult(['start', PROJECT_NAME], EXPECTED);
-//   });
-//   it('should start a new project with specific theme', () => {
-//     expectResult(['start', PROJECT_NAME, 'basic-angular'], EXPECTED);
-//     const { name } = readJsonSync(`${PROJECT_PATH}/package.json`);
-//     expect(name).to.equal('basic-angular');
-//   });
-// });
+  it('should fail (project exists)', () => {
+    ensureDirSync(PROJECT_NAME);
+    expectError(['start', PROJECT_NAME], 'PROJECT_START__ERROR__EXISTS');
+  });
 
-// describe('Test SETUP command', () => {
-//   beforeEach(() => {
-//     // create a new project
-//     spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
-//     // reset drive folder
-//     // for not accidentally remove in "after all" hook
-//     const path = `${PROJECT_PATH}/sheetbase.json`;
-//     const sheetbaseJson = readJsonSync(path);
-//     sheetbaseJson.driveFolder = '';
-//     writeJsonSync(path, sheetbaseJson);
-//     // copy .googlerc.json (connect the tester account)
-//     copySync(GOOGLE_RC, PROJECT_PATH + '/' + GOOGLE_RC);
-//   });
+  it('should fail (invalid theme, cannot download or extract file)', () => {
+    expectError(['start', PROJECT_NAME, 'invalid-theme@1.0.0'],
+      'Error: Request failed with status code 404',
+    );
+  });
 
-//   afterEach(async () => {
-//     const { driveFolder } = readJsonSync(`${PROJECT_PATH}/sheetbase.json`);
-//     // remove test folder
-//     removeSync(PROJECT_PATH);
-//     // remove drive folder
-//     const googleClient = await getOAuth2Client();
-//     await driveRemove(googleClient, driveFolder);
-//   });
+  it('should start a new project', () => {
+    expectResult(['start', PROJECT_NAME], EXPECTED);
+  });
 
-//   const EXPECTED = 'https://script.google.com/';
+  it('should start a new project with specific theme', () => {
+    expectResult(['start', PROJECT_NAME, 'basic-angular'], 'github.com/sheetbase-themes/basic-angular');
+  });
 
-//   it('should setup the project', () => expectResult(['setup'], EXPECTED, PROJECT_PATH));
-// });
+  it('should start a new project with correct milestones', () => {
+    const result = spawnSync(
+      SHEETBASE, ['start', PROJECT_NAME], { cwd: '.', encoding : 'utf8' },
+    );
+    expect(result.stdout).to.contain('Get the resource:');
+    expect(result.stdout).to.contain('Initial config the project');
+  });
+
+});
+
+describe.skip('Test SETUP command', () => {
+
+  beforeEach(() => {
+    // create a new project
+    createTestProject();
+    // copy .googlerc.json (connect the tester account)
+    copySync(GOOGLE_RC, PROJECT_PATH + '/' + GOOGLE_RC);
+  });
+
+  afterEach(async () => {
+    const { driveFolder } = readJsonSync(`${PROJECT_PATH}/sheetbase.json`);
+    // remove test project
+    removeTestProject();
+    // remove drive folder
+    await driveRemove(await getOAuth2Client(), driveFolder);
+  });
+
+  const EXPECTED = 'PROJECT_SETUP__OK';
+
+  it('should setup the project', () => expectResult(['setup'], EXPECTED, PROJECT_PATH));
+
+  it('should setup the project with correct milestones', () => {
+    const result = spawnSync(
+      SHEETBASE, ['setup'], { cwd: PROJECT_PATH, encoding : 'utf8' },
+    );
+    expect(result.stdout).to.contain('Create drive folder');
+    expect(result.stdout).to.contain('Create backend script');
+    expect(result.stdout).to.contain('Initial deploy the backend');
+  });
+
+});
 
 describe('Test CONFIG command', () => {
 
