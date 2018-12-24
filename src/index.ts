@@ -76,6 +76,7 @@ program
  * @param {string?} [--setup] (start) Run setup command.
  * @param {string?} [--open] (url) Open the url in browser.
  * @param {string?} [--database] (model) Custom database.
+ * @param {string?} [--clean] (model) Remove the default 'Sheet1'.
  */
 program
   .command('project [subCommand] [params...]')
@@ -83,6 +84,7 @@ program
   .option('-s, --setup', `(${chalk.green('start')}) Run setup command.`)
   .option('-o, --open', `(${chalk.green('url')}) Open the url in browser.`)
   .option('-d, --database [value]', `(${chalk.green('model')}) Custom database.`)
+  .option('-c, --clean', `(${chalk.green('model')}) Remove the default 'Sheet1'.`)
   .description('Project general tasks.')
   .action(projectCommand);
 
@@ -176,12 +178,14 @@ program
  * Proxy of _project model_
  * @name model
  * @param {string?} [--database] Custom database.
+ * @param {string?} [--clean] Remove the default 'Sheet1'.
  */
 program
-  .command('model [files...]')
+  .command('model [schemaFiles...]')
   .option('-d, --database [value]', `Custom database.`)
+  .option('-c, --clean', `Remove the default 'Sheet1'.`)
   .description(`Create model.`)
-  .action(async (files, options) => await projectCommand('model', files, options));
+  .action(async (schemaFiles, options) => await projectCommand('model', schemaFiles, options));
 
 /**
  * Output project info.

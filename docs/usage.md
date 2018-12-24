@@ -27,6 +27,7 @@ Sub-commands: start, setup, config, urls, info, hooks.
 - `--setup`: (start) Run setup command.
 - `--open`: (url) Open the url in browser.
 - `--database`: (model) Custom database.
+- `--clean`: (model) Remove the default 'Sheet1'.
 
 ### Start
 
@@ -88,6 +89,7 @@ Proxy of _project model_
 #### Options
 
 - `--database`: Custom database.
+- `--clean`: Remove the default 'Sheet1'.
 
 ### Info
 

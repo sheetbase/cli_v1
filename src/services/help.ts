@@ -31,7 +31,7 @@ export function help(): string {
     ${green('urls')} .......................... View project URLs.
     ${green('url [name]')} .................... View or open a project URL.
     ${green('models')} ........................ View project models.
-    ${green('model [id]')} .................... Create model.`;
+    ${green('model [schemaFiles]')} ........... Create model.`;
 }
 
 export function helpDetail(): string {
@@ -78,5 +78,5 @@ export function projectHelp(): string {
     ${green('urls')} .......................... View project URLs.
     ${green('url [name]')} .................... View or open a project URL.
     ${green('models')} ........................ View project models.
-    ${green('model [id]')} .................... Create model.`;
+    ${green('model [schemaFiles]')}............ Create model.`;
 }

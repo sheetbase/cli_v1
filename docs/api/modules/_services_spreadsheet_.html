@@ -80,6 +80,8 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_services_spreadsheet_.html#createsheetbyschema" class="tsd-kind-icon">create<wbr>Sheet<wbr>BySchema</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_services_spreadsheet_.html#deletedefaultsheet" class="tsd-kind-icon">delete<wbr>Default<wbr>Sheet</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_services_spreadsheet_.html#deletesheet" class="tsd-kind-icon">delete<wbr>Sheet</a></li>
 							</ul>
 						</section>
 					</div>
@@ -97,7 +99,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/51ce509/src/services/spreadsheet.ts#L10">services/spreadsheet.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/b17fdb4/src/services/spreadsheet.ts#L11">services/spreadsheet.ts:11</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -113,6 +115,61 @@
 								</li>
 								<li>
 									<h5>schema: <a href="../interfaces/_services_spreadsheet_.itemschema.html" class="tsd-signature-type">ItemSchema</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="deletedefaultsheet" class="tsd-anchor"></a>
+					<h3>delete<wbr>Default<wbr>Sheet</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">delete<wbr>Default<wbr>Sheet<span class="tsd-signature-symbol">(</span>client<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">OAuth2Client</span>, spreadsheetId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/b17fdb4/src/services/spreadsheet.ts#L138">services/spreadsheet.ts:138</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>client: <span class="tsd-signature-type">OAuth2Client</span></h5>
+								</li>
+								<li>
+									<h5>spreadsheetId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="deletesheet" class="tsd-anchor"></a>
+					<h3>delete<wbr>Sheet</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">delete<wbr>Sheet<span class="tsd-signature-symbol">(</span>client<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">OAuth2Client</span>, spreadsheetId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, sheetId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/b17fdb4/src/services/spreadsheet.ts#L145">services/spreadsheet.ts:145</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>client: <span class="tsd-signature-type">OAuth2Client</span></h5>
+								</li>
+								<li>
+									<h5>spreadsheetId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>sheetId: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -139,6 +196,12 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_services_spreadsheet_.html#createsheetbyschema" class="tsd-kind-icon">create<wbr>Sheet<wbr>BySchema</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_services_spreadsheet_.html#deletedefaultsheet" class="tsd-kind-icon">delete<wbr>Default<wbr>Sheet</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_services_spreadsheet_.html#deletesheet" class="tsd-kind-icon">delete<wbr>Sheet</a>
 					</li>
 				</ul>
 			</nav>

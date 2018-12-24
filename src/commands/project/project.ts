@@ -17,6 +17,7 @@ export interface Options {
     setup?: boolean;
     open?: boolean;
     database?: string;
+    clean?: boolean;
 }
 
 export async function projectCommand(command: string, params: string[] = [], options: Options = {}) {

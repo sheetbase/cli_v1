@@ -1,12 +1,12 @@
 import { getOAuth2Client } from '../../services/google';
-import { createSheetBySchema } from '../../services/spreadsheet';
+import { createSheetBySchema, deleteDefaultSheet } from '../../services/spreadsheet';
 import { getBackendConfigs } from '../../services/project';
 import { logError, logOk, logAction } from '../../services/message';
 
 import { getModels, getAvailableModels } from './project-models';
 import { Options } from './project';
 
-export async function projectModelCommand(filePaths: string[], options: Options) {
+export async function projectModelCommand(schemaFiles: string[], options: Options) {
     // load default google account
     const googleClient = await getOAuth2Client();
     if (!googleClient) {
@@ -21,18 +21,25 @@ export async function projectModelCommand(filePaths: string[], options: Options)
 
     // load schemas
     let models = {};
-    if (filePaths.length > 0) {
-        models = await getModels(filePaths);
+    if (schemaFiles.length > 0) {
+        models = await getModels(schemaFiles);
     } else {
         models = await getAvailableModels();
     }
 
     // send request
     for (const key of Object.keys(models)) {
-        await logAction('Create model: ' + key, async () => {
+        await logAction('Create model "' + key + '"', async () => {
             await createSheetBySchema(
                 googleClient, databaseId, key, models[key],
             );
+        });
+    }
+
+    // delete the default 'Sheet1'
+    if (options.clean) {
+        await logAction('Remove "Sheet1"', async () => {
+            await deleteDefaultSheet(googleClient, databaseId);
         });
     }
 
