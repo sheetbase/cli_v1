@@ -79,9 +79,6 @@ export async function projectSetupCommand() {
         await setConfigs(newConfigs);
     }
 
-    // create table models
-    execSync(`${cmd('sheetbase')} model`);
-
     // done
     logOk('PROJECT_SETUP__OK', true);
 }

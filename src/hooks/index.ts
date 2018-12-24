@@ -18,16 +18,8 @@ export class BuiltinHooks {
         this.system = system;
     }
 
-    buildName(name?: string, builder?: {
-        (projectName: string): string;
-    }) {
-        const { projectName } = this.system;
-        if (!!builder && builder instanceof Function) {
-            name = builder(projectName);
-        } else {
-            name = name || sentenceCase(projectName) + ' ' + (new Date()).getTime();
-        }
-        return name;
+    projectPrettyName() {
+        return sentenceCase(this.system.projectName);
     }
 
     async randomStr(length = 32, punctuation = false) {
@@ -39,15 +31,14 @@ export class BuiltinHooks {
     }
 
     async createDatabase(name?: string) {
-        name = this.buildName(name, (projectName) => `${projectName} Database`);
-        return await this.driveCreateSheets(name);
+        return await this.driveCreateSheets(name || `${this.projectPrettyName()} Database`);
     }
 
     async driveCreateFolder(name?: string) {
         const { googleClient, driveFolder } = this.system;
         return await driveCreateFolder(
             googleClient,
-            this.buildName(name, (projectName) => `${projectName} Folder`),
+            name || `${this.projectPrettyName()} Folder`,
             [driveFolder],
         );
     }
@@ -57,7 +48,7 @@ export class BuiltinHooks {
         const { googleClient, driveFolder } = this.system;
         return await driveCreateFile(
             googleClient,
-            this.buildName(name, (projectName) => `${projectName} File`),
+            name || `${this.projectPrettyName()} File`,
             mimeType,
             [driveFolder],
         );
@@ -69,15 +60,15 @@ export class BuiltinHooks {
         return await copyFile(
             googleClient,
             fileId,
-            this.buildName(name, (projectName) => `${projectName} Copied (${fileId})`),
+            name || `${this.projectPrettyName()} Copied (${fileId})`,
             [driveFolder],
         );
     }
 
     async driveCreateSheets(name?: string) {
         return await this.driveCreateFile(
-            this.buildName(name, (projectName) => `${projectName} Sheets`),
             'application/vnd.google-apps.spreadsheet',
+            name || `${this.projectPrettyName()} Sheets`,
         );
     }
 
