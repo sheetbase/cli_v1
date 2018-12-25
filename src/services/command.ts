@@ -22,8 +22,7 @@ export function getRawArgs(
 export async function exec(command: string, cwd = '.', stdio = 'inherit') {
     const [ cmd, ... cmds ] = command.trim().split(' ');
     const finalCommand = getCommand(cmd) + ' ' + cmds.join(' ');
-    // return await execAsync(finalCommand, { cwd, stdio } as any);
-    console.log(cwd, '"' + finalCommand + '"');
+    return await execAsync(finalCommand, { cwd, stdio } as any);
 }
 
 export async function run(
