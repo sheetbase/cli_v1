@@ -10,7 +10,7 @@ export async function projectUrlCommand(name = 'drive', options: Options) {
     const link = urls[name];
 
     if (options.open) {
-        logInfo('APP_INFO_LINK_OPENED', false, [ link ]);
+        logInfo('APP__INFO__LINK_OPENED', false, [ link ]);
         return opn(link);
     } else {
         logOk('PROJECT_URL__OK', true, [link]);

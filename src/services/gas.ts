@@ -4,7 +4,7 @@ import * as readDir from 'fs-readdir-recursive';
 
 import { FileCopyRequestBody } from './drive';
 
-export const DEPLOY_PATH = 'backend/dist';
+export const DEPLOY_PATH = 'backend/deploy';
 export const INIT_CONTENT = [
     {
         name: 'appsscript',
@@ -244,14 +244,19 @@ export async function gasWebappUpdate(
     scriptId: string,
     deploymentId: string,
     versionNumber?: number,
-    description = 'Update webapp',
+    description?: string,
 ) {
     // deploy new version
     if (!versionNumber) {
         await gasPush(client, scriptId);
         // create new version
-        versionNumber = (await gasVersion(client, scriptId, `Update V${versionNumber}`) as any).versionNumber;
+        versionNumber = (
+            await gasVersion(client, scriptId, `Update v${versionNumber}`) as any
+        ).versionNumber;
     }
     // redeploy or rollback
-    return await gasRedeploy(client, scriptId, deploymentId, versionNumber, description);
+    return await gasRedeploy(
+        client, scriptId, deploymentId, versionNumber,
+        description || 'Update webapp v' + versionNumber,
+    );
 }

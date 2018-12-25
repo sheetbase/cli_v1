@@ -1,8 +1,5 @@
 import * as os from 'os';
-import { promisify } from 'util';
-import { exec as cpExec } from 'child_process';
-
-export const execAsync = promisify(cpExec);
+import { execSync } from 'child_process';
 
 export function getCommand(command: string) {
     return (os.type() === 'Windows_NT') ? command + '.cmd' : command;
@@ -19,10 +16,10 @@ export function getRawArgs(
     return args;
 }
 
-export async function exec(command: string, cwd = '.', stdio = 'inherit') {
+export async function exec(command: string, cwd = '.', stdio: any = 'inherit') {
     const [ cmd, ... cmds ] = command.trim().split(' ');
     const finalCommand = getCommand(cmd) + ' ' + cmds.join(' ');
-    return await execAsync(finalCommand, { cwd, stdio } as any);
+    return execSync(finalCommand, { cwd, stdio });
 }
 
 export async function run(
@@ -47,5 +44,5 @@ export async function run(
         finalCommand = handlerCommand + ' ' + getRawArgs(commanderRawArgs, command);
     }
     // run command
-    exec(finalCommand, cwd);
+    await exec(finalCommand, cwd);
 }
