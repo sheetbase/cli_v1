@@ -3,7 +3,7 @@ import { pathExists, readJson } from 'fs-extra';
 
 import { logOk, green } from '../../services/message';
 import { ItemSchema } from '../../services/spreadsheet';
-import { readdirAsync } from '../../services/utils';
+import { readdirAsync } from '../../services/file';
 
 export async function projectModelsCommand() {
     const models = await getAvailableModels();

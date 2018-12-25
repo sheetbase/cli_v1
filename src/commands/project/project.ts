@@ -13,7 +13,7 @@ import { projectModelsCommand } from './project-models';
 import { projectModelCommand } from './project-model';
 
 export interface Options {
-    npm?: boolean;
+    install?: boolean;
     setup?: boolean;
     open?: boolean;
     database?: string;

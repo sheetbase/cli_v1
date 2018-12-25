@@ -1,8 +1,6 @@
-import { execSync } from 'child_process';
 import { basename } from 'path';
 import { sentenceCase } from 'change-case';
 
-import { cmd } from '../../services/utils';
 import { driveCreateFolder } from '../../services/drive';
 import { gasCreate, gasWebappInit } from '../../services/gas';
 import { getOAuth2Client } from '../../services/google';

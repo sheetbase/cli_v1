@@ -1,11 +1,12 @@
 import { resolve } from 'path';
-import { execSync } from 'child_process';
 import { pathExists, remove } from 'fs-extra';
 import axios from 'axios';
 
-import { buildValidFileName, download, unzip, unwrap, cmd } from '../../services/utils';
+import { buildValidFileName } from '../../services/utils';
+import { download, unzip, unwrap } from '../../services/file';
 import { setPackageDotJson, setSheetbaseDotJson } from '../../services/project';
 import { setClaspConfigs } from '../../services/clasp';
+import { exec } from '../../services/command';
 import { logError, logOk, logAction } from '../../services/message';
 
 import { Options } from './project';
@@ -31,7 +32,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
     await logAction('Get the resource: ' + url, async () => {
         if (url.endsWith('.git')) {
             // clone the repo when has .git url
-            execSync(`git clone ${url} ${name}`, { stdio: 'ignore' });
+            await exec(`git clone ${url} ${name}`, '.', 'ignore');
             await remove(deployPath + '/' + '.git'); // delete .git folder
         } else {
             const downloadedPath = await download(url, deployPath, 'resource.zip');
@@ -55,7 +56,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
                 },
                 (currentData, data) => {
                     // keep only these fields
-                    const { author, homepage, scripts } = currentData;
+                    const { author, homepage, license, scripts } = currentData;
                     return { ... data, author, homepage, scripts };
                 },
                 deployPath,
@@ -78,27 +79,29 @@ export async function projectStartCommand(params: string[], options?: Options) {
         });
 
         // install packages
-        if (options.npm) {
-            const NPM = cmd('npm');
+        if (options.install) {
             await logAction('Install backend dependencies', async () => {
-                execSync(`${NPM} install`, { cwd: deployPath + '/backend' });
+                await exec('npm install', deployPath + '/backend');
             });
             await logAction('Install frontend dependencies', async () => {
-                execSync(`${NPM} install`, { cwd: deployPath + '/frontend' });
+                await exec('npm install', deployPath + '/frontend');
             });
         }
 
         // run setup
         if (options.setup) {
-            execSync(`${cmd('sheetbase')} setup`, { cwd: deployPath });
+            await exec('sheetbase setup', deployPath);
         } else {
             logOk('PROJECT_START__OK__THEME', true, [options]);
         }
 
     } else {
-        await logAction('Install dependencies', async () => {
-            execSync(`${cmd('npm')} install`, { cwd: deployPath });
-        });
+        // install packages
+        if (options.install) {
+            await logAction('Install dependencies', async () => {
+                await exec('npm install', deployPath);
+            });
+        }
         logOk('PROJECT_START__OK__NOT_THEME', true);
     }
 
