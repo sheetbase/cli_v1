@@ -31,6 +31,7 @@ import { docsCommand } from './commands/docs/docs';
 import { backendCommand } from './commands/backend/backend';
 import { frontendCommand } from './commands/frontend/frontend';
 import { helpCommand } from './commands/help/help';
+import { updateCommand, checkUpdate } from './commands/update/update';
 import { unknownCommand } from './commands/unknown/unknown';
 
 export const version = require('../package.json').version;
@@ -239,19 +240,36 @@ program
   .command('help')
   .description('Display help.')
   .option('-d, --detail', 'Detail help.')
-  .action((options) => helpCommand(options));
+  .action(helpCommand);
 
 program
   .on('--help', () => { clear(); return helpCommand(); });
+
+/**
+ * Check and install update.
+ * @name update
+ * @param {boolean?} [-y,--yes] Install update when available.
+ */
+program
+  .command('update')
+  .description('Check and install update.')
+  .option('-y, --yes', `Install update when available.`)
+  .action(updateCommand);
 
 /**
  * Any other command will run: npm run <cmd>.
  * @name *
  */
 program
-  .command('*', `Any other command will run: npm run <cmd>.`)
+  .command('*', 'Any other command will run: npm run [cmd].')
   .action(unknownCommand);
 
+// check update
+if (process.argv.slice(2)[0] !== 'update') {
+  checkUpdate();
+}
+
+// show help
 if (!process.argv.slice(2).length) {
   helpCommand();
 }

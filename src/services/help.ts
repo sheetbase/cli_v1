@@ -19,7 +19,7 @@ export function help(): string {
 
     ${green('help')} ....................... Display help.
     ${green('docs')} ....................... Open the documentation.
-    ${green('google [subcommand]')} ........ ${beta()} Manage Google accounts.
+    ${green('google [subcommand]')} ........ Manage Google accounts.
     ${green('start [name] [resource]')} .... Start a new project.
 
  Project commands:
