@@ -8,7 +8,7 @@ import {
     GoogleAccounts,
 } from '../../services/google';
 import { formatDate } from '../../services/utils';
-import { logOk, logInfo } from '../../services/message';
+import { logOk, logError } from '../../services/message';
 
 import { Options } from './google';
 
@@ -19,7 +19,7 @@ export async function googleListCommand(options: Options) {
     const defaultGoogleAccountId: string = getDefaultGoogleAccountId();
     const rcAccount = await getLocalGoogleAccount();
     if (!googleAccounts && !rcAccount) {
-        logInfo('GOOGLE_LIST__INFO__NO_ACCOUNT', true);
+        return logError('GOOGLE__ERROR__NO_ACCOUNT');
     }
 
     // print out layout

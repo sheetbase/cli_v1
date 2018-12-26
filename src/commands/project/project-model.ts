@@ -10,7 +10,7 @@ export async function projectModelCommand(schemaFiles: string[], options: Option
     // load default google account
     const googleClient = await getOAuth2Client();
     if (!googleClient) {
-        return logError('PROJECT_MODEL__ERROR__NO_GOOGLE_ACCOUNT');
+        return logError('GOOGLE__ERROR__NO_ACCOUNT');
     }
 
     // get databaseId

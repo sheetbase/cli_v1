@@ -24,7 +24,7 @@ Sub-commands: start, setup, config, urls, info, hooks.
 - `subCommand`: Supported sub-commands.
 - `params`: Command params, comma-separated.
 - `-i,--install`: (start) Install npm packages.
-- `-s,--setup`: (start) Run setup command.
+- `-m,--no-setup`: (start) Do not run setup command.
 - `-o,--open`: (url) Open the url in browser.
 - `-d,--database`: (model) Custom database.
 - `-c,--clean`: (model) Remove the default 'Sheet1'.
@@ -39,7 +39,7 @@ Proxy of **project start**
 - `projectName`: Name of the project, auto default.
 - `resource`: Resource to create the project with, default to theme **blank_angular**.
 - `-i,--install`: Install npm packages.
-- `-s,--setup`: Run setup command.
+- `-m,--no-setup`: Do not run setup command.
 
 ### Setup
 
@@ -125,6 +125,14 @@ Display help.
 #### Options
 
 - `-d,--detail`: Detail help.
+
+### Update
+
+Check and install update.
+
+#### Options
+
+- `-y,--yes`: Install update when available.
 
 ### *
 

@@ -37,7 +37,7 @@ export async function projectModelsCommand() {
     }
 
     // done
-    logOk('PROJECT_MODELS__OK', true);
+    logOk('PROJECT_MODELS__OK', true, [models]);
 }
 
 export async function getAvailableModels(): Promise<{ [name: string]: ItemSchema[] }> {

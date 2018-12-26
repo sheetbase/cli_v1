@@ -74,7 +74,7 @@ program
  * @param {string?} [subCommand] Supported sub-commands.
  * @param {string[]?} [params] Command params, comma-separated.
  * @param {boolean?} [-i,--install] (start) Install npm packages.
- * @param {boolean?} [-s,--setup] (start) Run setup command.
+ * @param {boolean?} [-m,--no-setup] (start) Do not run setup command.
  * @param {boolean?} [-o,--open] (url) Open the url in browser.
  * @param {string?} [-d,--database] (model) Custom database.
  * @param {boolean?} [-c,--clean] (model) Remove the default 'Sheet1'.
@@ -83,7 +83,7 @@ program
   .command('project [subCommand] [params...]')
   .description('Project general tasks.')
   .option('-i, --install', `(${chalk.green('start')}) Install npm packages.`)
-  .option('-s, --setup', `(${chalk.green('start')}) Run setup command.`)
+  .option('-m, --no-setup', `(${chalk.green('start')}) Do not run setup command.`)
   .option('-o, --open', `(${chalk.green('url')}) Open the url in browser.`)
   .option('-d, --database [value]', `(${chalk.green('model')}) Custom database.`)
   .option('-c, --clean', `(${chalk.green('model')}) Remove the default 'Sheet1'.`)
@@ -96,13 +96,13 @@ program
  * @param {string?} [projectName] Name of the project, auto default.
  * @param {string?} [resource] Resource to create the project with, default to theme **blank_angular**.
  * @param {boolean?} [-i,--install] Install npm packages.
- * @param {boolean?} [-s,--setup] Run setup command.
+ * @param {boolean?} [-m,--no-setup] Do not run setup command.
  */
 program
   .command('start [projectName] [resource]')
   .description('Start a new project.')
   .option('-i, --install', 'Install npm packages.')
-  .option('-s, --setup', 'Run setup command.')
+  .option('-m, --no-setup', 'Do not run setup command.')
   .action(async (projectName, theme, options) => projectCommand(
     'start', [projectName, theme], options,
   ));

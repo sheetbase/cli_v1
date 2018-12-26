@@ -22,13 +22,11 @@ export async function frontendCommand(command: string, commander: any) {
 
         default:
             let cmd = command;
-
             // run script if available
             const { scripts = {} } = await readJson('package.json', cwd);
             if (!!scripts[command]) {
                 cmd = 'npm run ' + command;
             }
-
             await run(cmd, command, commanderRawArgs, cwd);
         break;
     }

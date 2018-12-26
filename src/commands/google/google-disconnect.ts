@@ -6,14 +6,14 @@ import {
 
     GoogleAccounts,
 } from '../../services/google';
-import { green, logError, logOk } from '../../services/message';
+import { green, logError, logInfo, logOk } from '../../services/message';
 
 export async function googleDisconnectCommand(params: string[]) {
     const [ id ] = params;
 
     // must have a valid id
     if (!id) {
-        return logError('GOOGLE_DISCONNECTED__ERROR__NO_ID');
+        return logError('GOOGLE_DISCONNECTED__ERROR__NO_VALUE');
     }
 
     // remove accounts
@@ -30,11 +30,13 @@ export async function googleDisconnectCommand(params: string[]) {
 
     // log result
     if (disconnectedAccounts) {
-        console.log(' Accounts disconnected:');
+        console.log('\n Accounts disconnected:');
         for (const key of Object.keys(disconnectedAccounts || {})) {
             const { name, email } = disconnectedAccounts[key].profile;
             console.log(` + ${green(email)} ${name ? '(' + name + ')' : ''}`);
         }
+        logOk('GOOGLE_DISCONNECTED__OK', true);
+    } else {
+        logInfo('GOOGLE_DISCONNECTED__INFO__NO_ACCOUNTS', true);
     }
-    logOk('GOOGLE_DISCONNECTED__OK', true);
 }

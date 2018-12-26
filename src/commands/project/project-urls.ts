@@ -10,8 +10,8 @@ export async function projectUrlsCommand() {
 
     // print out result
     const table = ttyTable([
-        {value: 'Name', width: 100, align: 'left'},
-        {value: 'Value', width: 500, align: 'left'},
+        { value: 'Name', width: 100, align: 'left' },
+        { value: 'Value', width: 500, align: 'left' },
     ], []);
     for(const key of Object.keys(urls)) {
         table.push([ key, green(urls[key] || 'n/a') ]);
@@ -50,8 +50,10 @@ export async function buildUrls() {
         const map = allUrlMaps[key];
         if (!!map) {
             const value = properties[key];
-            const [ name, prefix, suffix ] = map;
-            urls[name || key] = !!prefix ? (prefix + value + (suffix || '')) : value;
+            if (!!value) {
+                const [ name, prefix, suffix ] = map;
+                urls[name || key] = !!prefix ? (prefix + value + (suffix || '')) : value;
+            }
         }
     }
 

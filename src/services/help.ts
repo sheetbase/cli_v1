@@ -40,7 +40,6 @@ export function helpDetail(): string {
  Command groups:
 
     ${green('google [subcommand]')} ..... ${(
-        beta() + ' ' +
         'Manage Google accounts ' +
         `(subcommands: ${green('list')}, ${green('connect')}, ` +
         `${green('disconnect')}, ${green('default')})`

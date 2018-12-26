@@ -13,6 +13,6 @@ export async function projectUrlCommand(name = 'drive', options: Options) {
         logInfo('APP__INFO__LINK_OPENED', false, [ link ]);
         return opn(link);
     } else {
-        logOk('PROJECT_URL__OK', true, [link]);
+        logOk('PROJECT_URL__OK', true, [name, link]);
     }
 }

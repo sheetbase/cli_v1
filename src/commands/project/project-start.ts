@@ -19,7 +19,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
 
     // check if a project exists
     if (await pathExists(name)) {
-        return logError('PROJECT_START__ERROR__EXISTS');
+        return logError('PROJECT__ERROR__EXISTS');
     }
 
     // prepare the resource url
@@ -78,6 +78,11 @@ export async function projectStartCommand(params: string[], options?: Options) {
             await setClaspConfigs({ scriptId: '', projectId: '' }, true, deployPath);
         });
 
+        // run setup
+        if (options.setup) {
+            await exec('sheetbase setup', deployPath);
+        }
+
         // install packages
         if (options.install) {
             await logAction('Install backend dependencies', async () => {
@@ -88,12 +93,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
             });
         }
 
-        // run setup
-        if (options.setup) {
-            await exec('sheetbase setup', deployPath);
-        } else {
-            logOk('PROJECT_START__OK__THEME', true, [options]);
-        }
+        logOk('PROJECT_START__OK__THEME', true, [name, options]);
 
     } else {
         // install packages
@@ -102,7 +102,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
                 await exec('npm install', deployPath);
             });
         }
-        logOk('PROJECT_START__OK__NOT_THEME', true);
+        logOk('PROJECT_START__OK__NOT_THEME', true, [name, options]);
     }
 
 }

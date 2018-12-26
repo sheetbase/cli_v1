@@ -8,13 +8,13 @@ export async function backendPushCommand() {
     // load default google account
     const googleClient = await getOAuth2Client();
     if (!googleClient) {
-        return logError('BACKEND_PUSH__ERROR__NO_GOOGLE_ACCOUNT');
+        return logError('GOOGLE__ERROR__NO_ACCOUNT');
     }
 
     // load script id
     const { scriptId } = await getClaspConfigs();
     if (!scriptId) {
-        return logError('BACKEND_PUSH__ERROR__NO_BACKEND');
+        return logError('BACKEND__ERROR__INVALID');
     }
 
     // push files

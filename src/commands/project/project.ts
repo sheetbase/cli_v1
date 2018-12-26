@@ -68,7 +68,7 @@ export async function projectCommand(command: string, params: string[] = [], opt
         break;
 
         default:
-            logInfo('APP__INFO__INVALID_SUBCOMMAND');
+            logInfo('APP__INFO__INVALID_SUBCOMMAND', false, ['project']);
             console.log(projectHelp());
         break;
     }

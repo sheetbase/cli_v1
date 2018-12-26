@@ -9,7 +9,7 @@ export async function backendDeployCommand() {
     // load default google account
     const googleClient = await getOAuth2Client();
     if (!googleClient) {
-        return logError('BACKEND_DEPLOY__ERROR__NO_GOOGLE_ACCOUNT');
+        return logError('GOOGLE__ERROR__NO_ACCOUNT');
     }
 
     // load script id and deployment id
@@ -19,12 +19,12 @@ export async function backendDeployCommand() {
         .replace('https://script.google.com/macros/s/', '')
         .replace('/exec', '');
     if (!scriptId || !deploymentId) {
-        return logError('BACKEND_DEPLOY__ERROR__NO_BACKEND');
+        return logError('BACKEND__ERROR__INVALID');
     }
 
     // update the web app
     const result = await gasWebappUpdate(googleClient, scriptId, deploymentId);
 
     // done
-    logOk('BACKEND_DEPLOY__OK', true, [result]);
+    logOk('BACKEND_DEPLOY__OK', true);
 }

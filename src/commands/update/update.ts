@@ -36,22 +36,22 @@ export function logUpdateMessage() {
     const table = ttyTable(
         [{ value: 'Update available!', headerAlign: 'left', align: 'left' }],
         [
-            ['Sheetbase CLI got a new version, please update by:'],
+            ['Sheetbase CLI got a new version, please update:'],
             ['$ ' + magenta('npm install -g @sheetbase/cli@latest')],
         ],
         { compact: true },
     );
-    console.log('\n');
     console.log(table.render());
-    console.log('\n');
 }
 
 export async function checkUpdate() {
     const now = (new Date()).getTime();
     const latestCheck = configstore.get('latest_update_check');
-    const beenHours = latestCheck ? Math.round((now - latestCheck) / 60000) : 24;
+    const beenHours = latestCheck ? Math.round((now - latestCheck) / 3600000) : 24;
     if (beenHours >= 24 && await hasUpdate()) {
+        console.log('\n');
         logUpdateMessage();
+        console.log('\n');
         configstore.set('latest_update_check', now);
     }
 }

@@ -17,7 +17,7 @@ export async function projectSetupCommand() {
     // load default google account
     const googleClient = await getOAuth2Client();
     if (!googleClient) {
-        return logError('PROJECT_SETUP__ERROR__NO_GOOGLE_ACCOUNT');
+        return logError('PROJECT_SETUP__ERROR__NO_GOOGLE_ACCOUNT', true, [name]);
     }
 
     // load current configs

@@ -9,28 +9,28 @@ export async function projectConfigsCommand() {
     const frontendConfigs = await getFrontendConfigs();
 
     // print out backend configs
-    if (backendConfigs) {
+    if (Object.keys(backendConfigs).length > 0) {
         const table = ttyTable([
-            {value: 'Key', width: 100, align: 'left'},
-            {value: 'Value', width: 500, align: 'left'},
+            { value: 'Key', width: 100, align: 'left' },
+            { value: 'Value', width: 500, align: 'left' },
         ], []);
         for(const key of Object.keys(backendConfigs)) {
             table.push([ key, green(backendConfigs[key] || 'n/a') ]);
         }
-        console.log('\n Backend configs:');
+        console.log('\n Backend:');
         console.log(table.render());
     }
 
     // print out frontend configs
-    if (frontendConfigs) {
+    if (Object.keys(frontendConfigs).length > 0) {
         const table = ttyTable([
-            {value: 'Key', width: 100, align: 'left'},
-            {value: 'Value', width: 500, align: 'left'},
+            { value: 'Key', width: 100, align: 'left' },
+            { value: 'Value', width: 500, align: 'left' },
         ], []);
         for(const key of Object.keys(frontendConfigs)) {
             table.push([ key, green(frontendConfigs[key] || 'n/a') ]);
         }
-        console.log('\n Frontend configs:');
+        console.log('\n Frontend:');
         console.log(table.render());
     }
 
