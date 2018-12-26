@@ -3,7 +3,7 @@
 ### Google
 
 Manage Google accounts.
-Sub-commands: list, connect, disconnect, default.
+Sub-commands: list|ls, connect|add, disconnect|remove|rm, default.
 
 #### Options
 
@@ -17,7 +17,7 @@ Sub-commands: list, connect, disconnect, default.
 ### Project
 
 Project general tasks.
-Sub-commands: start, setup, config, urls, info, hooks.
+Sub-commands: start, setup, configs, config, urls, url, info, models, model.
 
 #### Options
 
@@ -84,7 +84,7 @@ Proxy of **project models**
 
 ### Model
 
-Create models.
+Create database models.
 Proxy of **project model**
 
 #### Options
@@ -98,13 +98,9 @@ Proxy of **project model**
 Output project info.
 Proxy of **project info**
 
-### Docs
-
-Open the documentation.
-
 ### Backend
 
-Run backend related command.
+Run backend related commands.
 
 #### Options
 
@@ -112,19 +108,15 @@ Run backend related command.
 
 ### Frontend
 
-Run frontend related command.
+Run frontend related commands.
 
 #### Options
 
 - `subCommand`: Optional supported sub-commands.
 
-### Help
+### Docs
 
-Display help.
-
-#### Options
-
-- `-d,--detail`: Detail help.
+Open the documentation.
 
 ### Update
 
@@ -133,6 +125,14 @@ Check and install update.
 #### Options
 
 - `-y,--yes`: Install update when available.
+
+### Help
+
+Display help.
+
+#### Options
+
+- `-d,--detail`: Detail help.
 
 ### *
 

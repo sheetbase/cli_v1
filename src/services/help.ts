@@ -1,81 +1,74 @@
 import chalk from 'chalk';
 
 const green = chalk.green;
-const yellow = chalk.yellow;
-const red = chalk.red;
-
-function exp(): string {
-    return red('(experimental)');
-}
-
-function beta(): string {
-    return yellow('(beta)');
-}
 
 export function help(): string {
     return '' +
 `
  Global commands:
 
-    ${green('help')} ....................... Display help.
-    ${green('docs')} ....................... Open the documentation.
     ${green('google [subcommand]')} ........ Manage Google accounts.
     ${green('start [name] [resource]')} .... Start a new project.
+    ${green('docs')} ....................... Open the documentation.
+    ${green('update')} ..................... Check and install update.
+    ${green('help')} ....................... Display help.
 
  Project commands:
 
-    ${green('setup')} ......................... Setup the project.
-    ${green('configs')} ....................... View project configs.
-    ${green('config [subcommand]')} ........... Config backend & frontend.
-    ${green('info')} .......................... Output project info.
-    ${green('urls')} .......................... View project URLs.
-    ${green('url [name]')} .................... View or open a project URL.
-    ${green('models')} ........................ View project models.
-    ${green('model [schemaFiles]')} ........... Create model.`;
+    ${green('setup')} ...................... Setup the project.
+    ${green('configs')} .................... View project configs.
+    ${green('config [subcommand]')} ........ Config the project.
+    ${green('urls')} ....................... View project URLs.
+    ${green('url [name]')} ................. View or open a project URL.
+    ${green('models')} ..................... View project models.
+    ${green('model [schemaFiles]')} ........ Create database models.
+    ${green('info')} ....................... Output project info.
+    ${green('backend [subcommand]')} ....... Run backend related commands.
+    ${green('frontend [subcommand]')} ...... Run frontend related commands.`;
 }
 
 export function helpDetail(): string {
     return '' +
 `
+General commands:
+
+    ${green('docs')} ....................... Open the documentation.
+    ${green('update')} ..................... Check and install update.
+    ${green('help')} ....................... Display help.
+
  Command groups:
 
-    ${green('google [subcommand]')} ..... ${(
-        'Manage Google accounts ' +
-        `(subcommands: ${green('list')}, ${green('connect')}, ` +
-        `${green('disconnect')}, ${green('default')})`
-    )}
-    ${green('project [subcommand]')} .... ${(
-        'Project general tasks ' +
-        `(subcommands: ${green('start')}, ${green('setup')}, ` +
-        `${green('config')}, ${green('urls')}, ${green('info')})`
-    )}
+    ${green('google [subcommand]')} ........ Manage Google accounts.
+    ${green('project [subcommand]')} ....... Project general tasks.
 
- Google subcommands:
+ Google sub-commands:
 ${googleHelp()}
 
- Project subcommands:
+ Project sub-commands:
 ${projectHelp()}`;
 }
 
 export function googleHelp(): string {
     return '' +
     `
-    ${green('list')} .................... List connected accounts.
-    ${green('connect')} ................. Connect an account.
-    ${green('disconnect [id]')} ......... Disconnect an account.
-    ${green('default [id]')} ............ Change the default account.`;
+    ${green('list')} ....................... List connected accounts.
+    ${green('connect')} .................... Connect an account.
+    ${green('disconnect [input]')} ......... Disconnect an account.
+    ${green('default [id]')} ............... Change the default account.`;
 }
 
 export function projectHelp(): string {
     return '' +
     `
-    ${green('start [name] [resource]')} ....... Start a new project.
-    ${green('setup')} ......................... Setup the project.
-    ${green('configs')} ....................... View project configs.
-    ${green('config [subcommand]')} ........... Config backend & frontend.
-    ${green('info')} .......................... Output project info.
-    ${green('urls')} .......................... View project URLs.
-    ${green('url [name]')} .................... View or open a project URL.
-    ${green('models')} ........................ View project models.
-    ${green('model [schemaFiles]')}............ Create model.`;
+    ${green('start [name] [resource]')} .... Start a new project.
+    ${green('setup')} ...................... Setup the project.
+    ${green('configs')} .................... View project configs.
+    ${green('config [subcommand]')} ........ Config the project.
+    ${green('urls')} ....................... View project URLs.
+    ${green('url [name]')} ................. View or open a project URL.
+    ${green('models')} ..................... View project models.
+    ${green('model [schemaFiles]')} ........ Create database models.
+    ${green('info')} ....................... Output project info.
+    ${green('backend [subcommand]')} ....... Run backend related commands.
+    ${green('frontend [subcommand]')} ...... Run frontend related commands.`;
 }

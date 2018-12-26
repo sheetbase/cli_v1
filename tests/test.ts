@@ -1,3 +1,4 @@
+// tslint:disable:max-line-length
 import * as os from 'os';
 import { resolve } from 'path';
 import {
@@ -5,6 +6,7 @@ import {
   removeSync, copySync,
   ensureDirSync, ensureFileSync,
   readJsonSync, writeJsonSync,
+  outputFileSync,
 } from 'fs-extra';
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
@@ -21,7 +23,7 @@ const PROJECT_NAME = 'test_project';
 const PROJECT_PATH = resolve(PROJECT_NAME);
 
 function createTestProject() {
-  spawnSync(SHEETBASE, ['start', PROJECT_NAME]);
+  spawnSync(SHEETBASE, ['start', PROJECT_NAME, '--no-setup']);
 }
 
 function removeTestProject() {
@@ -74,15 +76,6 @@ function expectError(args: string[], expected: string, cwd = '.') {
   // expect(result.status).to.equal(1);
 }
 
-describe('Test command group when missing subcommands', () => {
-  it('should show google subcommands', () => {
-    expectResult(['google'], 'APP__INFO__INVALID_SUBCOMMAND');
-  });
-  it('should show project subcommands', () => {
-    expectResult(['project'], 'APP__INFO__INVALID_SUBCOMMAND');
-  });
-});
-
 describe('Test GOOGLE command', () => {
 
   beforeEach(() => {
@@ -96,13 +89,16 @@ describe('Test GOOGLE command', () => {
     configstore.set(`google_accounts_default_id`, id);
   });
 
-  afterEach(() => restoreGoogleRc());
+  afterEach(() => {
+    spawnSync(SHEETBASE, ['google', 'disconnect', 'all']);
+    restoreGoogleRc();
+  });
 
   const LISTING_EXPECTED = `${FAKE_GOOGLE_ACCOUNTS[0].profile.id} (default)`;
-  const DISCONNECTION_EXPECTED = 'GOOGLE_DISCONNECTED__OK';
+  const DISCONNECTION_EXPECTED = 'Accounts disconnected:';
 
-  it('should fail to disconnect (no id argument)', () => {
-    expectError(['google', 'disconnect'], 'GOOGLE_DISCONNECTED__ERROR__NO_ID');
+  it('should fail to disconnect (no input arg)', () => {
+    expectError(['google', 'disconnect'], 'No value provided, available: <id>|all|default|local.');
   });
 
   it('should fail to disconnect (invalid id)', () => {
@@ -130,7 +126,7 @@ describe('Test GOOGLE command', () => {
 
   it('should set default', () => {
     const { id } = FAKE_GOOGLE_ACCOUNTS[1].profile;
-    expectResult(['google', 'default', id], `GOOGLE_DEFAULT__OK`);
+    expectResult(['google', 'default', id], `Default acccount changed to "${id}", detail: sheetbase google list -d`);
   });
 
   it('should disconnect by id', () => {
@@ -162,38 +158,39 @@ describe('Test START command', () => {
   beforeEach(() => removeTestProject());
   afterEach(() => removeTestProject());
 
-  const EXPECTED = 'PROJECT_START__OK__THEME';
-
   it('should fail (project exists)', () => {
     ensureDirSync(PROJECT_NAME);
-    expectError(['start', PROJECT_NAME], 'PROJECT_START__ERROR__EXISTS');
+    expectError(['start', PROJECT_NAME], 'Project exists, please choose different name.');
   });
 
   it('should fail (invalid theme, cannot download or extract file)', () => {
-    expectError(['start', PROJECT_NAME, 'invalid-theme@1.0.0'],
-      'Error: Request failed with status code 404',
-    );
+    expectError(['start', PROJECT_NAME, 'invalid-theme@1.0.0'], 'Error: Request failed with status code 404');
   });
 
-  it('should start a new project', () => {
-    expectResult(['start', PROJECT_NAME], EXPECTED);
+  it('should start a theme project', () => {
+    // add --no-setup for ignore no google accounts
+    expectResult(['start', PROJECT_NAME, '--no-setup'], 'Sheetbase theme project created');
   });
 
-  it('should start a new project with specific theme', () => {
-    expectResult(['start', PROJECT_NAME, 'basic-angular'], 'github.com/sheetbase-themes/basic-angular');
+  it('should start a theme project (specific theme)', () => {
+    expectResult(['start', PROJECT_NAME, 'basic-angular', '--no-setup'], 'github.com/sheetbase-themes/basic-angular');
   });
 
-  it('should start a new project with correct milestones', () => {
+  it('should start a theme project (correct milestones)', () => {
     const result = spawnSync(
-      SHEETBASE, ['start', PROJECT_NAME], { cwd: '.', encoding : 'utf8' },
+      SHEETBASE, ['start', PROJECT_NAME, '--no-setup'], { cwd: '.', encoding : 'utf8' },
     );
     expect(result.stdout).to.contain('Get the resource:');
     expect(result.stdout).to.contain('Initial config the project');
   });
 
+  it('should start a new project (not theme)', () => {
+    expectResult(['start', PROJECT_NAME, 'https://github.com/sheetbase/blank-server-module.git'], 'Sheetbase project created');
+  });
+
 });
 
-describe.skip('Test SETUP command', () => {
+describe('Test SETUP command', () => {
 
   beforeEach(() => {
     // create a new project
@@ -210,9 +207,7 @@ describe.skip('Test SETUP command', () => {
     removeTestProject();
   });
 
-  const EXPECTED = 'PROJECT_SETUP__OK';
-
-  it('should setup the project', () => expectResult(['setup'], EXPECTED, PROJECT_PATH));
+  it('should setup the project', () => expectResult(['setup'], 'Project setup successfully.', PROJECT_PATH));
 
   it('should setup the project with correct milestones', () => {
     const result = spawnSync(
@@ -231,40 +226,50 @@ describe('Test CONFIG(S) command', () => {
   afterEach(() => removeTestProject());
 
   it('should list configs', () => {
-    expectResult(['configs'], 'PROJECT_CONFIGS__OK', PROJECT_NAME);
+    expectResult(['configs'], 'Project configs listed, to update: sheetbase config update key=value|...', PROJECT_NAME);
   });
 
-  it('should fail to import (no or invalid file)', () => {
-    expectError(['config', 'import'], 'PROJECT_CONFIG_IMPORT__ERROR__NO_FILE', PROJECT_NAME);
-  });
-
-  it('should list configs (default)', () => {
-    expectResult(['config'], 'PROJECT_CONFIGS__OK', PROJECT_NAME);
+  it('should list configs (default for: list)', () => {
+    expectResult(['config'], 'Project configs listed, to update: sheetbase config update key=value|...', PROJECT_NAME);
   });
 
   it('should list configs', () => {
-    expectResult(['config', 'list'], 'PROJECT_CONFIGS__OK', PROJECT_NAME);
+    expectResult(['config', 'list'], 'Project configs listed, to update: sheetbase config update key=value|...', PROJECT_NAME);
   });
 
-  it('should update configs (no value argument)', () => {
-    expectResult(['config', 'update'], 'PROJECT_CONFIG_UPDATE__OK', PROJECT_NAME);
+  it('should list configs (may not have configs, has backend)', () => {
+    writeJsonSync(PROJECT_PATH + '/sheetbase.json', {
+      configs: { backend: { xxx: 'xxxxxxx' } },
+    });
+    expectResult(['configs'], 'Backend configurations:', PROJECT_NAME);
+  });
+
+  it('should update configs (no value arg)', () => {
+    expectResult(['config', 'update'], 'Project configs updated, view: sheetbase configs', PROJECT_NAME);
   });
 
   it('should set configs', () => {
-    expectResult(['config', 'update', 'a_key=a_value'], 'PROJECT_CONFIG_UPDATE__OK', PROJECT_NAME);
+    expectResult(['config', 'update', 'xxx=xxx_value'], 'Project configs updated, view: sheetbase configs', PROJECT_NAME);
   });
 
-  it('should list configs (has backend)', () => {
-    expectResult(['config'], 'Backend configs:', PROJECT_NAME);
+  it('should fail to import (no or invalid file)', () => {
+    expectError(['config', 'import'], 'No configs file found.', PROJECT_NAME);
+  });
+
+  it('should import configs', () => {
+    writeJsonSync(PROJECT_PATH + '/configs-file.json', {
+      backend: {}, frontend: {},
+    });
+    expectResult(['config', 'import', 'configs-file.json'], 'Project configs imported, view: sheetbase configs', PROJECT_NAME);
   });
 
   it('should export configs', () => {
-    expectResult(['config', 'export'], 'PROJECT_CONFIG_EXPORT__OK', PROJECT_NAME);
+    expectResult(['config', 'export'], 'Project configs exported to "exported/sheetbase-configs-exported-', PROJECT_NAME);
   });
 
   it('should export configs (custom path)', () => {
     const FILE = 'my-project-config.json';
-    expectResult(['config', 'export', FILE], 'PROJECT_CONFIG_EXPORT__OK', PROJECT_NAME);
+    expectResult(['config', 'export', FILE], `Project configs exported to "${FILE}".`, PROJECT_NAME);
   });
 
 });
@@ -274,20 +279,66 @@ describe('Test URL(S) command', () => {
   beforeEach(() => createTestProject());
   afterEach(() => removeTestProject());
 
-  it('should show urls list (default)', () => {
-    expectResult(['urls'], 'PROJECT_URLS__OK', PROJECT_NAME);
+  it('should show urls list', () => {
+    expectResult(['urls'], 'Links listed, to open a link: sheetbase url -o <name>', PROJECT_NAME);
   });
 
   it('should show url', () => {
-    expectResult(['url'], 'PROJECT_URL__OK', PROJECT_NAME);
+    expectResult(['url'], 'Link of [drive]:', PROJECT_NAME);
   });
 
   it('should open link in browser', () => {
-    expectResult(['url', '-o'], 'APP_INFO_LINK_OPENED', PROJECT_NAME);
+    expectResult(['url', '-o'], 'Link opened:', PROJECT_NAME);
   });
 
-  it('should open link in browser (by name)', () => {
-    expectResult(['url', 'backend', '-o'], 'APP_INFO_LINK_OPENED', PROJECT_NAME);
+  it('should show url (by name)', () => {
+    expectResult(['url', 'backend'], 'Link of [backend]:', PROJECT_NAME);
+  });
+
+});
+
+describe('Test MODEL(S) command', () => {
+
+  beforeEach(() => {
+    createTestProject();
+    // copy .googlerc.json (connect the tester account)
+    copySync(GOOGLE_RC, PROJECT_PATH + '/' + GOOGLE_RC);
+  });
+  afterEach(() => removeTestProject());
+
+  it('should show message (no models)', () => {
+    expectResult(['models'], 'The project has no models, to create a model: sheetbase model <schemaFile>', PROJECT_NAME);
+  });
+
+  it('should show list models', () => {
+    ensureDirSync(PROJECT_PATH + '/models'); // create models folder
+    // a model schema named test
+    writeJsonSync(PROJECT_PATH + '/models/test.json', [
+      { name: '#' }, { name: 'title' },
+    ]);
+    expectResult(['models'], 'Models listed, to create a model: sheetbase model <schemaFile>', PROJECT_NAME);
+  });
+
+  it('should error for model (no databaseId)', () => {
+    expectError(['model'], 'No database found or invalid.', PROJECT_NAME);
+  });
+
+  it('should show ok message', () => {
+    // has databaseId (from args), but no model to create
+    expectResult(['model', '--database', 'xxx'], 'Models created.', PROJECT_NAME);
+  });
+
+  it('should show delete Sheet1', () => {
+    expectResult(['model', '--clean', '--database', 'xxx'], 'Remove "Sheet1"', PROJECT_NAME);
+  });
+
+  it('should show create models', () => {
+    ensureDirSync(PROJECT_PATH + '/models'); // create models folder
+    // a model schema named test
+    writeJsonSync(PROJECT_PATH + '/models/test.json', [
+      { name: '#' }, { name: 'title' },
+    ]);
+    expectResult(['model', '--database', 'xxx'], 'Create model "test"', PROJECT_NAME);
   });
 
 });
@@ -301,16 +352,133 @@ describe('Test INFO command', () => {
 
 });
 
-describe('Test DOCS command', () => {
-  it('should open docs', () => expectResult(['docs'], 'APP__INFO__LINK_OPENED'));
-});
-
 describe('Test BACKEND command', () => {
-  it('should run backend cmd', () => expectError(['backend'], `Error: spawnSync`));
+
+  beforeEach(() => {
+    ensureDirSync('./backend'); // create backend folder
+    // to have 'xxx' script
+    writeJsonSync('./backend/package.json', {
+      scripts: { xxx: 'echo "Run script xxx"' },
+    });
+    // to have scriptId
+    writeJsonSync('./backend/.clasp.json', { scriptId: 'xxx' });
+    // to have a file for push
+    outputFileSync('./backend/deploy/index.js', '// ...');
+    // to be a valid project
+    writeJsonSync('./sheetbase.json', {
+      configs: {
+        frontend: {
+          backendUrl: 'https://script.google.com/macros/s/xxx/exec',
+        },
+      },
+    });
+  });
+
+  afterEach(() => {
+    removeSync('./backend');
+    removeSync('./sheetbase.json');
+  });
+
+  it('should error for push (no scriptId)', () => {
+    writeJsonSync('./backend/.clasp.json', { scriptId: '' });
+    expectError(['backend', 'push'], `No backend found or invalid.`);
+  });
+
+  it('should error for push (no deploy folder)', () => {
+    expectError(['backend', 'push'], `Project contents must include a manifest file named appsscript.`);
+  });
+
+  it('should run push', () => {
+    writeJsonSync('./backend/deploy/appsscript.json', {}); // must have appsscript.json
+    // invalid scriptId = 'xxx'
+    expectError(['backend', 'push'], `Request contains an invalid argument.`);
+  });
+
+  it('should error for deploy (no scriptId)', () => {
+    writeJsonSync('./backend/.clasp.json', { scriptId: '' });
+    expectError(['backend', 'deploy'], `No backend found or invalid.`);
+  });
+
+  it('should error for deploy (no deploy folder)', () => {
+    expectError(['backend', 'deploy'], `Project contents must include a manifest file named appsscript.`);
+  });
+
+  it('should error for deploy (no backendUrl aka deploymentId)', () => {
+    writeJsonSync('./sheetbase.json', {});
+    expectError(['backend', 'deploy'], `No backend found or invalid.`);
+  });
+
+  it('should run deploy', () => {
+    writeJsonSync('./backend/deploy/appsscript.json', {}); // must have appsscript.json
+    // invalid scriptId = 'xxx' and deploymentId = xxx
+    expectError(['backend', 'deploy'], `Request contains an invalid argument.`);
+  });
+
+  it('should run install', () => {
+    expectResult(['backend', 'install'], `up to date`);
+  });
+
+  it('should run uninstall', () => {
+    expectResult(['backend', 'uninstall'], `up to date`);
+  });
+
+  it('should run run', () => {
+    expectResult(['backend', 'run', 'xxx'], `Run script xxx`);
+  });
+
+  it('should run abc command', () => {
+    expectError(['backend', 'abc'], `'abc.cmd' is not recognized as an internal or external command`);
+  });
+
+  it('should run script', () => {
+    expectResult(['backend', 'xxx'], `Run script xxx`);
+  });
+
 });
 
 describe('Test FRONTEND command', () => {
-  it('should run frontend cmd', () => expectError(['frontend'], `Error: spawnSync`));
+
+  beforeEach(() => {
+    ensureDirSync('./frontend'); // create frontend folder
+    // to have 'xxx' script
+    writeJsonSync('./frontend/package.json', {
+      scripts: { xxx: 'echo "Run script xxx"' },
+    });
+  });
+
+  afterEach(() => {
+    removeSync('./frontend');
+  });
+
+  it('should run install', () => {
+    expectResult(['frontend', 'install'], `up to date`);
+  });
+
+  it('should run uninstall', () => {
+    expectResult(['frontend', 'uninstall'], `up to date`);
+  });
+
+  it('should run run', () => {
+    expectResult(['frontend', 'run', 'xxx'], `Run script xxx`);
+  });
+
+  it('should run abc command', () => {
+    expectError(['frontend', 'abc'], `'abc.cmd' is not recognized as an internal or external command`);
+  });
+
+  it('should run script', () => {
+    expectResult(['frontend', 'xxx'], `Run script xxx`);
+  });
+
+});
+
+describe('Test DOCS command', () => {
+  it('should open docs', () => expectResult(['docs'], 'Link opened: https://sheetbase.net/docs'));
+});
+
+describe('Test UPDATE command', () => {
+  it.skip('should be up to date', () => expectResult(['update'], 'Up to date :)'));
+  it.skip('should have update', () => expectResult(['update'], 'Sheetbase CLI got a new version, please update:'));
 });
 
 describe('Test HELP command', () => {
@@ -324,31 +492,59 @@ describe('Test * commands', () => {
   });
 });
 
+describe('Test command group when missing subcommands', () => {
+  it('should show google subcommands', () => {
+    expectResult(['google'], 'Invalid sub-command for "google", available:');
+  });
+  it('should show project subcommands', () => {
+    expectResult(['project'], 'Invalid sub-command for "project", available:');
+  });
+});
+
 describe('Test project specific commands while not in a Sheetbase project', () => {
-  const EXPECTED = 'PROJECT__ERROR__INVALID';
+  const EXPECTED = 'Invalid project, no "sheetbase.json" found.';
   it('should fail for setup', () => expectError(['setup'], EXPECTED));
+  it('should fail for configs', () => expectError(['configs'], EXPECTED));
   it('should fail for config', () => expectError(['config'], EXPECTED));
-  it('should fail for info', () => expectError(['info'], EXPECTED));
   it('should fail for urls', () => expectError(['urls'], EXPECTED));
+  it('should fail for url', () => expectError(['url'], EXPECTED));
+  it('should fail for models', () => expectError(['models'], EXPECTED));
+  it('should fail for model', () => expectError(['model'], EXPECTED));
+  it('should fail for info', () => expectError(['info'], EXPECTED));
 });
 
 describe('Test commands while no Google account', () => {
 
   beforeEach(() => {
-    spawnSync(SHEETBASE, ['google', 'disconnect', 'all']);
     removeGoogleRc();
+    spawnSync(SHEETBASE, ['google', 'disconnect', 'all']);
   });
-
   afterEach(() => restoreGoogleRc());
 
-  it('should fail for setup', () => {
-    ensureFileSync('sheetbase.json'); // create fake sheetbase.json
-    expectError(['setup'], 'PROJECT_SETUP__ERROR__NO_GOOGLE_ACCOUNT');
-    removeSync('sheetbase.json'); // remove sheetbase.json
+  const EXPECTED = 'No Google accounts connected, to connect: sheetbase google connect and try again.';
+
+  it('should fail for: setup', () => {
+    ensureFileSync('sheetbase.json'); // for valid project
+    expectError(['setup'], EXPECTED);
+    removeSync('sheetbase.json');
   });
 
-  it('should show no google list', () => {
-    expectResult(['google', 'list'], 'GOOGLE_LIST__INFO__NO_ACCOUNT');
+  it('should fail for: model', () => {
+    ensureFileSync('sheetbase.json'); // for valid project
+    expectError(['model'], EXPECTED);
+    removeSync('sheetbase.json');
+  });
+
+  it('should fail for: google list', () => {
+    expectError(['google', 'list'], EXPECTED);
+  });
+
+  it('should fail for: backend push', () => {
+    expectError(['backend', 'push'], EXPECTED);
+  });
+
+  it('should fail for: backend deploy', () => {
+    expectError(['backend', 'deploy'], EXPECTED);
   });
 
 });
@@ -356,12 +552,21 @@ describe('Test commands while no Google account', () => {
 describe('Test --help for each command', () => {
   it('should google --help', () => expectResult(['google', '-h'], 'Manage Google accounts.'));
   it('should project --help', () => expectResult(['project', '-h'], 'Project general tasks.'));
+
   it('should start --help', () => expectResult(['start', '-h'], 'Start a new project.'));
   it('should setup --help', () => expectResult(['setup', '-h'], 'Setup the project.'));
-  it('should config --help', () => expectResult(['config', '-h'], 'Config backend & frontend.'));
+  it('should configs --help', () => expectResult(['configs', '-h'], 'View project configs.'));
+  it('should config --help', () => expectResult(['config', '-h'], 'Config the project.'));
   it('should urls --help', () => expectResult(['urls', '-h'], 'View project URLs.'));
+  it('should url --help', () => expectResult(['url', '-h'], 'View or open a project URL.'));
+  it('should models --help', () => expectResult(['models', '-h'], 'View project models.'));
+  it('should model --help', () => expectResult(['model', '-h'], 'Create database models.'));
   it('should info --help', () => expectResult(['info', '-h'], 'Output project info.'));
+  it('should backend --help', () => expectResult(['backend', '-h'], 'Run backend related commands.'));
+  it('should frontend --help', () => expectResult(['frontend', '-h'], 'Run frontend related commands.'));
+
   it('should docs --help', () => expectResult(['docs', '-h'], 'Open the documentation.'));
+  it('should update --help', () => expectResult(['update', '-h'], 'Check and install update.'));
   it('should help --help', () => expectResult(['help', '-h'], 'Display help.'));
 });
 

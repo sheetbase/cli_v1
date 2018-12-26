@@ -46,7 +46,7 @@ program
 
 /**
  * Manage Google accounts.
- * Sub-commands: list, connect, disconnect, default.
+ * Sub-commands: list|ls, connect|add, disconnect|remove|rm, default.
  * @name google
  * @param {string?} [subCommand] Supported sub-commands.
  * @param {string[]?} [params] Command params, comma-separated.
@@ -69,7 +69,7 @@ program
 
 /**
  * Project general tasks.
- * Sub-commands: start, setup, config, urls, info, hooks.
+ * Sub-commands: start, setup, configs, config, urls, url, info, models, model.
  * @name project
  * @param {string?} [subCommand] Supported sub-commands.
  * @param {string[]?} [params] Command params, comma-separated.
@@ -103,8 +103,8 @@ program
   .description('Start a new project.')
   .option('-i, --install', 'Install npm packages.')
   .option('-m, --no-setup', 'Do not run setup command.')
-  .action(async (projectName, theme, options) => projectCommand(
-    'start', [projectName, theme], options,
+  .action((projectName, resource, options) => projectCommand(
+    'start', [projectName, resource], options,
   ));
 
 /**
@@ -115,7 +115,7 @@ program
 program
   .command('setup')
   .description('Setup the project.')
-  .action(async () => projectCommand('setup'));
+  .action(() => projectCommand('setup'));
 
 /**
  * View project configs.
@@ -125,7 +125,7 @@ program
 program
   .command('configs')
   .description('View project configs.')
-  .action(async () => await projectCommand('configs'));
+  .action(() => projectCommand('configs'));
 
 /**
  * Config the project.
@@ -138,9 +138,7 @@ program
 program
   .command('config [subCommand] [params...]')
   .description('Config the project.')
-  .action(async (subCommand, params) => await projectCommand(
-    'config', [subCommand, ... params],
-  ));
+  .action((subCommand, params) => projectCommand('config', [subCommand, ... params]));
 
 /**
  * View project URLs.
@@ -150,7 +148,7 @@ program
 program
   .command('urls')
   .description(`View project URLs.`)
-  .action(async () => await projectCommand('urls'));
+  .action(() => projectCommand('urls'));
 
 /**
  * View or open a project URL.
@@ -163,7 +161,7 @@ program
   .command('url [name]')
   .description(`View or open a project URL.`)
   .option('-o, --open', `Open the url in browser.`)
-  .action(async (name, options) => await projectCommand('url', [name], options));
+  .action((name, options) => projectCommand('url', [name], options));
 
 /**
  * View project models.
@@ -173,10 +171,10 @@ program
 program
   .command('models')
   .description(`View project models.`)
-  .action(async () => await projectCommand('models'));
+  .action(() => projectCommand('models'));
 
 /**
- * Create models.
+ * Create database models.
  * Proxy of **project model**
  * @name model
  * @param {string[]?} [schemaFiles] List of schema files.
@@ -185,10 +183,10 @@ program
  */
 program
   .command('model [schemaFiles...]')
-  .description(`Create models.`)
+  .description(`Create database models.`)
   .option('-d, --database [value]', `Custom database.`)
   .option('-c, --clean', `Remove the default 'Sheet1'.`)
-  .action(async (schemaFiles, options) => await projectCommand('model', schemaFiles, options));
+  .action((schemaFiles, options) => projectCommand('model', schemaFiles, options));
 
 /**
  * Output project info.
@@ -198,7 +196,29 @@ program
 program
   .command('info')
   .description(`Output project info.`)
-  .action(async () => await projectCommand('info'));
+  .action(() => projectCommand('info'));
+
+/**
+ * Run backend related commands.
+ * @name backend
+ * @param {string?} [subCommand] Optional supported sub-commands.
+ */
+program
+  .command('backend [subCommand]')
+  .description('Run backend related commands.')
+  .allowUnknownOption()
+  .action(backendCommand);
+
+/**
+ * Run frontend related commands.
+ * @name frontend
+ * @param {string?} [subCommand] Optional supported sub-commands.
+ */
+program
+  .command('frontend [subCommand]')
+  .description('Run frontend related commands.')
+  .allowUnknownOption()
+  .action(frontendCommand);
 
 /**
  * Open the documentation.
@@ -210,26 +230,15 @@ program
   .action(docsCommand);
 
 /**
- * Run backend related command.
- * @name backend
- * @param {string?} [subCommand] Optional supported sub-commands.
+ * Check and install update.
+ * @name update
+ * @param {boolean?} [-y,--yes] Install update when available.
  */
 program
-  .command('backend [subCommand]')
-  .description('Run backend related command.')
-  .allowUnknownOption()
-  .action(backendCommand);
-
-/**
- * Run frontend related command.
- * @name frontend
- * @param {string?} [subCommand] Optional supported sub-commands.
- */
-program
-  .command('frontend [subCommand]')
-  .description('Run frontend related command.')
-  .allowUnknownOption()
-  .action(frontendCommand);
+  .command('update')
+  .description('Check and install update.')
+  .option('-y, --yes', `Install update when available.`)
+  .action(updateCommand);
 
 /**
  * Display help.
@@ -244,17 +253,6 @@ program
 
 program
   .on('--help', () => { clear(); return helpCommand(); });
-
-/**
- * Check and install update.
- * @name update
- * @param {boolean?} [-y,--yes] Install update when available.
- */
-program
-  .command('update')
-  .description('Check and install update.')
-  .option('-y, --yes', `Install update when available.`)
-  .action(updateCommand);
 
 /**
  * Any other command will run: npm run <cmd>.

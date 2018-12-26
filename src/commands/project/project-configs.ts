@@ -17,7 +17,7 @@ export async function projectConfigsCommand() {
         for(const key of Object.keys(backendConfigs)) {
             table.push([ key, green(backendConfigs[key] || 'n/a') ]);
         }
-        console.log('\n Backend:');
+        console.log('\n Backend configurations:');
         console.log(table.render());
     }
 
@@ -30,7 +30,7 @@ export async function projectConfigsCommand() {
         for(const key of Object.keys(frontendConfigs)) {
             table.push([ key, green(frontendConfigs[key] || 'n/a') ]);
         }
-        console.log('\n Frontend:');
+        console.log('\n Frontend configurations:');
         console.log(table.render());
     }
 

@@ -1,4 +1,5 @@
 import { resolve } from 'path';
+import { execSync } from 'child_process';
 import { pathExists, remove } from 'fs-extra';
 import axios from 'axios';
 
@@ -32,7 +33,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
     await logAction('Get the resource: ' + url, async () => {
         if (url.endsWith('.git')) {
             // clone the repo when has .git url
-            await exec(`git clone ${url} ${name}`, '.', 'ignore');
+            execSync(`git clone ${url} ${name}`, { stdio: 'ignore' });
             await remove(deployPath + '/' + '.git'); // delete .git folder
         } else {
             const downloadedPath = await download(url, deployPath, 'resource.zip');
