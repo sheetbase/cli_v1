@@ -107,9 +107,12 @@ export const LOGS = {
     APP__INFO__LINK_OPENED: (link: string) => `Link opened: ${link}`,
     BACKEND_DEPLOY__OK: `To view newly deployed backend: ` + magenta('sheetbase url -o backend'),
     BACKEND_PUSH__OK: (result: any) => {
-        console.log(result);
-        let message = 'Pushed ' + 3 + ' files.';
-        message += '';
+        const { files = [] } = result;
+        let message = 'Pushed ' + files.length + ' files.';
+        files.forEach(file => {
+            const type = file.type === 'SERVER_JS' ? 'js' : file.type.toLowerCase();
+            message += '\n    + ' + file.name + '.' + type;
+        });
         return message;
     },
     GOOGLE_CONNECT__WARN__CREDS: 'File ".googlerc.json" saved, please keep the file SECRET.',

@@ -1,6 +1,6 @@
 {
   "name": "@sheetbase/cli",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Official CLI for working with Sheetbase. ",
   "author": "Sheetbase",
   "homepage": "https://sheetbase.net",
