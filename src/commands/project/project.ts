@@ -11,6 +11,8 @@ import { projectUrlsCommand } from './project-urls';
 import { projectUrlCommand } from './project-url';
 import { projectModelsCommand } from './project-models';
 import { projectModelCommand } from './project-model';
+import { projectBuildCommand } from './project-build';
+import { projectDeployCommand } from './project-deploy';
 
 export interface Options {
     install?: boolean;
@@ -65,6 +67,14 @@ export async function projectCommand(command: string, params: string[] = [], opt
 
         case 'info':
             await projectInfoCommand();
+        break;
+
+        case 'build':
+            await projectBuildCommand();
+        break;
+
+        case 'deploy':
+            await projectDeployCommand();
         break;
 
         default:

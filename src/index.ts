@@ -199,6 +199,26 @@ program
   .action(() => projectCommand('info'));
 
 /**
+ * Build the project.
+ * Proxy of **project build**
+ * @name build
+ */
+program
+  .command('build')
+  .description(`Build the project.`)
+  .action(() => projectCommand('build'));
+
+/**
+ * Deploy the project.
+ * Proxy of **project deploy**
+ * @name deploy
+ */
+program
+  .command('deploy')
+  .description(`Deploy the project.`)
+  .action(() => projectCommand('deploy'));
+
+/**
  * Run backend related commands.
  * @name backend
  * @param {string?} [subCommand] Optional supported sub-commands.

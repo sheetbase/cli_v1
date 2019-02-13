@@ -23,6 +23,8 @@ export function help(): string {
     ${green('models')} ..................... View project models.
     ${green('model [schemaFiles]')} ........ Create database models.
     ${green('info')} ....................... Output project info.
+    ${green('build')} ...................... Build the project.
+    ${green('deploy')} ..................... Deploy the project.
     ${green('backend [subcommand]')} ....... Run backend related commands.
     ${green('frontend [subcommand]')} ...... Run frontend related commands.`;
 }
@@ -69,6 +71,8 @@ export function projectHelp(): string {
     ${green('models')} ..................... View project models.
     ${green('model [schemaFiles]')} ........ Create database models.
     ${green('info')} ....................... Output project info.
+    ${green('build')} ...................... Build the project.
+    ${green('deploy')} ..................... Deploy the project.
     ${green('backend [subcommand]')} ....... Run backend related commands.
     ${green('frontend [subcommand]')} ...... Run frontend related commands.`;
 }
