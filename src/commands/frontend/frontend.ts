@@ -1,11 +1,17 @@
 import { run } from '../../services/command';
 import { readJson } from '../../services/project';
 
+import { frontendDeployCommand } from './frontend-deploy';
+
 export async function frontendCommand(command: string, commander: any) {
     const commanderRawArgs = commander['parent']['rawArgs'];
     const cwd = 'frontend';
 
     switch (command) {
+        case 'deploy':
+            await frontendDeployCommand();
+        break;
+
         case 'install':
         case 'i':
             await run('npm install', command, commanderRawArgs, cwd);

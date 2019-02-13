@@ -15,10 +15,6 @@ export const FRONTEND_CONFIG_FILE = 'frontend/src/sheetbase.config.ts';
 
 export interface SheetbaseDotJson {
     driveFolder?: string;
-    configMaps?: {
-        frontend?: string[];
-        backend?: string[];
-    };
     configs?: {
         frontend?: {
             backendUrl?: string;
@@ -28,11 +24,21 @@ export interface SheetbaseDotJson {
             [key: string]: any;
         };
     };
+    configMaps?: {
+        frontend?: string[];
+        backend?: string[];
+    };
     urlMaps?: {
         [configKey: string]: string[];
     };
     setupHooks?: {
         [configKey: string]: any[];
+    };
+    deployment?: {
+        provider: 'github' | 'firebase' | 'hosting' | 'server';
+        sourceDir?: string;
+        stagingDir?: string;
+        destination?: any;
     };
 }
 
