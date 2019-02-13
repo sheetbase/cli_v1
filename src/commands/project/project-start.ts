@@ -84,6 +84,9 @@ export async function projectStartCommand(params: string[], options?: Options) {
             await exec('sheetbase setup', deployPath);
         }
 
+        // create models
+        await exec('sheetbase model', deployPath);
+
         // install packages
         if (options.install) {
             await logAction('Install backend dependencies', async () => {
