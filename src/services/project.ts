@@ -13,6 +13,19 @@ export const PACKAGE_DOT_JSON = 'package.json';
 export const BACKEND_CONFIG_FILE = 'backend/src/sheetbase.config.ts';
 export const FRONTEND_CONFIG_FILE = 'frontend/src/sheetbase.config.ts';
 
+export interface GithubProvider {
+    url: string;
+    ghPages?: boolean;
+}
+
+export interface SheetbaseDeployment {
+    provider: 'github' | 'firebase' | 'hosting' | 'server';
+    url?: string;
+    sourceDir?: string;
+    stagingDir?: string;
+    destination?: GithubProvider;
+}
+
 export interface SheetbaseDotJson {
     driveFolder?: string;
     configs?: {
@@ -34,13 +47,7 @@ export interface SheetbaseDotJson {
     setupHooks?: {
         [configKey: string]: any[];
     };
-    deployment?: {
-        provider: 'github' | 'firebase' | 'hosting' | 'server';
-        url?: string;
-        sourceDir?: string;
-        stagingDir?: string;
-        destination?: any;
-    };
+    deployment?: SheetbaseDeployment;
 }
 
 export interface PackageDotJson {
