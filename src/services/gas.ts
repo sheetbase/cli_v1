@@ -151,7 +151,7 @@ export async function gasVersions(
 export async function gasVersion(
     client: OAuth2Client,
     scriptId: string,
-    description = 'New version',
+    description = 'Update',
 ) {
     const requestData: any = {};
     if (description) requestData.description = description;
@@ -251,12 +251,12 @@ export async function gasWebappUpdate(
         await gasPush(client, scriptId);
         // create new version
         versionNumber = (
-            await gasVersion(client, scriptId, `Update v${versionNumber}`) as any
+            await gasVersion(client, scriptId) as any
         ).versionNumber;
     }
     // redeploy or rollback
     return await gasRedeploy(
         client, scriptId, deploymentId, versionNumber,
-        description || 'Update webapp v' + versionNumber,
+        description || 'Update webapp V' + versionNumber,
     );
 }
