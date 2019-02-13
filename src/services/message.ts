@@ -117,7 +117,7 @@ export const LOGS = {
         });
         return message;
     },
-    FRONTEND_DEPLOY__OK: 'Website deployed.',
+    FRONTEND_DEPLOY__OK: (url: string) => 'Website deployed. View: ' + url,
     GOOGLE_CONNECT__WARN__CREDS: 'File ".googlerc.json" saved, please keep the file SECRET.',
     GOOGLE_CONNECT__OK: 'Account connected, see list: ' + magenta('sheetbase google list'),
     GOOGLE_DEFAULT__OK: (id: string) => `Default acccount changed to "${id}", detail: ` + magenta('sheetbase google list -d'),

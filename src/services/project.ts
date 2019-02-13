@@ -36,6 +36,7 @@ export interface SheetbaseDotJson {
     };
     deployment?: {
         provider: 'github' | 'firebase' | 'hosting' | 'server';
+        url?: string;
         sourceDir?: string;
         stagingDir?: string;
         destination?: any;
