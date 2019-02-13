@@ -89,6 +89,7 @@ export const ERRORS = {
     GOOGLE__ERROR__NO_ACCOUNT: 'No Google accounts connected, to connect: ' + magenta('sheetbase google connect') + ' and try again.',
     BACKEND__ERROR__INVALID: 'No backend found or invalid.',
     FRONTEND_DEPLOY__ERROR__NO_PROVIDER: 'No deployment configs.',
+    FRONTEND_DEPLOY__ERROR__NO_STAGING: 'No staging location.',
     GOOGLE_DISCONNECTED__ERROR__NO_VALUE: 'No value provided, available: <id>|all|default|local.',
     PROJECT__ERROR__INVALID: 'Invalid project, no "sheetbase.json" found.',
     PROJECT__ERROR__EXISTS: 'Project exists, please choose different name.',

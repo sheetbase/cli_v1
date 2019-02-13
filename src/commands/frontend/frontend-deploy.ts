@@ -1,5 +1,8 @@
-import { basename } from 'path';
+import { basename, resolve } from 'path';
+import { homedir } from 'os';
 import { execSync } from 'child_process';
+import { pathExists } from 'fs-extra';
+
 import { getPath, getSheetbaseDotJson } from '../../services/project';
 import { logError, logOk } from '../../services/message';
 
@@ -7,7 +10,11 @@ export async function frontendDeployCommand() {
     const name = basename(process.cwd());
     const { deployment } = await getSheetbaseDotJson();
     const { provider, stagingDir } = deployment || {} as any;
-    const cwd = !!stagingDir ? await getPath(stagingDir) : `~/sheetbase_staging/${name}`;
+    const cwd = !!stagingDir ? await getPath(stagingDir) : resolve(homedir(), 'sheetbase_staging', name);
+
+    if (!await pathExists(cwd)) {
+        return logError('FRONTEND_DEPLOY__ERROR__NO_STAGING');
+    }
 
     // deploy
     if (provider === 'github') {
