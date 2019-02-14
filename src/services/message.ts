@@ -90,6 +90,7 @@ export const ERRORS = {
     BACKEND__ERROR__INVALID: 'No backend found or invalid.',
     FRONTEND_DEPLOY__ERROR__NO_PROVIDER: 'No deployment configs.',
     FRONTEND_DEPLOY__ERROR__NO_STAGING: 'No staging found, please build first.',
+    FRONTEND_DEPLOY__ERROR__NO_GIT_URL: 'No git url for Github provider',
     GOOGLE_DISCONNECTED__ERROR__NO_VALUE: 'No value provided, available: <id>|all|default|local.',
     PROJECT__ERROR__INVALID: 'Invalid project, no "sheetbase.json" found.',
     PROJECT__ERROR__EXISTS: 'Project exists, please choose different name.',
@@ -117,6 +118,9 @@ export const LOGS = {
         });
         return message;
     },
+    FRONTEND_BUILD__OK: 'App build complete.' +
+        '\n    + To deploy: ' + magenta('sheetbase frontend deploy') +
+        '\n    + To preview: ' + magenta('sheetbase preview'),
     FRONTEND_DEPLOY__OK: (url: string) => 'Website deployed. View: ' + url,
     GOOGLE_CONNECT__WARN__CREDS: 'File ".googlerc.json" saved, please keep the file SECRET.',
     GOOGLE_CONNECT__OK: 'Account connected, see list: ' + magenta('sheetbase google list'),

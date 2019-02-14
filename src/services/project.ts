@@ -14,16 +14,17 @@ export const BACKEND_CONFIG_FILE = 'backend/src/sheetbase.config.ts';
 export const FRONTEND_CONFIG_FILE = 'frontend/src/sheetbase.config.ts';
 
 export interface GithubProvider {
-    url: string;
-    ghPages?: boolean;
+    gitUrl: string;
+    noMaster?: boolean;
+    updateBase?: boolean;
 }
 
 export interface SheetbaseDeployment {
     provider: 'github' | 'firebase' | 'hosting' | 'server';
+    destination: GithubProvider;
     url?: string;
     sourceDir?: string;
     stagingDir?: string;
-    destination?: GithubProvider;
 }
 
 export interface SheetbaseDotJson {

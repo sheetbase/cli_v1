@@ -22,14 +22,14 @@ export async function frontendDeployCommand() {
     }
     // deploy
     if (provider === 'github') {
-        const { ghPages } = destination || {} as GithubProvider;
+        const { noMaster } = destination || {} as GithubProvider;
         execSync('git add .', { cwd: stagingCwd, stdio: 'ignore' });
         execSync(
             'git commit -m "Updated ' + new Date().toISOString() + '"',
             { cwd: stagingCwd, stdio: 'ignore' },
         );
         execSync(
-            'git push origin ' + (ghPages ? 'gh-pages' : 'master'),
+            'git push origin ' + (noMaster ? 'gh-pages' : 'master'),
             { cwd: stagingCwd, stdio: 'ignore' },
         );
     }
