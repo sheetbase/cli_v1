@@ -58,7 +58,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
                 (currentData, data) => {
                     // keep only these fields
                     const { author, homepage, license, scripts } = currentData;
-                    return { ... data, author, homepage, scripts };
+                    return { ... data, author, homepage, license, scripts };
                 },
                 deployPath,
             );
@@ -70,6 +70,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
                         backend: {},
                         frontend: {},
                     },
+                    deployment: null,
                 },
                 // override above fields and keep the rest
                 (currentData, data) => ({ ... currentData, ... data }),

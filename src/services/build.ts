@@ -44,3 +44,7 @@ export function githubIndexHtmlSPAGenerator(html: string, base?: string) {
     }
     return html;
 }
+
+export function prerenderer(html: string, item: any) {
+    return 'xxx';
+}

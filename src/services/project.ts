@@ -27,6 +27,12 @@ export interface SheetbaseDeployment {
     stagingDir?: string;
 }
 
+export interface SheetbasePrerender {
+    path?: string;
+    keyField?: string;
+    renderer?(html: string, item: any): string;
+}
+
 export interface SheetbaseDotJson {
     driveFolder?: string;
     configs?: {
@@ -49,6 +55,9 @@ export interface SheetbaseDotJson {
         [configKey: string]: any[];
     };
     deployment?: SheetbaseDeployment;
+    prerender?: {
+        [table: string]: SheetbasePrerender;
+    };
 }
 
 export interface PackageDotJson {
