@@ -118,10 +118,8 @@ export const LOGS = {
         });
         return message;
     },
-    FRONTEND_BUILD__OK: 'App build complete.' +
-        '\n    + To deploy: ' + magenta('sheetbase frontend deploy') +
-        '\n    + To preview: ' + magenta('sheetbase preview'),
-    FRONTEND_DEPLOY__OK: (url: string) => 'Website deployed. View: ' + url,
+    FRONTEND_BUILD__OK: 'To re-deploy the frontend: ' + magenta('sheetbase frontend deploy'),
+    FRONTEND_DEPLOY__OK: (url: string) => `Frontend deployed. View: ${url}`,
     GOOGLE_CONNECT__WARN__CREDS: 'File ".googlerc.json" saved, please keep the file SECRET.',
     GOOGLE_CONNECT__OK: 'Account connected, see list: ' + magenta('sheetbase google list'),
     GOOGLE_DEFAULT__OK: (id: string) => `Default acccount changed to "${id}", detail: ` + magenta('sheetbase google list -d'),
@@ -130,10 +128,14 @@ export const LOGS = {
     GOOGLE_LIST__OK: `Accounts listed.
     + To disconnect accounts: ${magenta('sheetbase google disconnect <id>|all|default|local')}
     + To change default account: ${magenta('sheetbase google default <id>')}`,
+    PROJECT_BUILD__OK: 'Project build completed!' +
+        '\n    + Preview: ' + magenta('sheetbase preview') +
+        '\n    + Re-deploy: ' + magenta('sheetbase deploy'),
     PROJECT_CONFIG_EXPORT__OK: (file: string) => `Project configs exported to "${file}".`,
     PROJECT_CONFIG_IMPORT__OK: 'Project configs imported, view: ' + magenta('sheetbase configs'),
     PROJECT_CONFIG_UPDATE__OK: 'Project configs updated, view: ' + magenta('sheetbase configs'),
     PROJECT_CONFIGS__OK: 'Project configs listed, to update: ' + magenta('sheetbase config update key=value|...'),
+    PROJECT_DEPLOY__OK: 'Project deployed!',
     PROJECT_MODEL__OK: 'Models created.',
     PROJECT_MODELS__OK: (models: any) => {
         return (Object.keys(models).length > 0 ? 'Models listed' : 'The project has no models') + ', to create a model: ' + magenta('sheetbase model <schemaFile>');

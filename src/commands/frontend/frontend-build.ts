@@ -28,7 +28,7 @@ export async function frontendBuildCommand() {
     }
 
     // build code
-    await logAction('Build code', async () => {
+    await logAction('Build code (could take several minutes)', async () => {
         execSync('npm run build', { cwd: 'frontend', stdio: 'ignore' });
     });
 
