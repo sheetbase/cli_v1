@@ -89,3 +89,28 @@ export function makeupValues(value: any) {
     }
     return value;
 }
+
+export function replaceBetween(
+    content: string,
+    replaceWith: string,
+    starts: string | string[][] = [],
+    ends?: string,
+) {
+    // process data
+    if (typeof starts === 'string') {
+        if (!!ends) {
+            starts = [[ starts, ends ]];
+        } else {
+            starts = [];
+        }
+    }
+    // replace
+    for (let i = 0; i < starts.length; i++) {
+        const [ start, end ] = starts[i] || [] as any;
+        if (!!start && !!end) {
+            const reg = new RegExp(start + '(.*)' + end, 'g');
+            content = content.replace(reg, start + replaceWith + end);
+        }
+    }
+    return content;
+}

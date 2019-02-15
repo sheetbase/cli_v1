@@ -30,6 +30,7 @@ export interface SheetbaseDeployment {
 export interface SheetbasePrerender {
     location?: string;
     keyField?: string;
+    fields: {[field: string]: string};
 }
 
 export interface SheetbaseDotJson {

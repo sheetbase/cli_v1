@@ -14,7 +14,7 @@ import { logError, logOk, logAction } from '../../services/message';
 export async function frontendPrerenderCommand() {
     const { deployment, prerender } = await getSheetbaseDotJson();
     const { backendUrl, apiKey = '' } = await getFrontendConfigs();
-    const { stagingDir } = deployment || {} as SheetbaseDeployment;
+    const { url, stagingDir } = deployment || {} as SheetbaseDeployment;
     const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
         resolve(homedir(), 'sheetbase_staging', name);
 
@@ -30,24 +30,26 @@ export async function frontendPrerenderCommand() {
     for (const key of Object.keys(prerender)) {
         await logAction('Prerender table "' + key + '".', async () => {
             // load configs
-            const { location = '', keyField = '#' } = prerender[key] || {} as SheetbasePrerender;
+            const prerenderConfigs = prerender[key] || {} as SheetbasePrerender;
+            const { location = '', keyField = '#' } = prerenderConfigs;
             // clear previous rendered by location
             if (!!location) {
                 await remove(resolve(stagingCwd, location));
             }
             // load data
             const { data: items = [] } = await getData(
-                `${backendUrl}?e=/database&table=${key}&apiKey=${apiKey}`,
+                `${backendUrl}?e=/database&table=${key}` + (!!apiKey ? '&apiKey=' + apiKey : ''),
             );
             // load index html
             const indexHtmlContent = await readFile(resolve(stagingCwd, 'index.html'), 'utf-8');
             // render content
             for (let i = 0; i < items.length; i++) {
                 const item = items[i]; // an item
+                const remoteUrl = (url + '/' + location + '/' + item[keyField]).replace('//', '/');
                 // save file
                 await outputFile(
                     resolve(stagingCwd, location, item[keyField], 'index.html'),
-                    prerenderer(indexHtmlContent, item),
+                    prerenderer(indexHtmlContent, item, remoteUrl, prerenderConfigs),
                 );
             }
         });
