@@ -13,6 +13,7 @@ import { projectModelsCommand } from './project-models';
 import { projectModelCommand } from './project-model';
 import { projectBuildCommand } from './project-build';
 import { projectDeployCommand } from './project-deploy';
+import { projectPreviewCommand } from './project-preview';
 
 export interface Options {
     install?: boolean;
@@ -75,6 +76,10 @@ export async function projectCommand(command: string, params: string[] = [], opt
 
         case 'deploy':
             await projectDeployCommand();
+        break;
+
+        case 'preview':
+            await projectPreviewCommand();
         break;
 
         default:

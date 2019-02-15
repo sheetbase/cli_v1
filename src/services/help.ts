@@ -25,6 +25,7 @@ export function help(): string {
     ${green('info')} ....................... Output project info.
     ${green('build')} ...................... Build the project.
     ${green('deploy')} ..................... Deploy the project.
+    ${green('preview')} .................... Preview the project.
     ${green('backend [subcommand]')} ....... Run backend related commands.
     ${green('frontend [subcommand]')} ...... Run frontend related commands.`;
 }
@@ -73,6 +74,7 @@ export function projectHelp(): string {
     ${green('info')} ....................... Output project info.
     ${green('build')} ...................... Build the project.
     ${green('deploy')} ..................... Deploy the project.
+    ${green('preview')} .................... Preview the project.
     ${green('backend [subcommand]')} ....... Run backend related commands.
     ${green('frontend [subcommand]')} ...... Run frontend related commands.`;
 }

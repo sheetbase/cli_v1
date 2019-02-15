@@ -219,6 +219,16 @@ program
   .action(() => projectCommand('deploy'));
 
 /**
+ * Preview the project.
+ * Proxy of **project preview**
+ * @name preview
+ */
+program
+  .command('preview')
+  .description(`Preview the project.`)
+  .action(() => projectCommand('preview'));
+
+/**
  * Run backend related commands.
  * @name backend
  * @param {string?} [subCommand] Optional supported sub-commands.
