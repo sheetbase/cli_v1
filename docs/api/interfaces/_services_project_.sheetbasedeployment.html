@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PackageDotJson | @sheetbase/cli</title>
+	<title>SheetbaseDeployment | @sheetbase/cli</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -59,10 +59,10 @@
 					<a href="../modules/_services_project_.html">&quot;services/project&quot;</a>
 				</li>
 				<li>
-					<a href="_services_project_.packagedotjson.html">PackageDotJson</a>
+					<a href="_services_project_.sheetbasedeployment.html">SheetbaseDeployment</a>
 				</li>
 			</ul>
-			<h1>Interface PackageDotJson</h1>
+			<h1>Interface SheetbaseDeployment</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PackageDotJson</span>
+						<span class="target">SheetbaseDeployment</span>
 					</li>
 				</ul>
 			</section>
@@ -84,15 +84,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.packagedotjson.html#author" class="tsd-kind-icon">author</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.packagedotjson.html#bugs" class="tsd-kind-icon">bugs</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.packagedotjson.html#description" class="tsd-kind-icon">description</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.packagedotjson.html#homepage" class="tsd-kind-icon">homepage</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.packagedotjson.html#license" class="tsd-kind-icon">license</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.packagedotjson.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.packagedotjson.html#repository" class="tsd-kind-icon">repository</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.packagedotjson.html#scripts" class="tsd-kind-icon">scripts</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.packagedotjson.html#version" class="tsd-kind-icon">version</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.sheetbasedeployment.html#destination" class="tsd-kind-icon">destination</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.sheetbasedeployment.html#devdir" class="tsd-kind-icon">dev<wbr>Dir</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.sheetbasedeployment.html#provider" class="tsd-kind-icon">provider</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.sheetbasedeployment.html#sourcedir" class="tsd-kind-icon">source<wbr>Dir</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.sheetbasedeployment.html#stagingdir" class="tsd-kind-icon">staging<wbr>Dir</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_services_project_.sheetbasedeployment.html#url" class="tsd-kind-icon">url</a></li>
 							</ul>
 						</section>
 					</div>
@@ -101,119 +98,62 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="author" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> author</h3>
-					<div class="tsd-signature tsd-kind-icon">author<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="destination" class="tsd-anchor"></a>
+					<h3>destination</h3>
+					<div class="tsd-signature tsd-kind-icon">destination<span class="tsd-signature-symbol">:</span> <a href="_services_project_.githubprovider.html" class="tsd-signature-type">GithubProvider</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L70">services/project.ts:70</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L24">services/project.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="bugs" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> bugs</h3>
-					<div class="tsd-signature tsd-kind-icon">bugs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<a name="devdir" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> dev<wbr>Dir</h3>
+					<div class="tsd-signature tsd-kind-icon">dev<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L77">services/project.ts:77</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="description" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> description</h3>
-					<div class="tsd-signature tsd-kind-icon">description<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L69">services/project.ts:69</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L26">services/project.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="homepage" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> homepage</h3>
-					<div class="tsd-signature tsd-kind-icon">homepage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="provider" class="tsd-anchor"></a>
+					<h3>provider</h3>
+					<div class="tsd-signature tsd-kind-icon">provider<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"github"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"firebase"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"hosting"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"server"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L71">services/project.ts:71</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L23">services/project.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="license" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> license</h3>
-					<div class="tsd-signature tsd-kind-icon">license<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="sourcedir" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> source<wbr>Dir</h3>
+					<div class="tsd-signature tsd-kind-icon">source<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L72">services/project.ts:72</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L27">services/project.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="stagingdir" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> staging<wbr>Dir</h3>
+					<div class="tsd-signature tsd-kind-icon">staging<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L67">services/project.ts:67</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L28">services/project.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="repository" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> repository</h3>
-					<div class="tsd-signature tsd-kind-icon">repository<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<a name="url" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> url</h3>
+					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L73">services/project.ts:73</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-							</li>
-							<li class="tsd-parameter">
-								<h5>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="scripts" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> scripts</h3>
-					<div class="tsd-signature tsd-kind-icon">scripts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L80">services/project.ts:80</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-index-signature">
-								<h5><span class="tsd-signature-symbol">[</span>script: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">string</span></h5>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="version" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> version</h3>
-					<div class="tsd-signature tsd-kind-icon">version<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L68">services/project.ts:68</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/project.ts#L25">services/project.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -235,45 +175,36 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_services_project_.githubprovider.html" class="tsd-kind-icon">Github<wbr>Provider</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_services_project_.packagedotjson.html" class="tsd-kind-icon">Package<wbr>Dot<wbr>Json</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_services_project_.packagedotjson.html" class="tsd-kind-icon">Package<wbr>Dot<wbr>Json</a>
+						<a href="_services_project_.sheetbasedeployment.html" class="tsd-kind-icon">Sheetbase<wbr>Deployment</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_project_.packagedotjson.html#author" class="tsd-kind-icon">author</a>
+								<a href="_services_project_.sheetbasedeployment.html#destination" class="tsd-kind-icon">destination</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_project_.packagedotjson.html#bugs" class="tsd-kind-icon">bugs</a>
+								<a href="_services_project_.sheetbasedeployment.html#devdir" class="tsd-kind-icon">dev<wbr>Dir</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_project_.packagedotjson.html#description" class="tsd-kind-icon">description</a>
+								<a href="_services_project_.sheetbasedeployment.html#provider" class="tsd-kind-icon">provider</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_project_.packagedotjson.html#homepage" class="tsd-kind-icon">homepage</a>
+								<a href="_services_project_.sheetbasedeployment.html#sourcedir" class="tsd-kind-icon">source<wbr>Dir</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_project_.packagedotjson.html#license" class="tsd-kind-icon">license</a>
+								<a href="_services_project_.sheetbasedeployment.html#stagingdir" class="tsd-kind-icon">staging<wbr>Dir</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_project_.packagedotjson.html#name" class="tsd-kind-icon">name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_project_.packagedotjson.html#repository" class="tsd-kind-icon">repository</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_project_.packagedotjson.html#scripts" class="tsd-kind-icon">scripts</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_services_project_.packagedotjson.html#version" class="tsd-kind-icon">version</a>
+								<a href="_services_project_.sheetbasedeployment.html#url" class="tsd-kind-icon">url</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_services_project_.sheetbasedeployment.html" class="tsd-kind-icon">Sheetbase<wbr>Deployment</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_services_project_.sheetbasedotjson.html" class="tsd-kind-icon">Sheetbase<wbr>Dot<wbr>Json</a>
 					</li>

@@ -77,6 +77,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_services_utils_.html#buildvalidfilename" class="tsd-kind-icon">build<wbr>Valid<wbr>File<wbr>Name</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_services_utils_.html#formatdate" class="tsd-kind-icon">format<wbr>Date</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_services_utils_.html#makeupvalues" class="tsd-kind-icon">makeup<wbr>Values</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_services_utils_.html#replacebetween" class="tsd-kind-icon">replace<wbr>Between</a></li>
 							</ul>
 						</section>
 					</div>
@@ -94,7 +95,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/6b26949/src/services/utils.ts#L35">services/utils.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/utils.ts#L35">services/utils.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -122,7 +123,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/6b26949/src/services/utils.ts#L1">services/utils.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/utils.ts#L1">services/utils.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -145,7 +146,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/6b26949/src/services/utils.ts#L49">services/utils.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/utils.ts#L49">services/utils.ts:49</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -168,7 +169,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/6b26949/src/services/utils.ts#L62">services/utils.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/utils.ts#L62">services/utils.ts:62</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -178,6 +179,38 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="replacebetween" class="tsd-anchor"></a>
+					<h3>replace<wbr>Between</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">replace<wbr>Between<span class="tsd-signature-symbol">(</span>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, replaceWith<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, starts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span>, ends<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/utils.ts#L93">services/utils.ts:93</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>content: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>replaceWith: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> starts: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> ends: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -207,6 +240,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_services_utils_.html#makeupvalues" class="tsd-kind-icon">makeup<wbr>Values</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_services_utils_.html#replacebetween" class="tsd-kind-icon">replace<wbr>Between</a>
 					</li>
 				</ul>
 			</nav>

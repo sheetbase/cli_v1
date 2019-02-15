@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;commands/project/project-configs&quot; | @sheetbase/cli</title>
+	<title>&quot;services/data&quot; | @sheetbase/cli</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="_commands_project_project_configs_.html">&quot;commands/project/project-configs&quot;</a>
+					<a href="_services_data_.html">&quot;services/data&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;commands/project/project-configs&quot;</h1>
+			<h1>External module &quot;services/data&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -70,50 +70,37 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Variables</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_commands_project_project_configs_.html#ttytable" class="tsd-kind-icon">tty<wbr>Table</a></li>
-							</ul>
-						</section>
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_commands_project_project_configs_.html#projectconfigscommand" class="tsd-kind-icon">project<wbr>Configs<wbr>Command</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_services_data_.html#getdata" class="tsd-kind-icon">get<wbr>Data</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
-				<h2>Variables</h2>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="ttytable" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> tty<wbr>Table</h3>
-					<div class="tsd-signature tsd-kind-icon">tty<wbr>Table<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;tty-table&#x27;)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/commands/project/project-configs.ts#L1">commands/project/project-configs.ts:1</a></li>
-						</ul>
-					</aside>
-				</section>
-			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="projectconfigscommand" class="tsd-anchor"></a>
-					<h3>project<wbr>Configs<wbr>Command</h3>
+					<a name="getdata" class="tsd-anchor"></a>
+					<h3>get<wbr>Data</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">project<wbr>Configs<wbr>Command<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Data<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/commands/project/project-configs.ts#L6">commands/project/project-configs.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/sheetbase/cli/blob/8797003/src/services/data.ts#L3">services/data.ts:3</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>input: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -126,17 +113,14 @@
 						<a href="../index.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_commands_project_project_configs_.html">"commands/project/project-<wbr>configs"</a>
+						<a href="_services_data_.html">"services/data"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_commands_project_project_configs_.html#ttytable" class="tsd-kind-icon">tty<wbr>Table</a>
-					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_commands_project_project_configs_.html#projectconfigscommand" class="tsd-kind-icon">project<wbr>Configs<wbr>Command</a>
+						<a href="_services_data_.html#getdata" class="tsd-kind-icon">get<wbr>Data</a>
 					</li>
 				</ul>
 			</nav>

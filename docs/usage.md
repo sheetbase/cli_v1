@@ -17,7 +17,7 @@ Sub-commands: list|ls, connect|add, disconnect|remove|rm, default.
 ### Project
 
 Project general tasks.
-Sub-commands: start, setup, configs, config, urls, url, info, models, model.
+Sub-commands: start, setup, configs, config, urls, url, info, build, deploy, preview, models, model.
 
 #### Options
 
@@ -97,6 +97,21 @@ Proxy of **project model**
 
 Output project info.
 Proxy of **project info**
+
+### Build
+
+Build the project.
+Proxy of **project build**
+
+### Deploy
+
+Deploy the project.
+Proxy of **project deploy**
+
+### Preview
+
+Preview the project.
+Proxy of **project preview**
 
 ### Backend
 

@@ -69,7 +69,7 @@ program
 
 /**
  * Project general tasks.
- * Sub-commands: start, setup, configs, config, urls, url, info, models, model.
+ * Sub-commands: start, setup, configs, config, urls, url, info, build, deploy, preview, models, model.
  * @name project
  * @param {string?} [subCommand] Supported sub-commands.
  * @param {string[]?} [params] Command params, comma-separated.
