@@ -23,6 +23,7 @@ export interface SheetbaseDeployment {
     provider: 'github' | 'firebase' | 'hosting' | 'server';
     destination: GithubProvider;
     url?: string;
+    devDir?: string;
     sourceDir?: string;
     stagingDir?: string;
 }
@@ -30,7 +31,9 @@ export interface SheetbaseDeployment {
 export interface SheetbasePrerender {
     location?: string;
     keyField?: string;
-    fields: {[field: string]: string};
+    rewriteFields?: {[field: string]: string};
+    changefreq?: string;
+    priority?: string;
 }
 
 export interface SheetbaseDotJson {

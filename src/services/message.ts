@@ -122,6 +122,7 @@ export const LOGS = {
     FRONTEND_BUILD__OK: 'To re-deploy the frontend: ' + magenta('sheetbase frontend deploy'),
     FRONTEND_DEPLOY__OK: (url: string) => `Frontend deployed. View: ${url}`,
     FRONTEND_PRERENDER__OK: 'Prerender content completed.',
+    FRONTEND_SEO__OK: 'SEO content saved.',
     GOOGLE_CONNECT__WARN__CREDS: 'File ".googlerc.json" saved, please keep the file SECRET.',
     GOOGLE_CONNECT__OK: 'Account connected, see list: ' + magenta('sheetbase google list'),
     GOOGLE_DEFAULT__OK: (id: string) => `Default acccount changed to "${id}", detail: ` + magenta('sheetbase google list -d'),

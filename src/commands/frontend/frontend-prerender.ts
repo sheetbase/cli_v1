@@ -14,7 +14,7 @@ import { logError, logOk, logAction } from '../../services/message';
 export async function frontendPrerenderCommand() {
     const { deployment, prerender } = await getSheetbaseDotJson();
     const { backendUrl, apiKey = '' } = await getFrontendConfigs();
-    const { url, stagingDir } = deployment || {} as SheetbaseDeployment;
+    const { url = '', stagingDir } = deployment || {} as SheetbaseDeployment;
     const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
         resolve(homedir(), 'sheetbase_staging', name);
 
