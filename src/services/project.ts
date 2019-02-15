@@ -28,9 +28,8 @@ export interface SheetbaseDeployment {
 }
 
 export interface SheetbasePrerender {
-    path?: string;
+    location?: string;
     keyField?: string;
-    renderer?(html: string, item: any): string;
 }
 
 export interface SheetbaseDotJson {

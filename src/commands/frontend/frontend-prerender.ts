@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { homedir } from 'os';
-import { pathExists, readFile, outputFile } from 'fs-extra';
+import { pathExists, readFile, outputFile, remove } from 'fs-extra';
 
 import {
     SheetbaseDeployment,
@@ -13,11 +13,10 @@ import { logError, logOk, logAction } from '../../services/message';
 
 export async function frontendPrerenderCommand() {
     const { deployment, prerender } = await getSheetbaseDotJson();
-    const { stagingDir } = deployment || {} as SheetbaseDeployment;
     const { backendUrl, apiKey = '' } = await getFrontendConfigs();
+    const { stagingDir } = deployment || {} as SheetbaseDeployment;
     const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
         resolve(homedir(), 'sheetbase_staging', name);
-    const data: {[table: string]: any[]} = {};
 
     // check if dir exists
     if (!await pathExists(stagingCwd)) {
@@ -28,31 +27,27 @@ export async function frontendPrerenderCommand() {
         return logError('FRONTEND_PRERENDER__ERROR__NO_PRERENDER');
     }
 
-    // get data
-    await logAction('Load the data.', async () => {
-        for (const key of Object.keys(prerender)) {
+    for (const key of Object.keys(prerender)) {
+        await logAction('Prerender table "' + key + '".', async () => {
+            // load configs
+            const { location = '', keyField = '#' } = prerender[key] || {} as SheetbasePrerender;
+            // clear previous rendered by location
+            if (!!location) {
+                await remove(resolve(stagingCwd, location));
+            }
+            // load data
             const { data: items = [] } = await getData(
                 `${backendUrl}?e=/database&table=${key}&apiKey=${apiKey}`,
             );
-            data[key] = items;
-        }
-    });
-
-    // render content
-    const indexHtmlContent = await readFile(resolve(stagingCwd, 'index.html'), 'utf-8');
-    for (const key of Object.keys(data)) {
-        const items = data[key]; // get items
-        await logAction('Prerender table "' + key + '".', async () => {
-            const { path = '', keyField = '#', renderer } = prerender[key] || {} as SheetbasePrerender;
+            // load index html
+            const indexHtmlContent = await readFile(resolve(stagingCwd, 'index.html'), 'utf-8');
+            // render content
             for (let i = 0; i < items.length; i++) {
                 const item = items[i]; // an item
-                const key = item[keyField]; // item key
                 // save file
                 await outputFile(
-                    resolve(stagingCwd, path, key, 'index.html'),
-                    !!renderer ?
-                        renderer(indexHtmlContent, item) :
-                        prerenderer(indexHtmlContent, item),
+                    resolve(stagingCwd, location, item[keyField], 'index.html'),
+                    prerenderer(indexHtmlContent, item),
                 );
             }
         });
