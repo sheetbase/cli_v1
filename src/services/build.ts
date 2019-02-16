@@ -63,9 +63,6 @@ export function prerenderer(
     content = content.substr(0, 3) === '<p>' || content.substr(0, -4) === '</p>' ?
         content : '<p>' + content + '</p>';
 
-    // replace title
-    html = replaceBetween(html, title, '<title>', '</title>');
-
     // add content
     const article = (
     `<article class="sheetbase-prerender-content">
@@ -87,29 +84,31 @@ export function prerenderer(
     // modify meta data
     if (!!title) {
         html = replaceBetween(html, title, [
-            ['<meta property="og:title" content="', '">'], // facebook
+            ['<title>', '</title>'],
             ['<meta itemprop="name" content="', '">'], // google
             ['<meta name="twitter:title" content="', '">'], // twitter
+            ['<meta name="og:title" content="', '">'], // facebook
         ]);
     }
     if (!!url) {
         html = replaceBetween(html, url, [
-            ['<meta property="og:url" content="', '">'], // facebook
-            ['<meta name="twitter:url" content="', '">'], // twitter
+            ['<meta name="og:url" content="', '">'], // facebook
         ]);
     }
     if (!!description) {
         html = replaceBetween(html, description, [
-            ['<meta property="og:description" content="', '">'], // facebook
+            ['<meta name="description" content="', '">'],
             ['<meta itemprop="description" content="', '">'], // google
             ['<meta name="twitter:description" content="', '">'], // twitter
+            ['<meta name="og:description" content="', '">'], // facebook
         ]);
     }
     if (!!image) {
         html = replaceBetween(html, image, [
-            ['<meta property="og:image" content="', '">'], // facebook
+            ['<meta name="image" content="', '">'],
             ['<meta itemprop="image" content="', '">'], // google
-            ['<meta name="twitter:image" content="', '">'], // twitter
+            ['<meta name="twitter:image:src" content="', '">'], // twitter
+            ['<meta name="og:image" content="', '">'], // facebook
         ]);
     }
     return html;
