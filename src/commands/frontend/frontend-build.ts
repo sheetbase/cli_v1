@@ -11,7 +11,12 @@ import { logError, logOk, logAction } from '../../services/message';
 export async function frontendBuildCommand() {
     const name = basename(process.cwd());
     const { deployment } = await getSheetbaseDotJson();
-    const { provider, sourceDir, stagingDir, destination } = deployment || {} as SheetbaseDeployment;
+    const {
+        provider,
+        wwwDir = './frontend/www',
+        stagingDir,
+        destination,
+    } = deployment || {} as SheetbaseDeployment;
     const {
         gitUrl, master, changeBase, // github
     } = destination || {} as GithubProvider;
@@ -65,7 +70,7 @@ export async function frontendBuildCommand() {
 
     // copy file to the staging
     await logAction('Copy files', async () => {
-        await copy(await getPath(sourceDir || './frontend/www'), stagingCwd);
+        await copy(await getPath(wwwDir), stagingCwd);
     });
 
     // provider specific tweaks

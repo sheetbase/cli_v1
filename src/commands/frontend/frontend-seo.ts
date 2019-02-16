@@ -16,9 +16,9 @@ export async function frontendSEOCommand() {
     const {
         url = '',
         stagingDir,
-        devDir = './frontend/src',
+        srcDir = './frontend/src',
     } = deployment || {} as SheetbaseDeployment;
-    const devCwd = await getPath(devDir);
+    const srcCwd = await getPath(srcDir);
     const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
         resolve(homedir(), 'sheetbase_staging', name);
 
@@ -80,7 +80,7 @@ export async function frontendSEOCommand() {
     // robots
     await logAction('Save robots.txt.', async () => {
         const robotsDest = resolve(stagingCwd, 'robots.txt');
-        const robotsSource = resolve(devCwd, 'robots.txt');
+        const robotsSource = resolve(srcCwd, 'robots.txt');
         if (await pathExists(robotsSource)) {
             await copy(robotsSource, robotsDest); // copy
         } else {

@@ -5,15 +5,15 @@ import { logInfo } from '../../services/message';
 
 export async function projectPreviewCommand() {
     const { deployment } = await getSheetbaseDotJson();
-    const { sourceDir = './frontend/www' } = deployment || {} as SheetbaseDeployment;
-    const sourceCwd = await getPath(sourceDir);
+    const { wwwDir = './frontend/www' } = deployment || {} as SheetbaseDeployment;
+    const wwwCwd = await getPath(wwwDir);
     // launch server
     superstatic.server({
         port: 7777,
         host: 'localhost',
-        cwd: sourceCwd,
+        cwd: wwwCwd,
         config: {
-            root: sourceCwd,
+            root: wwwCwd,
         },
         debug: true,
     }).listen(() => logInfo('See your app at: http://localhost:7777'));
