@@ -58,6 +58,8 @@ Sub-commands: start, setup, configs, config, urls, url, info, build, deploy, pre
 - `-o,--open`: (url) Open the url in browser.
 - `-d,--database`: (model) Custom database.
 - `-c,--clean`: (model) Remove the default 'Sheet1'.
+- `-b,--backend`: (build, deploy) Build or deploy backend only.
+- `-f,--frontend`: (build, deploy) Build or deploy frontend only.
 
 ### Start
 
@@ -133,10 +135,20 @@ Proxy of **project info**
 Build the project.
 Proxy of **project build**
 
+#### Options
+
+- `-b,--backend`: Build backend only.
+- `-f,--frontend`: Build frontend only.
+
 ### Deploy
 
 Deploy the project.
 Proxy of **project deploy**
+
+#### Options
+
+- `-b,--backend`: Deploy backend only.
+- `-f,--frontend`: Deploy frontend only.
 
 ### Preview
 

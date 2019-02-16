@@ -78,8 +78,8 @@ program
  * @param {boolean?} [-o,--open] (url) Open the url in browser.
  * @param {string?} [-d,--database] (model) Custom database.
  * @param {boolean?} [-c,--clean] (model) Remove the default 'Sheet1'.
- * @param {boolean?} [-b, --backend] (build, deploy) Build or deploy backend only.
- * @param {boolean?} [-f, --frontend] (build, deploy) Build or deploy frontend only.
+ * @param {boolean?} [-b,--backend] (build, deploy) Build or deploy backend only.
+ * @param {boolean?} [-f,--frontend] (build, deploy) Build or deploy frontend only.
  */
 program
   .command('project [subCommand] [params...]')
@@ -206,8 +206,8 @@ program
  * Build the project.
  * Proxy of **project build**
  * @name build
- * @param {boolean?} [-b, --backend] Build backend only.
- * @param {boolean?} [-f, --frontend] Build frontend only.
+ * @param {boolean?} [-b,--backend] Build backend only.
+ * @param {boolean?} [-f,--frontend] Build frontend only.
  */
 program
   .command('build')
@@ -220,8 +220,8 @@ program
  * Deploy the project.
  * Proxy of **project deploy**
  * @name deploy
- * @param {boolean?} [-b, --backend] Deploy backend only.
- * @param {boolean?} [-f, --frontend] Deploy frontend only.
+ * @param {boolean?} [-b,--backend] Deploy backend only.
+ * @param {boolean?} [-f,--frontend] Deploy frontend only.
  */
 program
   .command('deploy')
