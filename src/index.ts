@@ -78,6 +78,8 @@ program
  * @param {boolean?} [-o,--open] (url) Open the url in browser.
  * @param {string?} [-d,--database] (model) Custom database.
  * @param {boolean?} [-c,--clean] (model) Remove the default 'Sheet1'.
+ * @param {boolean?} [-b, --backend] (build, deploy) Build or deploy backend only.
+ * @param {boolean?} [-f, --frontend] (build, deploy) Build or deploy frontend only.
  */
 program
   .command('project [subCommand] [params...]')
@@ -87,6 +89,8 @@ program
   .option('-o, --open', `(${chalk.green('url')}) Open the url in browser.`)
   .option('-d, --database [value]', `(${chalk.green('model')}) Custom database.`)
   .option('-c, --clean', `(${chalk.green('model')}) Remove the default 'Sheet1'.`)
+  .option('-b, --backend', `(${chalk.green('build, deploy')}) Build or deploy backend only.`)
+  .option('-f, --frontend', `(${chalk.green('build, deploy')}) Build or deploy frontend only.`)
   .action(projectCommand);
 
 /**
@@ -202,20 +206,28 @@ program
  * Build the project.
  * Proxy of **project build**
  * @name build
+ * @param {boolean?} [-b, --backend] Build backend only.
+ * @param {boolean?} [-f, --frontend] Build frontend only.
  */
 program
   .command('build')
   .description(`Build the project.`)
-  .action(() => projectCommand('build'));
+  .option('-b, --backend', `Build backend only.`)
+  .option('-f, --frontend', `Build frontend only.`)
+  .action((options) => projectCommand('build', [], options));
 
 /**
  * Deploy the project.
  * Proxy of **project deploy**
  * @name deploy
+ * @param {boolean?} [-b, --backend] Deploy backend only.
+ * @param {boolean?} [-f, --frontend] Deploy frontend only.
  */
 program
   .command('deploy')
   .description(`Deploy the project.`)
+  .option('-b, --backend', `Deploy backend only.`)
+  .option('-f, --frontend', `Deploy frontend only.`)
   .action(() => projectCommand('deploy'));
 
 /**

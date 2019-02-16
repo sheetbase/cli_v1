@@ -21,6 +21,8 @@ export interface Options {
     open?: boolean;
     database?: string;
     clean?: boolean;
+    backend?: boolean;
+    frontend?: boolean;
 }
 
 export async function projectCommand(command: string, params: string[] = [], options: Options = {}) {
@@ -71,11 +73,11 @@ export async function projectCommand(command: string, params: string[] = [], opt
         break;
 
         case 'build':
-            await projectBuildCommand();
+            await projectBuildCommand(options);
         break;
 
         case 'deploy':
-            await projectDeployCommand();
+            await projectDeployCommand(options);
         break;
 
         case 'preview':
