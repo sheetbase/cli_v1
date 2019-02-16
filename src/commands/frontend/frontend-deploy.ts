@@ -4,7 +4,7 @@ import { execSync } from 'child_process';
 import { pathExists } from 'fs-extra';
 
 import { GithubProvider, SheetbaseDeployment, getPath, getSheetbaseDotJson } from '../../services/project';
-import { logError, logOk } from '../../services/message';
+import { logError, logOk, logInfo } from '../../services/message';
 
 export async function frontendDeployCommand() {
     const name = basename(process.cwd());
@@ -22,6 +22,7 @@ export async function frontendDeployCommand() {
     }
     // deploy
     if (provider === 'github') {
+        logInfo('Call \'git\', please wait!');
         const { master } = destination || {} as GithubProvider;
         execSync('git add .', { cwd: stagingCwd, stdio: 'ignore' });
         execSync(
