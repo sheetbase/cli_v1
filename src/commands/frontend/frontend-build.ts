@@ -13,7 +13,7 @@ export async function frontendBuildCommand() {
     const { deployment } = await getSheetbaseDotJson();
     const { provider, sourceDir, stagingDir, destination } = deployment || {} as SheetbaseDeployment;
     const {
-        gitUrl, noMaster, updateBase, // github
+        gitUrl, master, changeBase, // github
     } = destination || {} as GithubProvider;
     const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
         resolve(homedir(), 'sheetbase_staging', name);
@@ -44,7 +44,7 @@ export async function frontendBuildCommand() {
                 // set remote
                 execSync('git remote add origin ' + gitUrl, { cwd: stagingCwd, stdio: 'ignore' });
                 // use master or gh-pages
-                if (noMaster) {
+                if (!master) {
                     execSync(
                         'git checkout -b gh-pages',
                         { cwd: stagingCwd, stdio: 'ignore' },
@@ -85,7 +85,7 @@ export async function frontendBuildCommand() {
                 resolve(stagingCwd, 'index.html'),
                 githubIndexHtmlSPAGenerator(
                     indexHtmlContent,
-                    updateBase ? `https://${org}.github.io/${repo}/` : null,
+                    changeBase ? `https://${org}.github.io/${repo}/` : null,
                 ),
             );
         }

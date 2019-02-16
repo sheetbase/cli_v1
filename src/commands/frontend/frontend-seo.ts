@@ -26,7 +26,7 @@ export async function frontendSEOCommand() {
     if (!await pathExists(stagingCwd)) {
         return logError('FRONTEND_DEPLOY__ERROR__NO_STAGING');
     }
-    if (!prerender) {
+    if (!prerender || !Object.keys(prerender).length) {
         return logError('FRONTEND_PRERENDER__ERROR__NO_PRERENDER');
     }
 

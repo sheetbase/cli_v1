@@ -15,8 +15,8 @@ export const FRONTEND_CONFIG_FILE = 'frontend/src/sheetbase.config.ts';
 
 export interface GithubProvider {
     gitUrl: string;
-    noMaster?: boolean;
-    updateBase?: boolean;
+    master?: boolean;
+    changeBase?: boolean;
 }
 
 export interface SheetbaseDeployment {
