@@ -27,6 +27,10 @@ export async function frontendPrerenderCommand() {
         return logError('FRONTEND_PRERENDER__ERROR__NO_PRERENDER');
     }
 
+    // load index html
+    const indexHtmlContent = await readFile(resolve(stagingCwd, 'index.html'), 'utf-8');
+
+    // prerender
     for (const key of Object.keys(prerender)) {
         await logAction('Prerender table "' + key + '".', async () => {
             // load configs
@@ -40,8 +44,6 @@ export async function frontendPrerenderCommand() {
             const { data: items = [] } = await getData(
                 `${backendUrl}?e=/database&table=${key}` + (!!apiKey ? '&apiKey=' + apiKey : ''),
             );
-            // load index html
-            const indexHtmlContent = await readFile(resolve(stagingCwd, 'index.html'), 'utf-8');
             // render content
             for (let i = 0; i < items.length; i++) {
                 const item = items[i]; // an item

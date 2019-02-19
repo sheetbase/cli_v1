@@ -228,7 +228,7 @@ program
   .description(`Deploy the project.`)
   .option('-b, --backend', `Deploy backend only.`)
   .option('-f, --frontend', `Deploy frontend only.`)
-  .action(() => projectCommand('deploy'));
+  .action((options) => projectCommand('deploy', [], options));
 
 /**
  * Preview the project.
