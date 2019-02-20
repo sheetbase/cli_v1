@@ -29,7 +29,6 @@ export interface SheetbaseDeployment {
 }
 
 export interface SheetbasePrerender {
-    type?: 'general' | 'article' | 'product' | 'image' | 'video';
     location?: string;
     keyField?: string;
     rewriteFields?: {[field: string]: string};

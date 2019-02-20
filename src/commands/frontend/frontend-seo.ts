@@ -50,7 +50,7 @@ export async function frontendSEOCommand() {
             // render content
             for (let i = 0; i < items.length; i++) {
                 const item = items[i]; // an item
-                const remoteUrl = (url + '/' + location + '/' + item[keyField]).replace('//', '/');
+                const remoteUrl = (url + '/' + location + '/' + item[keyField]).replace('//', '/') + '/';
                 const lastMod = (
                     item[fields['updatedAt'] || 'updatedAt'] ||
                     new Date().toISOString()

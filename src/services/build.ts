@@ -51,7 +51,7 @@ export function prerenderer(
     url: string,
     configs: SheetbasePrerender,
 ) {
-    const { type, rewriteFields = {}, defaultValues = {} } = configs;
+    const { rewriteFields = {}, defaultValues = {} } = configs;
 
     // prepare data
     const title: string = item[rewriteFields['title'] || 'title'] ||
@@ -88,117 +88,27 @@ export function prerenderer(
         html = replaceBetween(html, title, [
             ['<title>', '</title>'],
             ['<meta itemprop="name" content="', '" />'], // google
-            ['<meta name="twitter:title" content="', '" />'], // twitter
-            ['<meta property="og:title" content="', '" />'], // facebook
+            ['<meta property="og:title" content="', '" />'], // facebook & twitter
         ]);
     }
     if (!!url) {
         html = replaceBetween(html, url, [
-            ['<meta property="og:url" content="', '" />'], // facebook
+            ['<link rel="canonical" href="', '" />'],
+            ['<meta property="og:url" content="', '" />'], // facebook & twitter
         ]);
     }
     if (!!description) {
         html = replaceBetween(html, description, [
             ['<meta name="description" content="', '" />'],
             ['<meta itemprop="description" content="', '" />'], // google
-            ['<meta name="twitter:description" content="', '" />'], // twitter
-            ['<meta property="og:description" content="', '" />'], // facebook
+            ['<meta property="og:description" content="', '" />'], // facebook & twitter
         ]);
     }
     if (!!image) {
         html = replaceBetween(html, image, [
-            ['<meta name="image" content="', '" />'],
             ['<meta itemprop="image" content="', '" />'], // google
-            ['<meta name="twitter:image" content="', '" />'], // twitter
-            ['<meta property="og:image" content="', '" />'], // facebook
+            ['<meta property="og:image" content="', '" />'], // facebook & twitter
         ]);
-    }
-
-    // custom type
-    if (type === 'article') {
-        // author
-        let author: string | {} = item[rewriteFields['author'] || 'author'] ||
-            defaultValues['author'] || 'Sheetbase';
-        author = (author instanceof Object) ? author[Object.keys(author).pop()] : author;
-        // publisher
-        const publisher: string = item[rewriteFields['publisher'] || 'publisher'] ||
-            defaultValues['publisher'] || 'Sheetbase';
-        // published
-        let published: string = item[rewriteFields['published'] || 'published'] ||
-            defaultValues['published'];
-        published = new Date(published || new Date()).toISOString();
-        // modified
-        let modified: string = item[rewriteFields['modified'] || 'modified'] ||
-            defaultValues['modified'] || published;
-        modified = new Date(modified || new Date()).toISOString();
-        // section
-        let section: string | {} = item[rewriteFields['section'] || 'section'] ||
-            defaultValues['section'] || 'Sheetbase';
-        section = (section instanceof Object) ? section[Object.keys(section).pop()] : section;
-        // tag
-        const _tag: string | {} = item[rewriteFields['tag'] || 'tag'] ||
-            defaultValues['tag'] || 'sheetbase blog app';
-        let tag = '';
-        if (_tag instanceof Object) {
-            for (const key of Object.keys(_tag)) { tag += _tag[key] + ' '; }
-            tag = tag.trim();
-        } else {
-            tag = _tag as string;
-        }
-        // change type
-        html = replaceBetween(html, 'article', '<meta property="og:type" content="', '" />');
-        // add tags
-        html = html.replace(
-            '</head>',
-  `
-
-  <!-- Facebook: Article -->
-  <meta property="article:author" content="${author}" />
-  <meta property="article:publisher" content="${publisher}" />
-  <meta property="article:published_time" content="${published}" />
-  <meta property="article:modified_time" content="${modified}" />
-  <meta property="article:section" content="${section}" />
-  <meta property="article:tag" content="${tag}" />
-
-  </head>`,
-        );
-    } else if (type === 'product') {
-        // availability
-        const availability: string = item[rewriteFields['availability'] || 'availability'] ||
-            defaultValues['availability'] || 'instock';
-        // brand
-        const brand: string = item[rewriteFields['brand'] || 'brand'] ||
-            defaultValues['brand'] || 'Sheetbase';
-        // category
-        let category: string | {} = item[rewriteFields['category'] || 'category'] ||
-            defaultValues['category'] || 'Sheetbase';
-        category = (category instanceof Object) ? category[Object.keys(category).pop()] : category;
-        // price
-        const price: string = item[rewriteFields['price'] || 'price'] ||
-            defaultValues['price'] || 0;
-        // currency
-        const currency: string = item[rewriteFields['currency'] || 'currency'] ||
-            defaultValues['currency'] || 'USD';
-        // change type
-        html = replaceBetween(html, 'product', '<meta property="og:type" content="', '" />');
-        // add tags
-        html = html.replace(
-            '</head>',
-  `
-
-  <!-- Facebook: Product -->
-  <meta property="product:availability" content="${availability}" />
-  <meta property="product:brand" content="${brand}" />
-  <meta property="product:category" content="${category}" />
-  <meta property="product:price:amount" content="${price}" />
-  <meta property="product:price:currency" content="${currency}" />
-
-  </head>`,
-        );
-    } else if (type === 'image') {
-
-    } else if (type === 'video') {
-
     }
 
     return html;
