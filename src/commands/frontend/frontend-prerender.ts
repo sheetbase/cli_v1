@@ -1,10 +1,11 @@
 import { resolve } from 'path';
 import { homedir } from 'os';
-import { pathExists, readFile, outputFile, remove } from 'fs-extra';
+import { pathExists, readFile, outputFile, readJson, remove } from 'fs-extra';
 
 import {
     SheetbaseDeployment,
     SheetbasePrerender,
+    SheetbaseDirectPrerender,
     getSheetbaseDotJson, getFrontendConfigs, getPath,
 } from '../../services/project';
 import { getData } from '../../services/data';
@@ -12,9 +13,13 @@ import { prerenderer } from '../../services/build';
 import { logError, logOk, logAction } from '../../services/message';
 
 export async function frontendPrerenderCommand() {
-    const { deployment, prerender } = await getSheetbaseDotJson();
+    const {
+        deployment = {} as SheetbaseDeployment,
+        prerender = {},
+        directPrerender = [],
+    } = await getSheetbaseDotJson();
     const { backendUrl, apiKey = '' } = await getFrontendConfigs();
-    const { url = '', stagingDir } = deployment || {} as SheetbaseDeployment;
+    const { url = '', stagingDir } = deployment;
     const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
         resolve(homedir(), 'sheetbase_staging', name);
 
@@ -23,7 +28,10 @@ export async function frontendPrerenderCommand() {
         return logError('FRONTEND_DEPLOY__ERROR__NO_STAGING');
     }
 
-    if (!prerender || !Object.keys(prerender).length) {
+    if (
+        (!prerender || !Object.keys(prerender).length) &&
+        (!directPrerender || !directPrerender.length)
+    ) {
         return logError('FRONTEND_PRERENDER__ERROR__NO_PRERENDER');
     }
 
@@ -54,6 +62,32 @@ export async function frontendPrerenderCommand() {
                 await outputFile(
                     resolve(stagingCwd, location, item[keyField], 'index.html'),
                     prerenderer(indexHtmlContent, item, remoteUrl, prerenderConfigs),
+                );
+            }
+        });
+    }
+
+    // direct prerender
+    if (!!directPrerender && !!directPrerender.length) {
+        await logAction('Prerender direct items.', async () => {
+            let items: SheetbaseDirectPrerender[];
+            // load items from .json
+            if (typeof directPrerender === 'string') {
+                items = await readJson(resolve('.', directPrerender));
+            } else {
+                items = directPrerender;
+            }
+            // render
+            for (let i = 0; i < items.length; i++) {
+                const prerenderConfigs = items[i] || {} as SheetbaseDirectPrerender;
+                const { keyField = '#', data } = prerenderConfigs;
+                const remoteUrl = (url + '/' + data[keyField])
+                    .replace('//', '/')
+                    .replace(':/', '://') + '/';
+                // save files
+                await outputFile(
+                    resolve(stagingCwd, data[keyField], 'index.html'),
+                    prerenderer(indexHtmlContent, data, remoteUrl, prerenderConfigs),
                 );
             }
         });

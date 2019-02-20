@@ -38,6 +38,15 @@ export interface SheetbasePrerender {
     priority?: string;
 }
 
+export interface SheetbaseDirectPrerender extends SheetbasePrerender {
+    data: {
+        title: string;
+        description?: string;
+        image?: string;
+        content?: string;
+    };
+}
+
 export interface SheetbaseDotJson {
     driveFolder?: string;
     configs?: {
@@ -63,6 +72,7 @@ export interface SheetbaseDotJson {
     prerender?: {
         [table: string]: SheetbasePrerender;
     };
+    directPrerender?: string | SheetbaseDirectPrerender[];
 }
 
 export interface PackageDotJson {

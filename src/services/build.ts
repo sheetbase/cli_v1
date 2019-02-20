@@ -49,9 +49,9 @@ export function prerenderer(
     html: string,
     item: any,
     url: string,
-    configs: SheetbasePrerender,
+    prerenderConfigs: SheetbasePrerender,
 ) {
-    const { rewriteFields = {}, defaultValues = {} } = configs;
+    const { rewriteFields = {}, defaultValues = {} } = prerenderConfigs;
 
     // prepare data
     const title: string = item[rewriteFields['title'] || 'title'] ||

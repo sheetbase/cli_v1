@@ -1,23 +1,28 @@
 import { resolve } from 'path';
 import { homedir, EOL } from 'os';
-import { pathExists, outputFile, copy } from 'fs-extra';
+import { pathExists, outputFile, readJson, copy } from 'fs-extra';
 
 import {
     SheetbaseDeployment,
     SheetbasePrerender,
+    SheetbaseDirectPrerender,
     getSheetbaseDotJson, getFrontendConfigs, getPath,
 } from '../../services/project';
 import { getData } from '../../services/data';
 import { logError, logOk, logAction } from '../../services/message';
 
 export async function frontendSEOCommand() {
-    const { deployment, prerender } = await getSheetbaseDotJson();
+    const {
+        deployment = {} as SheetbaseDeployment,
+        prerender = {},
+        directPrerender = [],
+    } = await getSheetbaseDotJson();
     const { backendUrl, apiKey = '' } = await getFrontendConfigs();
     const {
         url = '',
         stagingDir,
         srcDir = './frontend/src',
-    } = deployment || {} as SheetbaseDeployment;
+    } = deployment;
     const srcCwd = await getPath(srcDir);
     const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
         resolve(homedir(), 'sheetbase_staging', name);
@@ -26,7 +31,10 @@ export async function frontendSEOCommand() {
     if (!await pathExists(stagingCwd)) {
         return logError('FRONTEND_DEPLOY__ERROR__NO_STAGING');
     }
-    if (!prerender || !Object.keys(prerender).length) {
+    if (
+        (!prerender || !Object.keys(prerender).length) &&
+        (!directPrerender || !directPrerender.length)
+    ) {
         return logError('FRONTEND_PRERENDER__ERROR__NO_PRERENDER');
     }
 
@@ -40,6 +48,7 @@ export async function frontendSEOCommand() {
                 location = '',
                 keyField = '#',
                 rewriteFields: fields = {},
+                defaultValues = {},
                 changefreq = 'daily',
                 priority = '0.5',
             } = prerenderConfigs;
@@ -55,7 +64,7 @@ export async function frontendSEOCommand() {
                     .replace(':/', '://') + '/';
                 const lastMod = (
                     item[fields['updatedAt'] || 'updatedAt'] ||
-                    new Date().toISOString()
+                    defaultValues['updatedAt'] || new Date().toISOString()
                 ).substr(0, 10);
                 // add to sitemap
                 sitemap += (
@@ -69,6 +78,49 @@ export async function frontendSEOCommand() {
             }
         });
     }
+
+    // direct sitemap
+    let directSitemap = '';
+    if (!!directPrerender && !!directPrerender.length) {
+        await logAction('Generate direct sitemap.', async () => {
+            let items: SheetbaseDirectPrerender[];
+            // load items from .json
+            if (typeof directPrerender === 'string') {
+                items = await readJson(resolve('.', directPrerender));
+            } else {
+                items = directPrerender;
+            }
+            // render
+            for (let i = 0; i < items.length; i++) {
+                const prerenderConfigs = items[i] || {} as SheetbaseDirectPrerender;
+                const {
+                    keyField = '#',
+                    rewriteFields: fields = {},
+                    defaultValues = {},
+                    changefreq = 'daily',
+                    priority = '0.5',
+                    data = {},
+                } = prerenderConfigs;
+                const remoteUrl = (url + '/' + data[keyField])
+                    .replace('//', '/')
+                    .replace(':/', '://') + '/';
+                const lastMod = (
+                    data[fields['updatedAt'] || 'updatedAt'] ||
+                    defaultValues['updatedAt'] || new Date().toISOString()
+                ).substr(0, 10);
+                // add to sitemap
+                directSitemap += (
+                    '   <url>' + EOL +
+                    '       <loc>' + remoteUrl + '</loc>' + EOL +
+                    '       <lastmod>' + lastMod + '</lastmod>' + EOL +
+                    '       <changefreq>' + changefreq + '</changefreq>' + EOL +
+                    '       <priority>' + priority + '</priority>' + EOL +
+                    '   </url>' + EOL
+                );
+            }
+        });
+    }
+
     // save file
     await logAction('Save sitemap.xml.', async () => {
         await outputFile(
@@ -81,6 +133,7 @@ export async function frontendSEOCommand() {
             '       <changefreq>' + 'daily' + '</changefreq>' + EOL +
             '       <priority>' + '1.0' + '</priority>' + EOL +
             '   </url>' + EOL +
+            directSitemap + EOL +
             sitemap + EOL +
             '</urlset>',
         );
