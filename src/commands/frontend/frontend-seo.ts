@@ -33,7 +33,7 @@ export async function frontendSEOCommand() {
     // sitemap
     let sitemap = '';
     for (const key of Object.keys(prerender)) {
-        await logAction('Generate sitemap for table "' + key + '".', async () => {
+        await logAction('Generate sitemap for "' + key + '".', async () => {
             // load configs
             const prerenderConfigs = prerender[key] || {} as SheetbasePrerender;
             const {

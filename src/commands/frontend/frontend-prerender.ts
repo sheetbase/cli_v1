@@ -32,7 +32,7 @@ export async function frontendPrerenderCommand() {
 
     // prerender
     for (const key of Object.keys(prerender)) {
-        await logAction('Prerender table "' + key + '".', async () => {
+        await logAction('Prerender "' + key + '".', async () => {
             // load configs
             const prerenderConfigs = prerender[key] || {} as SheetbasePrerender;
             const { location = '', keyField = '#' } = prerenderConfigs;
