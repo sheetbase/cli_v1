@@ -50,7 +50,9 @@ export async function frontendSEOCommand() {
             // render content
             for (let i = 0; i < items.length; i++) {
                 const item = items[i]; // an item
-                const remoteUrl = (url + '/' + location + '/' + item[keyField]).replace('//', '/') + '/';
+                const remoteUrl = (url + '/' + location + '/' + item[keyField])
+                    .replace('//', '/')
+                    .replace(':/', '://') + '/';
                 const lastMod = (
                     item[fields['updatedAt'] || 'updatedAt'] ||
                     new Date().toISOString()
@@ -67,11 +69,18 @@ export async function frontendSEOCommand() {
             }
         });
     }
+    // save file
     await logAction('Save sitemap.xml.', async () => {
         await outputFile(
         resolve(stagingCwd, 'sitemap.xml'),
             '<?xml version="1.0" encoding="UTF-8"?>' + EOL +
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + EOL +
+            '   <url>' + EOL +
+            '       <loc>' + url + '</loc>' + EOL +
+            '       <lastmod>' + (new Date().toISOString()).substr(0, 10) + '</lastmod>' + EOL +
+            '       <changefreq>' + 'daily' + '</changefreq>' + EOL +
+            '       <priority>' + '1.0' + '</priority>' + EOL +
+            '   </url>' + EOL +
             sitemap + EOL +
             '</urlset>',
         );

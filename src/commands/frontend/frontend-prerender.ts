@@ -47,7 +47,9 @@ export async function frontendPrerenderCommand() {
             // render content
             for (let i = 0; i < items.length; i++) {
                 const item = items[i]; // an item
-                const remoteUrl = (url + '/' + location + '/' + item[keyField]).replace('//', '/') + '/';
+                const remoteUrl = (url + '/' + location + '/' + item[keyField])
+                    .replace('//', '/')
+                    .replace(':/', '://') + '/';
                 // save files
                 await outputFile(
                     resolve(stagingCwd, location, item[keyField], 'index.html'),
