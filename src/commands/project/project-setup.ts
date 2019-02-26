@@ -31,7 +31,7 @@ export async function projectSetupCommand() {
 
     // drive folder
     if (!driveFolder) {
-        await logAction('Create drive folder', async () => {
+        await logAction('Create the Drive folder', async () => {
             driveFolder = await driveCreateFolder(googleClient, `Sheetbase Project: ${namePretty}`);
             await setSheetbaseDotJson({ driveFolder });
         });
@@ -39,7 +39,7 @@ export async function projectSetupCommand() {
 
     // backend
     if (!scriptId) {
-        await logAction('Create backend script', async () => {
+        await logAction('Create the backend script', async () => {
             scriptId = await gasCreate(googleClient, `${namePretty} Backend`, driveFolder);
             await setClaspConfigs({ scriptId }, true);
         });

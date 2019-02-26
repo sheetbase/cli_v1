@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import { buildValidFileName } from '../../services/utils';
 import { download, unzip, unwrap } from '../../services/file';
-import { setPackageDotJson, setSheetbaseDotJson } from '../../services/project';
+import { setPackageDotJson, setSheetbaseDotJson, getBackendConfigs } from '../../services/project';
 import { setClaspConfigs } from '../../services/clasp';
 import { exec } from '../../services/command';
 import { logError, logOk, logAction } from '../../services/message';
@@ -30,7 +30,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
     }
 
     // project files
-    await logAction('Get the resource: ' + url, async () => {
+    await logAction('Get the resource from ' + url, async () => {
         if (url.endsWith('.git')) {
             // clone the repo when has .git url
             execSync(`git clone ${url} ${name}`, { stdio: 'ignore' });
@@ -86,7 +86,10 @@ export async function projectStartCommand(params: string[], options?: Options) {
         }
 
         // create models
-        await exec('sheetbase model', deployPath);
+        const { databaseId } = await getBackendConfigs(deployPath);
+        if (!!databaseId) {
+            await exec('sheetbase model', deployPath);
+        }
 
         // install packages
         if (options.install) {
