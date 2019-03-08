@@ -1,97 +1,100 @@
 import { resolve } from 'path';
 import { homedir } from 'os';
-import { pathExists, readFile, outputFile, readJson, remove } from 'fs-extra';
+import { pathExists, outputFile } from 'fs-extra';
+const superstatic = require('superstatic');
+import { launch, Browser } from 'puppeteer-core';
 
 import {
     SheetbaseDeployment,
-    SheetbasePrerender,
-    SheetbaseDirectPrerender,
-    getSheetbaseDotJson, getFrontendConfigs, getPath,
+    getSheetbaseDotJson,
+    getFrontendConfigs,
+    getPath,
 } from '../../services/project';
-import { getData } from '../../services/data';
-import { prerenderer } from '../../services/build';
+import {
+    PrerenderItem,
+    loadPrerenderItems,
+    prerenderModifier,
+} from '../../services/build';
 import { logError, logOk, logAction } from '../../services/message';
 
 export async function frontendPrerenderCommand() {
+    const { deployment = {} as SheetbaseDeployment } = await getSheetbaseDotJson();
     const {
-        deployment = {} as SheetbaseDeployment,
-        prerender = {},
-        directPrerender = [],
-    } = await getSheetbaseDotJson();
-    const { backendUrl, apiKey = '' } = await getFrontendConfigs();
-    const { url = '', stagingDir } = deployment;
+        provider,
+        url = '',
+        stagingDir,
+        srcDir = './frontend/src',
+        wwwDir = './frontend/www',
+    } = deployment;
+
+    // folders
     const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
         resolve(homedir(), 'sheetbase_staging', name);
+    const srcCwd = await getPath(srcDir);
+    const wwwCwd = await getPath(wwwDir);
 
     // check if dir exists
     if (!await pathExists(stagingCwd)) {
         return logError('FRONTEND_DEPLOY__ERROR__NO_STAGING');
     }
 
-    if (
-        (!prerender || !Object.keys(prerender).length) &&
-        (!directPrerender || !directPrerender.length)
-    ) {
-        return logError('FRONTEND_PRERENDER__ERROR__NO_PRERENDER');
-    }
+    // load data
+    let prerenderList: Array<PrerenderItem | string>;
+    await logAction('Load prerender items', async () => {
+        prerenderList = await loadPrerenderItems(srcCwd, await getFrontendConfigs());
+    });
 
-    // load index html
-    const indexHtmlContent = await readFile(resolve(stagingCwd, 'index.html'), 'utf-8');
-
-    // prerender
-    for (const key of Object.keys(prerender)) {
-        await logAction('Prerender "' + key + '".', async () => {
-            // load configs
-            const prerenderConfigs = prerender[key] || {} as SheetbasePrerender;
-            const { location = '', keyField = '#' } = prerenderConfigs;
-            // clear previous rendered by location
-            if (!!location) {
-                await remove(resolve(stagingCwd, location));
-            }
-            // load data
-            const { data: items = [] } = await getData(
-                `${backendUrl}?e=/database&table=${key}` + (!!apiKey ? '&apiKey=' + apiKey : ''),
-            );
-            // render content
-            for (let i = 0; i < items.length; i++) {
-                const item = items[i]; // an item
-                const remoteUrl = (url + '/' + location + '/' + item[keyField])
-                    .replace('//', '/')
-                    .replace(':/', '://') + '/';
-                // save files
-                await outputFile(
-                    resolve(stagingCwd, location, item[keyField], 'index.html'),
-                    prerenderer(indexHtmlContent, item, remoteUrl, prerenderConfigs),
-                );
-            }
+    // server & browser
+    let server: any;
+    let browser: Browser;
+    await logAction('Spin off the server', async () => {
+        server = await superstatic.server({
+            port: 7777,
+            host: 'localhost',
+            cwd: wwwCwd,
+            config: {
+                rewrites: [{ source: '**', destination: '/index.html' }],
+                cleanUrls: true,
+            },
+            debug: false,
+        }).listen();
+        // browser
+        browser = await launch({
+            executablePath: process.env.GOOGLE_CHROME,
         });
-    }
+    });
 
-    // direct prerender
-    if (!!directPrerender && !!directPrerender.length) {
-        await logAction('Prerender direct items.', async () => {
-            let items: SheetbaseDirectPrerender[];
-            // load items from .json
-            if (typeof directPrerender === 'string') {
-                items = await readJson(resolve('.', directPrerender));
-            } else {
-                items = directPrerender;
+    await logAction('Prerender:', async () => {
+        const page = await browser.newPage();
+        for (let i = 0; i < prerenderList.length; i++) {
+            const item = prerenderList[i];
+            const path = typeof item === 'string' ? item : item.path;
+            const prerenderPath = resolve(stagingCwd, path, 'index.html');
+            // prerender when:
+            // always /
+            // not exists
+            // forced (todo)
+            // expired (todo)
+            if (
+                !path ||
+                (!!path && !await pathExists(prerenderPath))
+            ) {
+                await page.goto('http://localhost:7777/' + path, {
+                    waitUntil: 'networkidle0',
+                    timeout: 1000000,
+                });
+                const content = prerenderModifier(provider, await page.content(), url, !path);
+                await outputFile(prerenderPath, content);
+                console.log('   + ' + (path || '/'));
             }
-            // render
-            for (let i = 0; i < items.length; i++) {
-                const prerenderConfigs = items[i] || {} as SheetbaseDirectPrerender;
-                const { keyField = '#', data } = prerenderConfigs;
-                const remoteUrl = (url + '/' + data[keyField])
-                    .replace('//', '/')
-                    .replace(':/', '://') + '/';
-                // save files
-                await outputFile(
-                    resolve(stagingCwd, data[keyField], 'index.html'),
-                    prerenderer(indexHtmlContent, data, remoteUrl, prerenderConfigs),
-                );
-            }
-        });
-    }
+        }
+    });
+
+    // shutdown
+    await logAction('Power down the server', async () => {
+        await browser.close();
+        await server.close();
+    });
 
     // done
     logOk('FRONTEND_PRERENDER__OK', true);

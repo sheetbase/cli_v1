@@ -1,5 +1,23 @@
-import { SheetbasePrerender } from './project';
+import { resolve } from 'path';
+import { pathExists, readJson } from 'fs-extra';
+import axios from 'axios';
+
 import { replaceBetween  } from './utils';
+
+export type Prerenders = Array<string | Prerender>;
+
+export interface Prerender {
+  table: string;
+  location?: string;
+  changefreq?: string;
+  priority?: string;
+}
+
+export interface PrerenderItem {
+  path: string;
+  changefreq?: string;
+  priority?: string;
+}
 
 export function github404HtmlContent(repo: string, title = 'Sheetbase') {
     return (
@@ -20,96 +38,74 @@ export function github404HtmlContent(repo: string, title = 'Sheetbase') {
     );
 }
 
-export function githubIndexHtmlSPAGenerator(html: string, base?: string) {
-    //SPA hack
-    html = html.replace(
-    '<head>',
-  `<head>
-
-  <!-- Github Pages hack to allow SPA refresh without receiving 404. -->
-  <script>
-    (function () {
-      var redirect = sessionStorage.redirect;
-      delete sessionStorage.redirect;
-      if (redirect && redirect != location.href) {
-        history.replaceState(null, null, redirect);
+export async function loadPrerenderItems(srcCwd: string, frontendConfigs: any) {
+  const { backendUrl, apiKey = '' } = frontendConfigs;
+  const prerenderConfigPath = resolve(srcCwd, 'prerender.json');
+  // load items
+  const prerenderList: Array<PrerenderItem | string> = [''];
+  if (await pathExists(prerenderConfigPath)) {
+    const prerenderConfig = await readJson(prerenderConfigPath);
+    for (let i = 0; i < prerenderConfig.length; i++) {
+      const item = prerenderConfig[i];
+      if (typeof item === 'string') {
+        prerenderList.push(item);
+      } else {
+        const { table, location, changefreq, priority } = item as Prerender;
+        // load data
+        const { data } = await axios({
+          method: 'GET',
+          url: `${backendUrl}?e=/database&table=${table}` + (!!apiKey ? '&apiKey=' + apiKey : ''),
+        });
+        const { data: items = [] } = data;
+        // assign item
+        for (let j = 0; j < items.length; j++) {
+          prerenderList.push({
+            path: location + '/' + items[j]['$key'],
+            changefreq,
+            priority,
+          });
+        }
       }
-    })();
-  </script>
-  `,
-    );
-    // change base
-    if (!!base) {
-        html = replaceBetween(html, base, '<base href="', '" />');
     }
-    return html;
+  }
+  return prerenderList;
 }
 
-export function prerenderer(
-    html: string,
-    item: any,
-    url: string,
-    prerenderConfigs: SheetbasePrerender,
+export function prerenderModifier(
+  provider: string,
+  html: string,
+  url: string,
+  isIndex = false,
 ) {
-    const { rewriteFields = {}, defaultValues = {} } = prerenderConfigs;
+  // replace localhost url
+  html = html.replace(new RegExp('http://localhost:7777', 'g'), url);
 
-    // prepare data
-    const title: string = item[rewriteFields['title'] || 'title'] ||
-        defaultValues['title'];
-    const description: string = item[rewriteFields['description'] || 'description'] ||
-        defaultValues['description'];
-    const image: string = item[rewriteFields['image'] || 'image'] ||
-        defaultValues['image'];
-    let content: string = item[rewriteFields['content'] || 'content'] ||
-        defaultValues['content'] || description || title;
-    content = content.substr(0, 3) === '<p>' || content.substr(0, -4) === '</p>' ?
-        content : '<p>' + content + '</p>';
+  // change base
+  // when using subfolder
+  if (url.split('/').filter(Boolean).length > 2) {
+    html = replaceBetween(html, url + '/', '<base href="', '"');
+  }
 
-    // add content
-    const article = (
-  `<article class="sheetbase-prerender-content">
-    <h1>${title}</h1>
-    ${ !!description ? '<p><strong>' + description + '</strong></p>' : '' }
-    ${ !!image ? '<p><img src="' + image + '" alt="' + title + '" /></p>' : '' }
-    ${content}
-  </article>`
+  // provider specific
+  if (provider === 'github' && isIndex) {
+    html = html.replace(
+      '<head>',
+    `<head>
+
+    <!-- Github Pages hack to allow SPA refresh without receiving 404. -->
+    <script>
+      (function () {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect != location.href) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
+
+    `,
     );
-    if (
-        html.indexOf('<app-root>') > -1 &&
-        html.indexOf('</app-root>') > -1
-    ) { // Angular
-        html = html.replace('</app-root>', article + '</app-root>');
-    } else {
-        html = html.replace('</body>', article + '</body>');
-    }
+  }
 
-    // modify meta data
-    if (!!title) {
-        html = replaceBetween(html, title, [
-            ['<title>', '</title>'],
-            ['<meta itemprop="name" content="', '" />'], // google
-            ['<meta property="og:title" content="', '" />'], // facebook & twitter
-        ]);
-    }
-    if (!!url) {
-        html = replaceBetween(html, url, [
-            ['<link rel="canonical" href="', '" />'],
-            ['<meta property="og:url" content="', '" />'], // facebook & twitter
-        ]);
-    }
-    if (!!description) {
-        html = replaceBetween(html, description, [
-            ['<meta name="description" content="', '" />'],
-            ['<meta itemprop="description" content="', '" />'], // google
-            ['<meta property="og:description" content="', '" />'], // facebook & twitter
-        ]);
-    }
-    if (!!image) {
-        html = replaceBetween(html, image, [
-            ['<meta itemprop="image" content="', '" />'], // google
-            ['<meta property="og:image" content="', '" />'], // facebook & twitter
-        ]);
-    }
-
-    return html;
+  return html;
 }

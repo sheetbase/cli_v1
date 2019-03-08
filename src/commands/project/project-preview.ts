@@ -13,7 +13,8 @@ export async function projectPreviewCommand() {
         host: 'localhost',
         cwd: wwwCwd,
         config: {
-            root: wwwCwd,
+            rewrites: [{ source: '**', destination: '/index.html' }],
+            cleanUrls: true,
         },
         debug: true,
     }).listen(() => logInfo('See your app at: http://localhost:7777'));

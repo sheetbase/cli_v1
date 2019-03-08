@@ -1,35 +1,49 @@
-import { basename, resolve } from 'path';
-import { homedir } from 'os';
+import { resolve } from 'path';
 import { execSync } from 'child_process';
+import { homedir } from 'os';
 import { pathExists, readFile, outputFile, ensureDir, copy } from 'fs-extra';
 import * as del from 'del';
 
-import { GithubProvider, SheetbaseDeployment, getPath, getSheetbaseDotJson } from '../../services/project';
-import { github404HtmlContent, githubIndexHtmlSPAGenerator } from '../../services/build';
+import {
+    GithubProvider,
+    SheetbaseDeployment,
+    getSheetbaseDotJson,
+    getPath,
+} from '../../services/project';
+import {
+    github404HtmlContent,
+    prerenderModifier,
+} from '../../services/build';
 import { logError, logOk, logAction } from '../../services/message';
 
 export async function frontendBuildCommand() {
-    const name = basename(process.cwd());
-    const { deployment } = await getSheetbaseDotJson();
+    const { deployment = {} as SheetbaseDeployment } = await getSheetbaseDotJson();
     const {
         provider,
-        wwwDir = './frontend/www',
+        url = '',
         stagingDir,
-        destination,
-    } = deployment || {} as SheetbaseDeployment;
+        wwwDir = './frontend/www',
+        destination = {} as any,
+    } = deployment;
     const {
-        gitUrl, master, changeBase, // github
-    } = destination || {} as GithubProvider;
+        gitUrl, master, // github
+    } = destination as GithubProvider;
+
+    // folders
     const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
         resolve(homedir(), 'sheetbase_staging', name);
+    const wwwCwd = await getPath(wwwDir);
 
-    // no provider
-    if (!provider) {
-        return logError('FRONTEND_DEPLOY__ERROR__NO_PROVIDER');
+    // check if dir exists
+    if (!await pathExists(stagingCwd)) {
+        return logError('FRONTEND_DEPLOY__ERROR__NO_STAGING');
     }
-    // no required destination
-    if (provider === 'github' && !gitUrl) {
-        return logError('FRONTEND_DEPLOY__ERROR__NO_GIT_URL');
+    // malform provider
+    if (
+        !provider ||
+        (provider === 'github' && !destination.gitUrl)
+    ) {
+        return logError('FRONTEND_DEPLOY__ERROR__NO_PROVIDER');
     }
 
     // build code
@@ -42,20 +56,6 @@ export async function frontendBuildCommand() {
         if (!await pathExists(stagingCwd)) {
             // create the folder
             await ensureDir(stagingCwd);
-            // provider specific preparations
-            if (provider === 'github') {
-                // init git
-                execSync('git init', { cwd: stagingCwd, stdio: 'ignore' });
-                // set remote
-                execSync('git remote add origin ' + gitUrl, { cwd: stagingCwd, stdio: 'ignore' });
-                // use master or gh-pages
-                if (!master) {
-                    execSync(
-                        'git checkout -b gh-pages',
-                        { cwd: stagingCwd, stdio: 'ignore' },
-                    );
-                }
-            }
         } else {
             // clean the folder
             await del([
@@ -66,11 +66,28 @@ export async function frontendBuildCommand() {
                 '!' + stagingCwd + '/.git/',
             ], { force: true });
         }
+        // provider specific preparations
+        if (
+            provider === 'github' &&
+            !await pathExists(resolve(stagingCwd, '.git'))
+        ) {
+            // init git
+            execSync('git init', { cwd: stagingCwd, stdio: 'ignore' });
+            // set remote
+            execSync('git remote add origin ' + gitUrl, { cwd: stagingCwd, stdio: 'ignore' });
+            // use master or gh-pages
+            if (!master) {
+                execSync(
+                    'git checkout -b gh-pages',
+                    { cwd: stagingCwd, stdio: 'ignore' },
+                );
+            }
+        }
     });
 
     // copy file to the staging
     await logAction('Copy files', async () => {
-        await copy(await getPath(wwwDir), stagingCwd);
+        await copy(wwwCwd, stagingCwd);
     });
 
     // provider specific tweaks
@@ -88,10 +105,7 @@ export async function frontendBuildCommand() {
             // change base if needed
             await outputFile(
                 resolve(stagingCwd, 'index.html'),
-                githubIndexHtmlSPAGenerator(
-                    indexHtmlContent,
-                    changeBase ? `https://${org}.github.io/${repo}/` : null,
-                ),
+                prerenderModifier(provider, indexHtmlContent, url, true),
             );
         }
     });

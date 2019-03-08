@@ -88,7 +88,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
         // create models
         const { databaseId } = await getBackendConfigs(deployPath);
         if (!!databaseId) {
-            await exec('sheetbase model', deployPath);
+            await exec('sheetbase model -c', deployPath);
         }
 
         // install packages

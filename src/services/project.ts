@@ -16,7 +16,6 @@ export const FRONTEND_CONFIG_FILE = 'frontend/src/sheetbase.config.ts';
 export interface GithubProvider {
     gitUrl: string;
     master?: boolean;
-    changeBase?: boolean;
 }
 
 export interface SheetbaseDeployment {
@@ -26,25 +25,6 @@ export interface SheetbaseDeployment {
     srcDir?: string;
     wwwDir?: string;
     stagingDir?: string;
-}
-
-export interface SheetbasePrerender {
-    location?: string;
-    keyField?: string;
-    rewriteFields?: {[field: string]: string};
-    defaultValues?: {[field: string]: any};
-    // sitemap
-    changefreq?: string;
-    priority?: string;
-}
-
-export interface SheetbaseDirectPrerender extends SheetbasePrerender {
-    data: {
-        title: string;
-        description?: string;
-        image?: string;
-        content?: string;
-    };
 }
 
 export interface SheetbaseDotJson {
@@ -69,10 +49,6 @@ export interface SheetbaseDotJson {
         [configKey: string]: any[];
     };
     deployment?: SheetbaseDeployment;
-    prerender?: {
-        [table: string]: SheetbasePrerender;
-    };
-    directPrerender?: string | SheetbaseDirectPrerender[];
 }
 
 export interface PackageDotJson {
