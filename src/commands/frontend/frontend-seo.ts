@@ -30,16 +30,17 @@ export async function frontendSEOCommand() {
     }
 
     // load data
-    let prerenderList: Array<PrerenderItem | string>;
+    let prerenderItems: Array<PrerenderItem | string>;
     await logAction('Load prerender items', async () => {
-        prerenderList = await loadPrerenderItems(srcCwd, await getFrontendConfigs());
+        const { items } = await loadPrerenderItems(srcCwd, await getFrontendConfigs());
+        prerenderItems = items;
     });
 
     // sitemap
     let sitemap = '';
     await logAction('Generate sitemap.xml', async () => {
-        for (let i = 0; i < prerenderList.length; i++) {
-            let item = prerenderList[i];
+        for (let i = 0; i < prerenderItems.length; i++) {
+            let item = prerenderItems[i];
             if (typeof item === 'string') {
                 item = {
                     path: item,

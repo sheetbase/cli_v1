@@ -12,6 +12,7 @@ import {
 } from '../../services/project';
 import {
     PrerenderItem,
+    LoadingScreen,
     loadPrerenderItems,
     prerenderModifier,
 } from '../../services/build';
@@ -39,9 +40,12 @@ export async function frontendPrerenderCommand() {
     }
 
     // load data
-    let prerenderList: Array<PrerenderItem | string>;
+    let prerenderItems: Array<PrerenderItem | string>;
+    let prerenderLoading: boolean | LoadingScreen;
     await logAction('Load prerender items', async () => {
-        prerenderList = await loadPrerenderItems(srcCwd, await getFrontendConfigs());
+        const { items, loading } = await loadPrerenderItems(srcCwd, await getFrontendConfigs());
+        prerenderItems = items;
+        prerenderLoading = loading;
     });
 
     // server & browser
@@ -65,9 +69,8 @@ export async function frontendPrerenderCommand() {
     });
 
     await logAction('Prerender:', async () => {
-        const page = await browser.newPage();
-        for (let i = 0; i < prerenderList.length; i++) {
-            const item = prerenderList[i];
+        for (let i = 0; i < prerenderItems.length; i++) {
+            const item = prerenderItems[i];
             const path = typeof item === 'string' ? item : item.path;
             const prerenderPath = resolve(stagingCwd, path, 'index.html');
             // prerender when:
@@ -79,13 +82,21 @@ export async function frontendPrerenderCommand() {
                 !path ||
                 (!!path && !await pathExists(prerenderPath))
             ) {
+                const page = await browser.newPage();
                 await page.goto('http://localhost:7777/' + path, {
                     waitUntil: 'networkidle0',
                     timeout: 1000000,
                 });
-                const content = prerenderModifier(provider, await page.content(), url, !path);
+                const content = prerenderModifier(
+                    provider,
+                    await page.content(),
+                    url,
+                    prerenderLoading,
+                    !path,
+                );
                 await outputFile(prerenderPath, content);
                 console.log('   + ' + (path || '/'));
+                await page.close();
             }
         }
     });
