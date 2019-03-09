@@ -20,10 +20,6 @@ export async function projectBuildCommand(options?: Options) {
         // pre-render content
         logInfo('Prerender the content.');
         await exec('sheetbase frontend prerender');
-
-        // seo
-        logInfo('Generate SEO content.');
-        await exec('sheetbase frontend seo');
     }
 
     // done

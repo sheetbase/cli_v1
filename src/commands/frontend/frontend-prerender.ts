@@ -1,8 +1,8 @@
 import { resolve } from 'path';
-import { homedir } from 'os';
-import { pathExists, outputFile } from 'fs-extra';
+import { homedir, EOL } from 'os';
+import { pathExists, copy, outputFile } from 'fs-extra';
 const superstatic = require('superstatic');
-import { launch, Browser } from 'puppeteer-core';
+import { launch } from 'puppeteer-core';
 
 import {
     SheetbaseDeployment,
@@ -49,25 +49,21 @@ export async function frontendPrerenderCommand() {
     });
 
     // server & browser
-    let server: any;
-    let browser: Browser;
-    await logAction('Spin off the server', async () => {
-        server = await superstatic.server({
-            port: 7777,
-            host: 'localhost',
-            cwd: wwwCwd,
-            config: {
-                rewrites: [{ source: '**', destination: '/index.html' }],
-                cleanUrls: true,
-            },
-            debug: false,
-        }).listen();
-        // browser
-        browser = await launch({
-            executablePath: process.env.GOOGLE_CHROME || (
-                'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
-            ),
-        });
+    const server = await superstatic.server({
+        port: 7777,
+        host: 'localhost',
+        cwd: wwwCwd,
+        config: {
+            rewrites: [{ source: '**', destination: '/index.html' }],
+            cleanUrls: true,
+        },
+        debug: false,
+    }).listen();
+    // browser
+    const browser = await launch({
+        executablePath: process.env.GOOGLE_CHROME || (
+            'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+        ),
     });
 
     await logAction('Prerender:', async () => {
@@ -104,9 +100,57 @@ export async function frontendPrerenderCommand() {
     });
 
     // shutdown
-    await logAction('Power down the server', async () => {
-        await browser.close();
-        await server.close();
+    await browser.close();
+    await server.close();
+
+    // sitemap
+    let sitemap = '';
+    await logAction('Generate sitemap.xml', async () => {
+        for (let i = 0; i < prerenderItems.length; i++) {
+            let item = prerenderItems[i];
+            if (typeof item === 'string') {
+                item = {
+                    path: item,
+                    changefreq: !item ? 'daily' : 'monthly',
+                    priority: !item ? '1.0' : '0.5',
+                };
+            }
+            const { path, changefreq, priority } = item;
+            let remoteUrl = url + '/' + path;
+            remoteUrl = remoteUrl.substr(-1) === '/' ? remoteUrl : (remoteUrl + '/');
+            const lastmod = (new Date().toISOString()).substr(0, 10);
+            // add to sitemap
+            sitemap += (
+                '   <url>' + EOL +
+                '       <loc>' + remoteUrl + '</loc>' + EOL +
+                '       <lastmod>' + lastmod + '</lastmod>' + EOL +
+                '       <changefreq>' + changefreq + '</changefreq>' + EOL +
+                '       <priority>' + priority + '</priority>' + EOL +
+                '   </url>' + EOL
+            );
+        }
+        await outputFile(
+            resolve(stagingCwd, 'sitemap.xml'),
+            '<?xml version="1.0" encoding="UTF-8"?>' + EOL +
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + EOL +
+            sitemap + EOL +
+            '</urlset>',
+        );
+    });
+
+    // robots
+    await logAction('Save robots.txt', async () => {
+        const robotsSourcePath = resolve(srcCwd, 'robots.txt');
+        const robotsDestPath = resolve(stagingCwd, 'robots.txt');
+        if (await pathExists(robotsSourcePath)) {
+            await copy(robotsSourcePath, robotsDestPath); // copy
+        } else {
+            // save new file
+            await outputFile(robotsDestPath,
+                'User-agent: *' + EOL +
+                'Disallow:',
+            );
+        }
     });
 
     // done

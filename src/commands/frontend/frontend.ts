@@ -4,7 +4,6 @@ import { readJson } from '../../services/project';
 import { frontendBuildCommand } from './frontend-build';
 import { frontendDeployCommand } from './frontend-deploy';
 import { frontendPrerenderCommand } from './frontend-prerender';
-import { frontendSEOCommand } from './frontend-seo';
 
 export async function frontendCommand(command: string, commander: any) {
     const commanderRawArgs = commander['parent']['rawArgs'];
@@ -21,10 +20,6 @@ export async function frontendCommand(command: string, commander: any) {
 
         case 'prerender':
             await frontendPrerenderCommand();
-        break;
-
-        case 'seo':
-            await frontendSEOCommand();
         break;
 
         case 'install':
