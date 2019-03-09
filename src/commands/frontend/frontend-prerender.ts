@@ -64,7 +64,9 @@ export async function frontendPrerenderCommand() {
         }).listen();
         // browser
         browser = await launch({
-            executablePath: process.env.GOOGLE_CHROME,
+            executablePath: process.env.GOOGLE_CHROME || (
+                'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+            ),
         });
     });
 
