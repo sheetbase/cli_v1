@@ -5,8 +5,12 @@ import { frontendBuildCommand } from './frontend-build';
 import { frontendDeployCommand } from './frontend-deploy';
 import { frontendPrerenderCommand } from './frontend-prerender';
 
-export async function frontendCommand(command: string, commander: any) {
-    const commanderRawArgs = commander['parent']['rawArgs'];
+export interface Options {
+    message?: string;
+}
+
+export async function frontendCommand(command: string, options: any) {
+    const commanderRawArgs = options['parent']['rawArgs'];
     const cwd = 'frontend';
 
     switch (command) {
@@ -15,7 +19,7 @@ export async function frontendCommand(command: string, commander: any) {
         break;
 
         case 'deploy':
-            await frontendDeployCommand();
+            await frontendDeployCommand(options);
         break;
 
         case 'prerender':

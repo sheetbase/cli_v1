@@ -6,7 +6,9 @@ import { pathExists } from 'fs-extra';
 import { GithubProvider, SheetbaseDeployment, getPath, getSheetbaseDotJson } from '../../services/project';
 import { logError, logOk, logAction } from '../../services/message';
 
-export async function frontendDeployCommand() {
+import { Options } from './frontend';
+
+export async function frontendDeployCommand(options: Options) {
     const name = basename(process.cwd());
     const { deployment } = await getSheetbaseDotJson();
     const { provider, url = 'n/a', stagingDir, destination } = deployment || {} as SheetbaseDeployment;
@@ -29,7 +31,11 @@ export async function frontendDeployCommand() {
             execSync(addCmd, { cwd: stagingCwd, stdio: 'ignore' });
         });
         // commit
-        const commitCmd = 'git commit -m "Updated ' + new Date().toISOString() + '"';
+        const commitCmd = 'git commit -m ' + (
+            !!options.message ?
+            ('"' + options.message + '"') :
+            ('"' + new Date().toISOString() + '"')
+        );
         await logAction(commitCmd, async () => {
             execSync(commitCmd, { cwd: stagingCwd, stdio: 'ignore' });
         });

@@ -4,7 +4,9 @@ import { getClaspConfigs } from '../../services/clasp';
 import { getFrontendConfigs } from '../../services/project';
 import { logError, logOk } from '../../services/message';
 
-export async function backendDeployCommand() {
+import { Options } from './backend';
+
+export async function backendDeployCommand(options: Options) {
 
     // load default google account
     const googleClient = await getOAuth2Client();
@@ -23,7 +25,7 @@ export async function backendDeployCommand() {
     }
 
     // update the web app
-    const result = await gasWebappUpdate(googleClient, scriptId, deploymentId);
+    await gasWebappUpdate(googleClient, scriptId, deploymentId, null, options.message);
 
     // done
     logOk('BACKEND_DEPLOY__OK', true);

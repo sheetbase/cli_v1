@@ -8,14 +8,16 @@ export async function projectDeployCommand(options?: Options) {
     if (!options.frontend) {
         // deploy backend
         logInfo('Deploy the backend.');
-        await exec('sheetbase backend deploy');
+        await exec('sheetbase backend deploy' +
+        (!!options.message ? ' -m "' + options.message + '"' : ''));
     }
 
     // frontend
     if (!options.backend) {
         // deploy frontend
         logInfo('Deploy the frontend.');
-        await exec('sheetbase frontend deploy');
+        await exec('sheetbase frontend deploy' +
+        (!!options.message ? ' -m "' + options.message + '"' : ''));
     }
 
     // done

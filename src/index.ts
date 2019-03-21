@@ -74,23 +74,25 @@ program
  * @param {string?} [subCommand] Supported sub-commands.
  * @param {string[]?} [params] Command params, comma-separated.
  * @param {boolean?} [-i,--install] (start) Install npm packages.
- * @param {boolean?} [-m,--no-setup] (start) Do not run setup command.
+ * @param {boolean?} [-x,--no-setup] (start) Do not run setup command.
  * @param {boolean?} [-o,--open] (url) Open the url in browser.
  * @param {string?} [-d,--database] (model) Custom database.
  * @param {boolean?} [-c,--clean] (model) Remove the default 'Sheet1'.
  * @param {boolean?} [-b,--backend] (build, deploy) Build or deploy backend only.
  * @param {boolean?} [-f,--frontend] (build, deploy) Build or deploy frontend only.
+ * @param {string?} [-m,--message] (deploy) Deployment message.
  */
 program
   .command('project [subCommand] [params...]')
   .description('Project general tasks.')
   .option('-i, --install', `(${chalk.green('start')}) Install npm packages.`)
-  .option('-m, --no-setup', `(${chalk.green('start')}) Do not run setup command.`)
+  .option('-x, --no-setup', `(${chalk.green('start')}) Do not run setup command.`)
   .option('-o, --open', `(${chalk.green('url')}) Open the url in browser.`)
   .option('-d, --database [value]', `(${chalk.green('model')}) Custom database.`)
   .option('-c, --clean', `(${chalk.green('model')}) Remove the default 'Sheet1'.`)
   .option('-b, --backend', `(${chalk.green('build, deploy')}) Build or deploy backend only.`)
   .option('-f, --frontend', `(${chalk.green('build, deploy')}) Build or deploy frontend only.`)
+  .option('-m, --message [value]', `(${chalk.green('deploy')}) Deployment message.`)
   .action(projectCommand);
 
 /**
@@ -100,13 +102,13 @@ program
  * @param {string?} [projectName] Name of the project, auto default.
  * @param {string?} [resource] Resource to create the project with, default to theme **blank_angular**.
  * @param {boolean?} [-i,--install] Install npm packages.
- * @param {boolean?} [-m,--no-setup] Do not run setup command.
+ * @param {boolean?} [-x,--no-setup] Do not run setup command.
  */
 program
   .command('start [projectName] [resource]')
   .description('Start a new project.')
   .option('-i, --install', 'Install npm packages.')
-  .option('-m, --no-setup', 'Do not run setup command.')
+  .option('-x, --no-setup', 'Do not run setup command.')
   .action((projectName, resource, options) => projectCommand(
     'start', [projectName, resource], options,
   ));
@@ -222,12 +224,14 @@ program
  * @name deploy
  * @param {boolean?} [-b,--backend] Deploy backend only.
  * @param {boolean?} [-f,--frontend] Deploy frontend only.
+ * @param {string?} [-m,--message] Deployment message.
  */
 program
   .command('deploy')
   .description(`Deploy the project.`)
   .option('-b, --backend', `Deploy backend only.`)
   .option('-f, --frontend', `Deploy frontend only.`)
+  .option('-m, --message [value]', `Deployment message.`)
   .action((options) => projectCommand('deploy', [], options));
 
 /**
@@ -244,10 +248,12 @@ program
  * Run backend related commands.
  * @name backend
  * @param {string?} [subCommand] Optional supported sub-commands.
+ * @param {string?} [-m,--message] Deployment message.
  */
 program
   .command('backend [subCommand]')
   .description('Run backend related commands.')
+  .option('-m, --message [value]', `Deployment message.`)
   .allowUnknownOption()
   .action(backendCommand);
 
@@ -255,10 +261,12 @@ program
  * Run frontend related commands.
  * @name frontend
  * @param {string?} [subCommand] Optional supported sub-commands.
+ * @param {string?} [-m,--message] Deployment message.
  */
 program
   .command('frontend [subCommand]')
   .description('Run frontend related commands.')
+  .option('-m, --message [value]', `Deployment message.`)
   .allowUnknownOption()
   .action(frontendCommand);
 

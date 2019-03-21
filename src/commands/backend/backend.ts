@@ -4,8 +4,12 @@ import { readJson } from '../../services/project';
 import { backendPushCommand } from './backend-push';
 import { backendDeployCommand } from './backend-deploy';
 
-export async function backendCommand(command: string, commander: any) {
-    const commanderRawArgs = commander['parent']['rawArgs'];
+export interface Options {
+    message?: string;
+}
+
+export async function backendCommand(command: string, options: any) {
+    const commanderRawArgs = options['parent']['rawArgs'];
     const cwd = 'backend';
 
     switch (command) {
@@ -14,7 +18,7 @@ export async function backendCommand(command: string, commander: any) {
         break;
 
         case 'deploy':
-            await backendDeployCommand();
+            await backendDeployCommand(options);
         break;
 
         case 'install':

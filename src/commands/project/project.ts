@@ -23,6 +23,7 @@ export interface Options {
     clean?: boolean;
     backend?: boolean;
     frontend?: boolean;
+    message?: string;
 }
 
 export async function projectCommand(command: string, params: string[] = [], options: Options = {}) {

@@ -151,10 +151,10 @@ export async function gasVersions(
 export async function gasVersion(
     client: OAuth2Client,
     scriptId: string,
-    description = 'Update',
+    description?: string,
 ) {
     const requestData: any = {};
-    if (description) requestData.description = description;
+    requestData.description = description || 'Update';
     const { data } = await client.request({
         method: 'POST',
         url: `https://script.googleapis.com/v1/projects/${scriptId}/versions`,
@@ -178,11 +178,11 @@ export async function gasDeploy(
     client: OAuth2Client,
     scriptId: string,
     versionNumber = 1,
-    description = 'Deploy webapp',
+    description?: string,
 ) {
     const requestData: any = {};
-    if (versionNumber) requestData.versionNumber = versionNumber || 1;
-    if (description) requestData.description = description;
+    requestData.versionNumber = versionNumber || 1;
+    requestData.description = description || 'Deploy webapp';
     const { data } = await client.request({
         method: 'POST',
         url: `https://script.googleapis.com/v1/projects/${scriptId}/deployments`,
@@ -196,7 +196,7 @@ export async function gasRedeploy(
     scriptId: string,
     deploymentId: string,
     versionNumber: number,
-    description = 'Update webapp',
+    description?: string,
 ) {
     const requestData: any = {
         deploymentConfig: {
@@ -228,14 +228,14 @@ export async function gasUndeploy(
 export async function gasWebappInit(
     client: OAuth2Client,
     scriptId: string,
-    description = 'Init webapp',
+    description?: string,
     pushContent = false,
 ) {
     // update the content
     await gasPush(client, scriptId, pushContent ? null : INIT_CONTENT);
     // create new version
     await gasVersion(client, scriptId, 'Init');
-    const result = await gasDeploy(client, scriptId, 1, description) as any;
+    const result = await gasDeploy(client, scriptId, 1, description || 'Init webapp') as any;
     return result.entryPoints[0].webApp;
 }
 
@@ -244,19 +244,19 @@ export async function gasWebappUpdate(
     scriptId: string,
     deploymentId: string,
     versionNumber?: number,
-    description?: string,
+    versionDescription?: string,
 ) {
     // deploy new version
     if (!versionNumber) {
         await gasPush(client, scriptId);
         // create new version
         versionNumber = (
-            await gasVersion(client, scriptId) as any
+            await gasVersion(client, scriptId, versionDescription) as any
         ).versionNumber;
     }
     // redeploy or rollback
     return await gasRedeploy(
         client, scriptId, deploymentId, versionNumber,
-        description || 'Update webapp V' + versionNumber,
+        'V' + versionNumber + ' (' + versionDescription + ')',
     );
 }
