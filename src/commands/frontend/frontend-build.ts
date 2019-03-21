@@ -1,5 +1,4 @@
 import { resolve } from 'path';
-import { execSync } from 'child_process';
 import { homedir } from 'os';
 import { pathExists, readFile, outputFile, ensureDir, copy } from 'fs-extra';
 import * as del from 'del';
@@ -14,6 +13,7 @@ import {
     github404HtmlContent,
     prerenderModifier,
 } from '../../services/build';
+import { exec } from '../../services/command';
 import { logError, logOk, logAction } from '../../services/message';
 
 export async function frontendBuildCommand() {
@@ -43,9 +43,9 @@ export async function frontendBuildCommand() {
     }
 
     // build code
-    // await logAction('Build code (could take several minutes)', async () => {
-    //     execSync('npm run build', { cwd: 'frontend', stdio: 'ignore' });
-    // });
+    await logAction('Build code (could take several minutes)', async () => {
+        exec('npm run build', 'frontend', 'ignore');
+    });
 
     // prepare the staging folder
     await logAction('Prepare the deploy area', async () => {
@@ -68,15 +68,12 @@ export async function frontendBuildCommand() {
             !await pathExists(resolve(stagingCwd, '.git'))
         ) {
             // init git
-            execSync('git init', { cwd: stagingCwd, stdio: 'ignore' });
+            exec('git init', stagingCwd, 'ignore');
             // set remote
-            execSync('git remote add origin ' + gitUrl, { cwd: stagingCwd, stdio: 'ignore' });
+            exec('git remote add origin ' + gitUrl, stagingCwd, 'ignore');
             // use master or gh-pages
             if (!master) {
-                execSync(
-                    'git checkout -b gh-pages',
-                    { cwd: stagingCwd, stdio: 'ignore' },
-                );
+                exec('git checkout -b gh-pages', stagingCwd, 'ignore');
             }
         }
     });

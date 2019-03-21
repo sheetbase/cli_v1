@@ -1,5 +1,4 @@
 import { resolve } from 'path';
-import { execSync } from 'child_process';
 import { pathExists, remove } from 'fs-extra';
 import axios from 'axios';
 
@@ -33,7 +32,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
     await logAction('Get the resource from ' + url, async () => {
         if (url.endsWith('.git')) {
             // clone the repo when has .git url
-            execSync(`git clone ${url} ${name}`, { stdio: 'ignore' });
+            exec(`git clone ${url} ${name}`, '.', 'ignore');
             await remove(deployPath + '/' + '.git'); // delete .git folder
         } else {
             const downloadedPath = await download(url, deployPath, 'resource.zip');
@@ -82,22 +81,22 @@ export async function projectStartCommand(params: string[], options?: Options) {
 
         // run setup
         if (options.setup) {
-            await exec('sheetbase setup', deployPath);
+            exec('sheetbase setup', deployPath);
         }
 
         // create models
         const { databaseId } = await getBackendConfigs(deployPath);
         if (!!databaseId) {
-            await exec('sheetbase model -c', deployPath);
+            exec('sheetbase model -c', deployPath);
         }
 
         // install packages
         if (options.install) {
             await logAction('Install backend dependencies', async () => {
-                await exec('npm install', deployPath + '/backend');
+                exec('npm install', deployPath + '/backend');
             });
             await logAction('Install frontend dependencies', async () => {
-                await exec('npm install', deployPath + '/frontend');
+                exec('npm install', deployPath + '/frontend');
             });
         }
 
@@ -107,7 +106,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
         // install packages
         if (options.install) {
             await logAction('Install dependencies', async () => {
-                await exec('npm install', deployPath);
+                exec('npm install', deployPath);
             });
         }
         logOk('PROJECT_START__OK__NOT_THEME', true, [name, options]);

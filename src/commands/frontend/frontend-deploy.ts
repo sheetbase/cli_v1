@@ -1,9 +1,9 @@
 import { basename, resolve } from 'path';
 import { homedir } from 'os';
-import { execSync } from 'child_process';
 import { pathExists } from 'fs-extra';
 
 import { GithubProvider, SheetbaseDeployment, getPath, getSheetbaseDotJson } from '../../services/project';
+import { exec } from '../../services/command';
 import { logError, logOk, logAction } from '../../services/message';
 
 import { Options } from './frontend';
@@ -28,7 +28,7 @@ export async function frontendDeployCommand(options: Options) {
         // add
         const addCmd = 'git add .';
         await logAction(addCmd, async () => {
-            execSync(addCmd, { cwd: stagingCwd, stdio: 'ignore' });
+            exec(addCmd, stagingCwd, 'ignore');
         });
         // commit
         const commitCmd = 'git commit -m ' + (
@@ -37,12 +37,12 @@ export async function frontendDeployCommand(options: Options) {
             ('"' + new Date().toISOString() + '"')
         );
         await logAction(commitCmd, async () => {
-            execSync(commitCmd, { cwd: stagingCwd, stdio: 'ignore' });
+            exec(commitCmd, stagingCwd, 'ignore');
         });
         // push
         const pushCmd = 'git push -f origin ' + (master ? 'master' : 'gh-pages');
         await logAction(pushCmd, async () => {
-            execSync(pushCmd, { cwd: stagingCwd, stdio: 'ignore' });
+            exec(pushCmd, stagingCwd, 'ignore');
         });
     }
     // done

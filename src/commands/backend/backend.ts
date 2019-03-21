@@ -1,4 +1,4 @@
-import { run } from '../../services/command';
+import { exec, run } from '../../services/command';
 import { readJson } from '../../services/project';
 
 import { backendPushCommand } from './backend-push';
@@ -13,6 +13,10 @@ export async function backendCommand(command: string, options: any) {
     const cwd = 'backend';
 
     switch (command) {
+        case 'build':
+            exec('npm run build', cwd);
+        break;
+
         case 'push':
             await backendPushCommand();
         break;
@@ -23,16 +27,16 @@ export async function backendCommand(command: string, options: any) {
 
         case 'install':
         case 'i':
-            await run('npm install', command, commanderRawArgs, cwd);
+            run('npm install', command, commanderRawArgs, cwd);
         break;
 
         case 'uninstall':
         case 'un':
-            await run('npm uninstall', command, commanderRawArgs, cwd);
+            run('npm uninstall', command, commanderRawArgs, cwd);
         break;
 
         case 'run':
-            await run('npm run', command, commanderRawArgs, cwd, true);
+            run('npm run', command, commanderRawArgs, cwd, true);
         break;
 
         default:
@@ -42,7 +46,7 @@ export async function backendCommand(command: string, options: any) {
             if (!!scripts[command]) {
                 cmd = 'npm run ' + command;
             }
-            await run(cmd, command, commanderRawArgs, cwd);
+            run(cmd, command, commanderRawArgs, cwd);
         break;
     }
 }

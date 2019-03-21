@@ -28,16 +28,16 @@ export async function frontendCommand(command: string, options: any) {
 
         case 'install':
         case 'i':
-            await run('npm install', command, commanderRawArgs, cwd);
+            run('npm install', command, commanderRawArgs, cwd);
         break;
 
         case 'uninstall':
         case 'un':
-            await run('npm uninstall', command, commanderRawArgs, cwd);
+            run('npm uninstall', command, commanderRawArgs, cwd);
         break;
 
         case 'run':
-            await run('npm run', command, commanderRawArgs, cwd, true);
+            run('npm run', command, commanderRawArgs, cwd, true);
         break;
 
         default:
@@ -47,7 +47,7 @@ export async function frontendCommand(command: string, options: any) {
             if (!!scripts[command]) {
                 cmd = 'npm run ' + command;
             }
-            await run(cmd, command, commanderRawArgs, cwd);
+            run(cmd, command, commanderRawArgs, cwd);
         break;
     }
 }

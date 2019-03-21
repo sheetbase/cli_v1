@@ -1,23 +1,21 @@
-import { exec } from '../../services/command';
 import { logInfo, logOk } from '../../services/message';
 
+import { backendDeployCommand } from '../backend/backend-deploy';
+import { frontendDeployCommand } from '../frontend/frontend-deploy';
 import { Options } from './project';
 
 export async function projectDeployCommand(options?: Options) {
-    // backend
+
+    // deploy backend
     if (!options.frontend) {
-        // deploy backend
-        logInfo('Deploy the backend.');
-        await exec('sheetbase backend deploy' +
-        (!!options.message ? ' -m "' + options.message + '"' : ''));
+        logInfo('Deploy the backend...');
+        await backendDeployCommand({ message: options.message });
     }
 
-    // frontend
+    // deploy frontend
     if (!options.backend) {
-        // deploy frontend
-        logInfo('Deploy the frontend.');
-        await exec('sheetbase frontend deploy' +
-        (!!options.message ? ' -m "' + options.message + '"' : ''));
+        logInfo('Deploy the frontend...');
+        await frontendDeployCommand({ message: options.message });
     }
 
     // done

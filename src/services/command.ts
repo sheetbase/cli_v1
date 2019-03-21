@@ -16,13 +16,13 @@ export function getRawArgs(
     return args;
 }
 
-export async function exec(command: string, cwd = '.', stdio: any = 'inherit') {
+export function exec(command: string, cwd = '.', stdio: any = 'inherit') {
     const [ cmd, ... cmds ] = command.trim().split(' ');
     const finalCommand = getCommand(cmd) + ' ' + cmds.join(' ');
     return execSync(finalCommand, { cwd, stdio });
 }
 
-export async function run(
+export function run(
     handlerCommand: string,
     command: string,
     commanderRawArgs: string[],
@@ -44,5 +44,5 @@ export async function run(
         finalCommand = handlerCommand + ' ' + getRawArgs(commanderRawArgs, command);
     }
     // run command
-    await exec(finalCommand, cwd);
+    exec(finalCommand, cwd);
 }
