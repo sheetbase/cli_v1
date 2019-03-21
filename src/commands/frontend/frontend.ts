@@ -7,6 +7,7 @@ import { frontendPrerenderCommand } from './frontend-prerender';
 
 export interface Options {
     message?: string;
+    only?: string;
 }
 
 export async function frontendCommand(command: string, options: any) {
@@ -23,7 +24,7 @@ export async function frontendCommand(command: string, options: any) {
         break;
 
         case 'prerender':
-            await frontendPrerenderCommand();
+            await frontendPrerenderCommand(options);
         break;
 
         case 'install':

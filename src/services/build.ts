@@ -9,6 +9,7 @@ export type Prerenders = Array<string | Prerender>;
 export interface Prerender {
   from: string;
   location?: string;
+  keyField?: string; // use different field for key
   changefreq?: string;
   priority?: string;
 }
@@ -65,7 +66,7 @@ export async function loadPrerenderItems(frontendConfigs: any) {
       if (typeof rawItem === 'string') {
         prerenderItems.push(rawItem);
       } else {
-        const { from, location, changefreq, priority } = rawItem as Prerender;
+        const { from, location, keyField, changefreq, priority } = rawItem as Prerender;
         // load data
         const { data } = await axios({
           method: 'GET',
@@ -75,7 +76,7 @@ export async function loadPrerenderItems(frontendConfigs: any) {
         // assign item
         for (let j = 0; j < items.length; j++) {
           prerenderItems.push({
-            path: location + '/' + items[j]['$key'],
+            path: location + '/' + items[j][keyField || '$key'],
             changefreq,
             priority,
           });

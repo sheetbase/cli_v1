@@ -57,3 +57,7 @@ export function unwrap(dir: string): Promise<boolean> {
         }, reject);
     });
 }
+
+export function getModifiedTime(path: string) {
+    return lstatSync(path).mtime;
+}

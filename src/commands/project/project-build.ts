@@ -21,7 +21,7 @@ export async function projectBuildCommand(options?: Options) {
         await frontendBuildCommand();
         // pre-render content
         logInfo('Prerender the content...');
-        await frontendPrerenderCommand();
+        await frontendPrerenderCommand({});
     }
 
     // done

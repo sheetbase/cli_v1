@@ -16,9 +16,12 @@ import {
     loadPrerenderItems,
     prerenderModifier,
 } from '../../services/build';
-import { logError, logOk, logAction } from '../../services/message';
+import { getModifiedTime } from '../../services/file';
+import { logError, logOk, logInfo, logAction } from '../../services/message';
 
-export async function frontendPrerenderCommand() {
+import { Options } from './frontend';
+
+export async function frontendPrerenderCommand(options: Options) {
     const { deployment = {} as SheetbaseDeployment } = await getSheetbaseDotJson();
     const {
         provider,
@@ -65,6 +68,32 @@ export async function frontendPrerenderCommand() {
     });
 
     await logAction('Prerender:', async () => {
+        // force checker
+        const forcedChecker = (path: string) => {
+            let forced = false;
+            // check
+            const forcedItems: string[] = (options.only || '').split(',').filter(Boolean);
+            for (let i = 0; i < forcedItems.length; i++) {
+                const forcedItem = forcedItems[i];
+                if (path.indexOf(forcedItem) > -1) {
+                    forced = true; break;
+                }
+            }
+            return forced;
+        };
+        // expired checker
+        const expiredChecker = (prerenderPath: string) => {
+            const nowTime = new Date().getTime();
+            const modifiedTime = getModifiedTime(prerenderPath).getTime();
+            return (nowTime - modifiedTime) > 604800000; // a week
+        };
+        // counter
+        const countAll = prerenderItems.length;
+        let countDone = 0;
+        let countSkipped = 0;
+        let countForced = 0;
+        let countExpired = 0;
+        // process items
         for (let i = 0; i < prerenderItems.length; i++) {
             const item = prerenderItems[i];
             const path = typeof item === 'string' ? item : item.path;
@@ -72,11 +101,23 @@ export async function frontendPrerenderCommand() {
             // prerender when:
             // always /
             // not exists
-            // forced (todo)
-            // expired (todo)
+            // forced
+            // expired
+            const isForced = forcedChecker(path);
+            if (isForced) {
+                countForced++;
+            }
+            const isExpired = expiredChecker(prerenderPath);
+            if (isExpired) {
+                countExpired++;
+            }
+            // process
             if (
-                !path ||
-                (!!path && !await pathExists(prerenderPath))
+                !path || // always /
+                (!!path && !await pathExists(prerenderPath)) || // not exists
+                options.only === '*' || // force (*)
+                isForced || // forced (custom)
+                isExpired // expired
             ) {
                 const page = await browser.newPage();
                 await page.goto('http://localhost:7777/' + path, {
@@ -91,10 +132,19 @@ export async function frontendPrerenderCommand() {
                     !path,
                 );
                 await outputFile(prerenderPath, content);
-                console.log('   + ' + (path || '/'));
                 await page.close();
+                // log item
+                const status = (!isForced || !isExpired) ? (isExpired ? 'expired' : 'forced') : null;
+                console.log('   + ' + (path || '/') + (!!status ? `(${ status })` : ''));
+                // count done
+                countDone++;
+            } else {
+                countSkipped++;
             }
         }
+        // log counter
+        // tslint:disable-next-line:max-line-length
+        logInfo(`All: ${ countAll }; done: ${ countDone }; skipped: ${ countSkipped }; forced: ${ countForced }; expired: ${ countExpired }`);
     });
 
     // shutdown
