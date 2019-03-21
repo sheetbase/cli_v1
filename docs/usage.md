@@ -24,12 +24,14 @@ Sub-commands: start, setup, configs, config, urls, url, info, build, deploy, pre
 - `subCommand`: Supported sub-commands.
 - `params`: Command params, comma-separated.
 - `-i,--install`: (start) Install npm packages.
-- `-m,--no-setup`: (start) Do not run setup command.
+- `-x,--no-setup`: (start) Do not run setup command.
+- `-r,--re-setup`: (setup) Force re-setup.
 - `-o,--open`: (url) Open the url in browser.
 - `-d,--database`: (model) Custom database.
 - `-c,--clean`: (model) Remove the default 'Sheet1'.
 - `-b,--backend`: (build, deploy) Build or deploy backend only.
 - `-f,--frontend`: (build, deploy) Build or deploy frontend only.
+- `-m,--message`: (deploy) Deployment message.
 
 ### Start
 
@@ -41,12 +43,16 @@ Proxy of **project start**
 - `projectName`: Name of the project, auto default.
 - `resource`: Resource to create the project with, default to theme **blank_angular**.
 - `-i,--install`: Install npm packages.
-- `-m,--no-setup`: Do not run setup command.
+- `-x,--no-setup`: Do not run setup command.
 
 ### Setup
 
 Setup the project.
 Proxy of **project setup**
+
+#### Options
+
+- `-r,--re-setup`: Force re-setup.
 
 ### Configs
 
@@ -119,6 +125,7 @@ Proxy of **project deploy**
 
 - `-b,--backend`: Deploy backend only.
 - `-f,--frontend`: Deploy frontend only.
+- `-m,--message`: Deployment message.
 
 ### Preview
 
@@ -132,6 +139,7 @@ Run backend related commands.
 #### Options
 
 - `subCommand`: Optional supported sub-commands.
+- `-m,--message`: Deployment message.
 
 ### Frontend
 
@@ -140,6 +148,8 @@ Run frontend related commands.
 #### Options
 
 - `subCommand`: Optional supported sub-commands.
+- `-m,--message`: Deployment message.
+- `-o,--only`: Force prerender or only certain parts.
 
 ### Docs
 

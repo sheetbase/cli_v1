@@ -1,6 +1,6 @@
 {
   "name": "@sheetbase/cli",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "Official CLI for working with Sheetbase. ",
   "author": "Sheetbase",
   "homepage": "https://sheetbase.net",
@@ -19,8 +19,8 @@
     "build-fresh": "npm cache clean --force && npm i && npm run build",
     "before-usage": "npm i --save-dev ucfirst extract-comments parse-comments@0.4.3",
     "after-usage": "npm un --save-dev ucfirst extract-comments parse-comments",
-    "usage": "npm run before-usage && tsc src/usage.ts && node src/usage.js && npm run after-usage",
-    "api": "typedoc ./src --out ./docs/api --mode modules --target ES5 --ignoreCompilerErrors --readme none",
+    "usage": "npm run before-usage && tsc src/usage.ts --lib es2018,dom && node src/usage.js && npm run after-usage",
+    "api": "typedoc ./src --out ./docs/api --mode file --target ES5 --ignoreCompilerErrors --readme none",
     "docs": "npm run usage && npm run api",
     "lint": "tslint --project tslint.json && echo 'All files pass linting.'",
     "test": "nyc --cache false mocha --timeout 100000 -- tests/*.js",
