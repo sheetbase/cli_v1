@@ -1,5 +1,6 @@
 // tslint:disable:max-line-length
 import chalk from 'chalk';
+import { EOL } from 'os';
 
 export const green = chalk.green;
 export const red = chalk.red;
@@ -32,16 +33,16 @@ export function log(type: string, code: string, exit = false, args: any[] = []):
     }
     // log the message out
     if (type === 'error') {
-        console.error(`\n ${error} ${message}`);
+        console.error(EOL + ` ${error} ${message}`);
         return process.exit(1);
     } else if (type === 'warn') {
-        console.log(`\n ${warn} ${message}`);
+        console.log(EOL + ` ${warn} ${message}`);
     } else if (type === 'wait') {
-        console.log(`\n ${wait} ${message}`);
+        console.log(EOL + ` ${wait} ${message}`);
     } else if (type === 'info') {
-        console.log(`\n ${info} ${message}`);
+        console.log(EOL + ` ${info} ${message}`);
     } else {
-        console.log(`\n ${ok} ${message}`);
+        console.log(EOL + ` ${ok} ${message}`);
     }
     // exit = 0
     if (!!exit) {
@@ -69,7 +70,7 @@ export async function logAction(
     action: {(): Promise<any>},
     done?: string | {(result: any): string},
 ) {
-    console.log('\n - ' + description);
+    console.log(EOL + ' ' + description);
 
     // run the action
     const timeBegin = (new Date()).getTime();
@@ -98,9 +99,9 @@ export const ERRORS = {
     PROJECT_MODEL__ERROR__NO_DATABASE: 'No database found or invalid.',
     PROJECT_SETUP__ERROR__NO_GOOGLE_ACCOUNT: (name: string) => {
         return ERRORS['GOOGLE__ERROR__NO_ACCOUNT'] +
-            '\n       + Then: ' + magenta('cd ' + name) +
-            '\n       + And: ' + magenta('sheetbase setup') +
-            '\n';
+            EOL + '       + Then: ' + magenta('cd ' + name) +
+            EOL + '       + And: ' + magenta('sheetbase setup') +
+            EOL + '';
     },
     PROJECT_START__ERROR__INVALID_RESOURCE: 'Invalid resource.',
 };
@@ -114,7 +115,7 @@ export const LOGS = {
         let message = 'Pushed ' + files.length + ' files.';
         files.forEach(file => {
             const type = file.type === 'SERVER_JS' ? 'js' : file.type.toLowerCase();
-            message += '\n    + ' + file.name + '.' + type;
+            message += EOL + '    + ' + file.name + '.' + type;
         });
         return message;
     },
@@ -130,8 +131,8 @@ export const LOGS = {
     + To disconnect accounts: ${magenta('sheetbase google disconnect <id>|all|default|local')}
     + To change default account: ${magenta('sheetbase google default <id>')}`,
     PROJECT_BUILD__OK: 'Project build completed!' +
-        '\n    + Preview: ' + magenta('sheetbase preview') +
-        '\n    + Re-deploy: ' + magenta('sheetbase deploy'),
+        EOL + '    + Preview: ' + magenta('sheetbase preview') +
+        EOL + '    + Re-deploy: ' + magenta('sheetbase deploy'),
     PROJECT_CONFIG_EXPORT__OK: (file: string) => `Project configs exported to "${file}".`,
     PROJECT_CONFIG_IMPORT__OK: 'Project configs imported, view: ' + magenta('sheetbase configs'),
     PROJECT_CONFIG_UPDATE__OK: 'Project configs updated, view: ' + magenta('sheetbase configs'),
@@ -145,23 +146,23 @@ export const LOGS = {
     PROJECT_SETUP__OK: 'Project setup successfully.',
     PROJECT_START__OK__THEME: (name: string, options: any) => {
         let message = 'Sheetbase theme project created, next steps:';
-        message += '\n    + Go to the project: ' + magenta('cd ' + name);
+        message += EOL + '    + Go to the project: ' + magenta('cd ' + name);
         if (!options.setup) {
-            message += '\n    + Setup automatically: ' + magenta('sheetbase setup');
+            message += EOL + '    + Setup automatically: ' + magenta('sheetbase setup');
         }
         if (!options.install) {
-            message += '\n    + Install packages: ' + magenta('sheetbase backend install && sheetbase frontend install');
+            message += EOL + '    + Install packages: ' + magenta('sheetbase backend install && sheetbase frontend install');
         }
-        message += '\n    + Great, start developing :)';
+        message += EOL + '    + Great, start developing :)';
         return message;
     },
     PROJECT_START__OK__NOT_THEME: (name: string, options: any) => {
         let message = 'Sheetbase project created, next steps:';
-        message += '\n    + Go to the project: ' + magenta('cd ' + name);
+        message += EOL + '    + Go to the project: ' + magenta('cd ' + name);
         if (!options.install) {
-            message += '\n    + Install packages: ' + magenta('npm install');
+            message += EOL + '    + Install packages: ' + magenta('npm install');
         }
-        message += '\n    + Great, start developing :)';
+        message += EOL + '    + Great, start developing :)';
         return message;
     },
     PROJECT_URL__OK: (name: string, url: string) => `Link of [${name}]: ${green(url)}.\n    + To open, include "-o" flag.`,

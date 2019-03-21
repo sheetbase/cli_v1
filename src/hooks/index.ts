@@ -1,4 +1,5 @@
 const randomstring = require('randomstring');
+const inquirer = require('inquirer');
 import { sentenceCase } from 'change-case';
 import { OAuth2Client } from 'google-auth-library';
 
@@ -70,6 +71,17 @@ export class BuiltinHooks {
             'application/vnd.google-apps.spreadsheet',
             name || `${this.projectPrettyName()} Sheets`,
         );
+    }
+
+    async userInput(message?: string) {
+        const { hookAnswer } = await inquirer.prompt([
+            {
+                type : 'input',
+                name : 'hookAnswer',
+                message : (message || 'Answer') + ':',
+            },
+        ]);
+        return hookAnswer;
     }
 
 }
