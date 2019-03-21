@@ -8,6 +8,8 @@ import {
 } from 'fs-extra';
 import { merge } from 'lodash';
 
+import { setClaspConfigs } from './clasp';
+
 export const SHEETBASE_DOT_JSON = 'sheetbase.json';
 export const PACKAGE_DOT_JSON = 'package.json';
 export const BACKEND_CONFIG_FILE = 'backend/src/sheetbase.config.ts';
@@ -207,4 +209,38 @@ export async function setFrontendConfigs(data: {}, customRoot?: string) {
 
 export async function saveFrontendConfigs(data: {}, customRoot?: string) {
     await saveConfigsToFile(FRONTEND_CONFIG_FILE, data, customRoot);
+}
+
+export async function setInitialConfigs(customRoot?: string) {
+    const deployPath = await getPath(customRoot);
+    // package.json
+    await setPackageDotJson(
+        {
+            name,
+            version: '1.0.0',
+            description: 'A Sheetbase project',
+        },
+        (currentData, data) => {
+            // keep only these fields
+            const { author, homepage, license, scripts } = currentData;
+            return { ... data, author, homepage, license, scripts };
+        },
+        deployPath,
+    );
+    // sheetbase.json
+    await setSheetbaseDotJson(
+        {
+            driveFolder: '',
+            configs: {
+                backend: {},
+                frontend: {},
+            },
+            deployment: null,
+        },
+        // override above fields and keep the rest
+        (currentData, data) => ({ ... currentData, ... data }),
+        deployPath,
+    );
+    // backend/.clasp.json
+    await setClaspConfigs({ scriptId: '', projectId: '' }, true, deployPath);
 }

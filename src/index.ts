@@ -75,6 +75,7 @@ program
  * @param {string[]?} [params] Command params, comma-separated.
  * @param {boolean?} [-i,--install] (start) Install npm packages.
  * @param {boolean?} [-x,--no-setup] (start) Do not run setup command.
+ * @param {boolean?} [-r,--re-setup] (setup) Force re-setup.
  * @param {boolean?} [-o,--open] (url) Open the url in browser.
  * @param {string?} [-d,--database] (model) Custom database.
  * @param {boolean?} [-c,--clean] (model) Remove the default 'Sheet1'.
@@ -87,6 +88,7 @@ program
   .description('Project general tasks.')
   .option('-i, --install', `(${chalk.green('start')}) Install npm packages.`)
   .option('-x, --no-setup', `(${chalk.green('start')}) Do not run setup command.`)
+  .option('-r, --re-setup', `(${chalk.green('setup')}) Force re-setup.`)
   .option('-o, --open', `(${chalk.green('url')}) Open the url in browser.`)
   .option('-d, --database [value]', `(${chalk.green('model')}) Custom database.`)
   .option('-c, --clean', `(${chalk.green('model')}) Remove the default 'Sheet1'.`)
@@ -117,10 +119,12 @@ program
  * Setup the project.
  * Proxy of **project setup**
  * @name setup
+ * @param {boolean?} [-r,--re-setup] Force re-setup.
  */
 program
   .command('setup')
   .description('Setup the project.')
+  .option('-r, --re-setup', `Force re-setup.`)
   .action(() => projectCommand('setup'));
 
 /**

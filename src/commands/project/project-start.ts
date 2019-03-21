@@ -4,8 +4,7 @@ import axios from 'axios';
 
 import { buildValidFileName } from '../../services/utils';
 import { download, unzip, unwrap } from '../../services/file';
-import { setPackageDotJson, setSheetbaseDotJson, getBackendConfigs } from '../../services/project';
-import { setClaspConfigs } from '../../services/clasp';
+import { setInitialConfigs, getBackendConfigs } from '../../services/project';
 import { exec } from '../../services/command';
 import { logError, logOk, logAction } from '../../services/message';
 
@@ -47,36 +46,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
 
         // reset configs
         await logAction('Initial config the project', async () => {
-            // package.json
-            await setPackageDotJson(
-                {
-                    name,
-                    version: '1.0.0',
-                    description: 'A Sheetbase project',
-                },
-                (currentData, data) => {
-                    // keep only these fields
-                    const { author, homepage, license, scripts } = currentData;
-                    return { ... data, author, homepage, license, scripts };
-                },
-                deployPath,
-            );
-            // sheetbase.json
-            await setSheetbaseDotJson(
-                {
-                    driveFolder: '',
-                    configs: {
-                        backend: {},
-                        frontend: {},
-                    },
-                    deployment: null,
-                },
-                // override above fields and keep the rest
-                (currentData, data) => ({ ... currentData, ... data }),
-                deployPath,
-            );
-            // backend/.clasp.json
-            await setClaspConfigs({ scriptId: '', projectId: '' }, true, deployPath);
+            await setInitialConfigs(deployPath);
         });
 
         // run setup

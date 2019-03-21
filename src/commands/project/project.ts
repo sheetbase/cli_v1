@@ -18,6 +18,7 @@ import { projectPreviewCommand } from './project-preview';
 export interface Options {
     install?: boolean;
     setup?: boolean;
+    reSetup?: boolean;
     open?: boolean;
     database?: string;
     clean?: boolean;
@@ -42,7 +43,7 @@ export async function projectCommand(command: string, params: string[] = [], opt
         break;
 
         case 'setup':
-            await projectSetupCommand();
+            await projectSetupCommand(options);
         break;
 
         case 'configs':

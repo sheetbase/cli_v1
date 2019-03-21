@@ -4,13 +4,20 @@ import { sentenceCase } from 'change-case';
 import { driveCreateFolder } from '../../services/drive';
 import { gasCreate, gasWebappInit } from '../../services/gas';
 import { getOAuth2Client } from '../../services/google';
-import { getSheetbaseDotJson, setSheetbaseDotJson, setConfigs } from '../../services/project';
+import {
+    setInitialConfigs,
+    getSheetbaseDotJson,
+    setSheetbaseDotJson,
+    setConfigs,
+} from '../../services/project';
 import { setClaspConfigs, getClaspConfigs } from '../../services/clasp';
 import { logError, logWarn, logOk, logAction } from '../../services/message';
 
 import { BuiltinHooks } from '../../hooks';
 
-export async function projectSetupCommand() {
+import { Options } from './project';
+
+export async function projectSetupCommand(options: Options) {
     const name = basename(process.cwd());
     const namePretty = sentenceCase(name);
 
@@ -18,6 +25,13 @@ export async function projectSetupCommand() {
     const googleClient = await getOAuth2Client();
     if (!googleClient) {
         return logError('PROJECT_SETUP__ERROR__NO_GOOGLE_ACCOUNT', true, [name]);
+    }
+
+    // clear configs
+    if (options.reSetup) {
+        await logAction('Reset configs', async () => {
+            await setInitialConfigs();
+        });
     }
 
     // load current configs
