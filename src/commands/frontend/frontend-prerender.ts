@@ -17,7 +17,7 @@ import {
     prerenderModifier,
 } from '../../services/build';
 import { getModifiedTime } from '../../services/file';
-import { logError, logOk, logInfo, logAction } from '../../services/message';
+import { gray, blue, logError, logOk, logAction } from '../../services/message';
 
 import { Options } from './frontend';
 
@@ -88,7 +88,7 @@ export async function frontendPrerenderCommand(options: Options) {
             return (nowTime - modifiedTime) > 604800000; // a week
         };
         // counter
-        const countAll = prerenderItems.length;
+        const countTotal = prerenderItems.length;
         let countDone = 0;
         let countSkipped = 0;
         let countForced = 0;
@@ -100,21 +100,31 @@ export async function frontendPrerenderCommand(options: Options) {
             const prerenderPath = resolve(stagingCwd, path, 'index.html');
             // prerender when:
             // always /
-            // not exists
+            // not exists (new)
             // forced
             // expired
-            const isForced = forcedChecker(path);
-            if (isForced) {
-                countForced++;
-            }
-            const isExpired = expiredChecker(prerenderPath);
-            if (isExpired) {
-                countExpired++;
+            // process
+
+            let isForced = false;
+            let isExpired = false;
+            if (!!path) {
+                // forced
+                isForced = forcedChecker(path);
+                if (isForced) {
+                    countForced++;
+                }
+                // expired
+                if (await pathExists(prerenderPath)) {
+                    isExpired = expiredChecker(prerenderPath);
+                    if (isExpired) {
+                        countExpired++;
+                    }
+                }
             }
             // process
             if (
                 !path || // always /
-                (!!path && !await pathExists(prerenderPath)) || // not exists
+                (!!path && !await pathExists(prerenderPath)) || // not exists (new)
                 options.only === '*' || // force (*)
                 isForced || // forced (custom)
                 isExpired // expired
@@ -134,17 +144,18 @@ export async function frontendPrerenderCommand(options: Options) {
                 await outputFile(prerenderPath, content);
                 await page.close();
                 // log item
-                const status = (!isForced || !isExpired) ? (isExpired ? 'expired' : 'forced') : null;
-                console.log('   + ' + (path || '/') + (!!status ? `(${ status })` : ''));
+                const status = (isForced || isExpired) ? (isExpired ? 'expired' : 'forced') : null;
+                console.log('   + ' + (path || '/') + blue(!!status ? ` (${ status })` : ''));
                 // count done
                 countDone++;
             } else {
+                console.log('   + ' + path + gray(' (skipped)'));
                 countSkipped++;
             }
         }
-        // log counter
+        // log counters
         // tslint:disable-next-line:max-line-length
-        logInfo(`All: ${ countAll }; done: ${ countDone }; skipped: ${ countSkipped }; forced: ${ countForced }; expired: ${ countExpired }`);
+        console.log(EOL + `   Total: ${ countTotal } | Done: ${ countDone } | Skipped: ${ countSkipped } | Forced: ${ countForced } | Expired: ${ countExpired }`);
     });
 
     // shutdown

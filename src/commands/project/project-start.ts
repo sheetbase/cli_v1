@@ -31,7 +31,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
     await logAction('Get the resource from ' + url, async () => {
         if (url.endsWith('.git')) {
             // clone the repo when has .git url
-            exec(`git clone ${url} ${name}`, '.', 'ignore');
+            exec(`git clone ${url} ${name}`, '.', 'ignore', true);
             await remove(deployPath + '/' + '.git'); // delete .git folder
         } else {
             const downloadedPath = await download(url, deployPath, 'resource.zip');

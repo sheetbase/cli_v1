@@ -16,9 +16,12 @@ export function getRawArgs(
     return args;
 }
 
-export function exec(command: string, cwd = '.', stdio: any = 'inherit') {
-    const [ cmd, ... cmds ] = command.trim().split(' ');
-    const finalCommand = getCommand(cmd) + ' ' + cmds.join(' ');
+export function exec(command: string, cwd = '.', stdio: any = 'inherit', raw = false) {
+    let finalCommand = command;
+    if (!raw) {
+        const [ cmd, ... cmds ] = command.trim().split(' ');
+        finalCommand = getCommand(cmd) + ' ' + cmds.join(' ');
+    }
     return execSync(finalCommand, { cwd, stdio });
 }
 

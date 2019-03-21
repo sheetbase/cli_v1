@@ -68,12 +68,12 @@ export async function frontendBuildCommand() {
             !await pathExists(resolve(stagingCwd, '.git'))
         ) {
             // init git
-            exec('git init', stagingCwd, 'ignore');
+            exec('git init', stagingCwd, 'ignore', true);
             // set remote
-            exec('git remote add origin ' + gitUrl, stagingCwd, 'ignore');
+            exec('git remote add origin ' + gitUrl, stagingCwd, 'ignore', true);
             // use master or gh-pages
             if (!master) {
-                exec('git checkout -b gh-pages', stagingCwd, 'ignore');
+                exec('git checkout -b gh-pages', stagingCwd, 'ignore', true);
             }
         }
     });
