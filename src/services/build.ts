@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import { pathExists, readJson } from 'fs-extra';
 import axios from 'axios';
 
-import { replaceBetween  } from './utils';
+import { replaceBetween, isHostSubfolder } from './utils';
 
 export type Prerenders = Array<string | Prerender>;
 
@@ -24,7 +24,11 @@ export interface LoadingScreen {
   css?: string;
 }
 
-export function github404HtmlContent(repo: string, title = 'Sheetbase') {
+export function github404HtmlContent(url: string, title = 'Sheetbase') {
+    let subfolder = '';
+    if (isHostSubfolder(url)) {
+      subfolder = url.split('/').filter(Boolean)[2];
+    }
     return (
 `<!DOCTYPE html>
 <html lang="en">
@@ -32,7 +36,7 @@ export function github404HtmlContent(repo: string, title = 'Sheetbase') {
   <meta charset="utf-8" />
   <title>${title}</title>
   <script>sessionStorage.redirect = location.href;</script>
-  <meta http-equiv="refresh" content="0;URL='/${repo}'"></meta>
+  <meta http-equiv="refresh" content="0;URL='/${subfolder}'"></meta>
 </head>
 <body>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -94,7 +98,7 @@ export function prerenderModifier(
 
   // change base
   // only when hosting in a subfolder
-  if (url.split('/').filter(Boolean).length > 2) {
+  if (isHostSubfolder(url)) {
     html = replaceBetween(html, url + '/', '<base href="', '"');
   }
 
@@ -126,18 +130,18 @@ export function prerenderModifier(
   if (provider === 'github' && isIndex) {
     html = html.replace(
       '<head>',
-    `<head>
+  `<head>
 
-    <!-- Github Pages hack to allow SPA refresh without receiving 404. -->
-    <script>
-      (function () {
-        var redirect = sessionStorage.redirect;
-        delete sessionStorage.redirect;
-        if (redirect && redirect != location.href) {
-          history.replaceState(null, null, redirect);
-        }
-      })();
-    </script>
+  <!-- Github Pages hack to allow SPA refresh without receiving 404. -->
+  <script>
+    (function () {
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect != location.href) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
 
     `,
     );

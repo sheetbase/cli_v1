@@ -34,10 +34,6 @@ export async function frontendBuildCommand() {
         resolve(homedir(), 'sheetbase_staging', name);
     const wwwCwd = await getPath(wwwDir);
 
-    // check if dir exists
-    if (!await pathExists(stagingCwd)) {
-        return logError('FRONTEND_DEPLOY__ERROR__NO_STAGING');
-    }
     // malform provider
     if (
         !provider ||
@@ -47,9 +43,9 @@ export async function frontendBuildCommand() {
     }
 
     // build code
-    await logAction('Build code (could take several minutes)', async () => {
-        execSync('npm run build', { cwd: 'frontend', stdio: 'ignore' });
-    });
+    // await logAction('Build code (could take several minutes)', async () => {
+    //     execSync('npm run build', { cwd: 'frontend', stdio: 'ignore' });
+    // });
 
     // prepare the staging folder
     await logAction('Prepare the deploy area', async () => {
@@ -95,17 +91,24 @@ export async function frontendBuildCommand() {
         if (provider === 'github') {
             const indexHtmlContent = await readFile(resolve(stagingCwd, 'index.html'), 'utf-8');
             const title = indexHtmlContent.match(/\<title\>(.*)\<\/title\>/).pop();
-            const [ org, repo ] = gitUrl.replace('https://github.com/', '').replace('.git', '').split('/');
             // add 404.html
             await outputFile(
                 resolve(stagingCwd, '404.html'),
-                github404HtmlContent(repo, title),
+                github404HtmlContent(url, title),
             );
+            // add CNAME
+            // only when using custom domain
+            if (url.indexOf('.github.io') < 0) {
+                await outputFile(
+                    resolve(stagingCwd, 'CNAME'),
+                    url.split('/').filter(Boolean)[1],
+                );
+            }
             // add index.html SPA hack snipet
             // change base if needed
             await outputFile(
                 resolve(stagingCwd, 'index.html'),
-                prerenderModifier(provider, indexHtmlContent, url, true),
+                prerenderModifier(provider, indexHtmlContent, url, true, true),
             );
         }
     });

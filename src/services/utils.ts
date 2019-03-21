@@ -114,3 +114,7 @@ export function replaceBetween(
     }
     return content;
 }
+
+export function isHostSubfolder(url: string) {
+    return url.split('/').filter(Boolean).length > 2;
+}
