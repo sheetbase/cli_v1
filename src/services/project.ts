@@ -22,7 +22,6 @@ export interface SheetbaseDeployment {
     provider: 'github' | 'firebase' | 'hosting' | 'server';
     destination: GithubProvider;
     url?: string;
-    srcDir?: string;
     wwwDir?: string;
     stagingDir?: string;
 }

@@ -24,14 +24,12 @@ export async function frontendPrerenderCommand() {
         provider,
         url = '',
         stagingDir,
-        srcDir = './frontend/src',
         wwwDir = './frontend/www',
     } = deployment;
 
     // folders
     const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
         resolve(homedir(), 'sheetbase_staging', name);
-    const srcCwd = await getPath(srcDir);
     const wwwCwd = await getPath(wwwDir);
 
     // check if dir exists
@@ -43,7 +41,7 @@ export async function frontendPrerenderCommand() {
     let prerenderItems: Array<PrerenderItem | string>;
     let prerenderLoading: boolean | LoadingScreen;
     await logAction('Load prerender items', async () => {
-        const { items, loading } = await loadPrerenderItems(srcCwd, await getFrontendConfigs());
+        const { items, loading } = await loadPrerenderItems(await getFrontendConfigs());
         prerenderItems = items;
         prerenderLoading = loading;
     });
@@ -140,7 +138,7 @@ export async function frontendPrerenderCommand() {
 
     // robots
     await logAction('Save robots.txt', async () => {
-        const robotsSourcePath = resolve(srcCwd, 'robots.txt');
+        const robotsSourcePath = resolve('.', 'robots.txt');
         const robotsDestPath = resolve(stagingCwd, 'robots.txt');
         if (await pathExists(robotsSourcePath)) {
             await copy(robotsSourcePath, robotsDestPath); // copy

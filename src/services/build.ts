@@ -47,9 +47,9 @@ export function github404HtmlContent(url: string, title = 'Sheetbase') {
     );
 }
 
-export async function loadPrerenderItems(srcCwd: string, frontendConfigs: any) {
+export async function loadPrerenderItems(frontendConfigs: any) {
   const { backendUrl, apiKey = '' } = frontendConfigs;
-  const prerenderConfigPath = resolve(srcCwd, 'prerender.json');
+  const prerenderConfigPath = resolve('.', 'prerender.json');
   // load items
   const prerenderItems: Array<PrerenderItem | string> = [''];
   let loading: boolean | LoadingScreen;
