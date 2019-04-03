@@ -266,13 +266,15 @@ program
  * @name frontend
  * @param {string?} [subCommand] Optional supported sub-commands.
  * @param {string?} [-m,--message] Deployment message.
- * @param {string?} [-o,--only] Force prerender or only certain parts.
+ * @param {string?} [-f,--force] Force prerender all or certain parts.
+ * @param {string?} [-o,--only] Prerender only certain parts.
  */
 program
   .command('frontend [subCommand]')
   .description('Run frontend related commands.')
   .option('-m, --message [value]', `Deployment message.`)
-  .option('-o, --only [value]', `Force prerender or only certain parts.`)
+  .option('-f, --force [value]', `Force prerender all or certain parts.`)
+  .option('-o, --only [value]', `Prerender only certain parts.`)
   .allowUnknownOption()
   .action(frontendCommand);
 

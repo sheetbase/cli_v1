@@ -7,6 +7,7 @@ import { frontendPrerenderCommand } from './frontend-prerender';
 
 export interface Options {
     message?: string;
+    force?: string;
     only?: string;
 }
 

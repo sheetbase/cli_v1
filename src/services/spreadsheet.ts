@@ -1,6 +1,8 @@
 import { OAuth2Client } from 'google-auth-library';
+import { parse as papaparse } from 'papaparse';
 
 import { Model } from './model';
+import { getData } from './data';
 
 export async function createSheetByModel(
     client: OAuth2Client,
@@ -155,4 +157,27 @@ export async function deleteSheet(
         url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`,
         data: requestData,
     });
+}
+
+export async function getDirectSheet(
+    databasePublicId: string,
+    gid: string,
+) {
+    // url builder
+    const csvUrl =  `https://docs.google.com/spreadsheets/d/e/`
+        + databasePublicId +
+        `/pub?gid=`
+        + gid +
+        `&single=true&output=csv`;
+    // parser
+    const parseCSV = (csv: string) => {
+        return new Promise<any[]>((resolve, reject) => {
+            papaparse(csv, {
+                header: true,
+                complete: (result) => !result.errors.length ? resolve(result.data) : reject(result.errors),
+            });
+        });
+    };
+    const csv = await getData(csvUrl);
+    return await parseCSV(csv);
 }

@@ -68,11 +68,24 @@ export async function frontendPrerenderCommand(options: Options) {
     });
 
     await logAction('Prerender:', async () => {
+        // only checker
+        const onlyChecker = (path: string) => {
+            let only = false;
+            // check
+            const onlyItems: string[] = (options.only || '').split(',').filter(Boolean);
+            for (let i = 0; i < onlyItems.length; i++) {
+                const onlyItem = onlyItems[i];
+                if (path.indexOf(onlyItem) > -1) {
+                    only = true; break;
+                }
+            }
+            return only;
+        };
         // force checker
         const forcedChecker = (path: string) => {
             let forced = false;
             // check
-            const forcedItems: string[] = (options.only || '').split(',').filter(Boolean);
+            const forcedItems: string[] = (options.force || '').split(',').filter(Boolean);
             for (let i = 0; i < forcedItems.length; i++) {
                 const forcedItem = forcedItems[i];
                 if (path.indexOf(forcedItem) > -1) {
@@ -98,16 +111,21 @@ export async function frontendPrerenderCommand(options: Options) {
             const item = prerenderItems[i];
             const path = typeof item === 'string' ? item : item.path;
             const prerenderPath = resolve(stagingCwd, path, 'index.html');
-            // prerender when:
+            // prerender:
+            // 1. only
+            // 2. regular, when:
             // always /
             // not exists (new)
             // forced
             // expired
             // process
 
+            let isOnly = false;
             let isForced = false;
             let isExpired = false;
             if (!!path) {
+                // only
+                isOnly = onlyChecker(path);
                 // forced
                 isForced = forcedChecker(path);
                 if (isForced) {
@@ -123,11 +141,23 @@ export async function frontendPrerenderCommand(options: Options) {
             }
             // process
             if (
-                !path || // always /
-                (!!path && !await pathExists(prerenderPath)) || // not exists (new)
-                options.only === '*' || // force (*)
-                isForced || // forced (custom)
-                isExpired // expired
+                // only
+                (!!options.only && isOnly) ||
+                // regular
+                (!options.only &&
+                    (
+                        // always /
+                        !path ||
+                        // not exists (new)
+                        (!!path && !await pathExists(prerenderPath)) ||
+                        // force (*)
+                        options.force === '*' ||
+                        // forced (custom)
+                        isForced ||
+                        // expired
+                        isExpired
+                    )
+                )
             ) {
                 const page = await browser.newPage();
                 await page.goto('http://localhost:7777/' + path, {
