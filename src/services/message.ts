@@ -97,6 +97,9 @@ export const ERRORS = {
     PROJECT__ERROR__EXISTS: 'Project exists, please choose different name.',
     PROJECT_CONFIG_IMPORT__ERROR__NO_FILE: 'No configs file found.',
     PROJECT_MODEL__ERROR__NO_DATABASE: 'No database found or invalid.',
+    PROJECT_MODEL__ERROR__DUPLICATE_GID: (m1: string, m2: string) => (
+        `Model "${ m1 }" has the same GID as "${ m2 }"`
+    ),
     PROJECT_SETUP__ERROR__NO_GOOGLE_ACCOUNT: (name: string) => {
         return ERRORS['GOOGLE__ERROR__NO_ACCOUNT'] +
             EOL + '       + Then: ' + magenta('cd ' + name) +

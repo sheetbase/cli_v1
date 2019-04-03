@@ -2,13 +2,12 @@ import { OAuth2Client } from 'google-auth-library';
 
 import { Model } from './model';
 
-export async function createSheetBySchema(
+export async function createSheetByModel(
     client: OAuth2Client,
     spreadsheetId: string,
     sheetName: string,
     model: Model,
 ) {
-    // const sheetId = Math.round(Math.random() * 1E9);
     const { gid: sheetId, schema } = model;
     const columnCount = schema.length;
 
