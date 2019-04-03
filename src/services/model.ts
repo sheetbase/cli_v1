@@ -2,7 +2,7 @@ import { pathExists, readJson } from 'fs-extra';
 
 import { readdirAsync } from './file';
 import { ModelExtended, getSheetbaseDotJson } from './project';
-import { getData } from './data';
+import { getData } from './fetch';
 
 export interface ModelSchema {
   name: string;

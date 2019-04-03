@@ -1,8 +1,7 @@
 import { resolve } from 'path';
 import { pathExists, readJson } from 'fs-extra';
-import axios from 'axios';
 
-import { getDirectSheet } from './spreadsheet';
+import { getServerSheet, getDirectSheet } from './spreadsheet';
 import { replaceBetween, isHostSubfolder } from './utils';
 
 export type Prerenders = Array<string | Prerender>;
@@ -50,7 +49,12 @@ export function github404HtmlContent(url: string, title = 'Sheetbase') {
 }
 
 export async function loadPrerenderItems(frontendConfigs: any) {
-  const { backendUrl, apiKey = '', databasePublicId, databaseGids } = frontendConfigs;
+  const {
+    backendUrl,
+    apiKey = '',
+    databasePublicId,
+    databaseGids,
+  } = frontendConfigs;
   const prerenderConfigPath = resolve('.', 'prerender.json');
   // load items
   const prerenderItems: Array<PrerenderItem | string> = [''];
@@ -73,12 +77,7 @@ export async function loadPrerenderItems(frontendConfigs: any) {
         if (!!databasePublicId && !!databaseGids && !!databaseGids[from]) {
           items = await getDirectSheet(databasePublicId, databaseGids[from]);
         } else {
-          const { data } = await axios({
-            method: 'GET',
-            url: `${backendUrl}?e=/database&table=${from}` + (!!apiKey ? '&apiKey=' + apiKey : ''),
-          });
-          const { data: serverItems = [] } = data;
-          items = serverItems;
+          items = await getServerSheet(backendUrl, apiKey, from);
         }
         // assign item
         for (let j = 0; j < items.length; j++) {

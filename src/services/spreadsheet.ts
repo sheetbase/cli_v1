@@ -2,7 +2,7 @@ import { OAuth2Client } from 'google-auth-library';
 import { parse as papaparse } from 'papaparse';
 
 import { Model } from './model';
-import { getData } from './data';
+import { getData } from './fetch';
 
 export async function createSheetByModel(
     client: OAuth2Client,
@@ -159,6 +159,20 @@ export async function deleteSheet(
     });
 }
 
+export async function getServerSheet(
+    backendUrl: string,
+    apiKey: string,
+    sheetName: string,
+) {
+    const {
+        data: items = [],
+    } = await getData(
+        `${backendUrl}?e=/database&sheet=${sheetName}` +
+        (!!apiKey ? '&apiKey=' + apiKey : ''),
+    );
+    return items;
+}
+
 export async function getDirectSheet(
     databasePublicId: string,
     gid: string,
@@ -166,8 +180,7 @@ export async function getDirectSheet(
     // url builder
     const csvUrl =  `https://docs.google.com/spreadsheets/d/e/`
         + databasePublicId +
-        `/pub?gid=`
-        + gid +
+        `/pub?gid=` + gid +
         `&single=true&output=csv`;
     // parser
     const parseCSV = (csv: string) => {
