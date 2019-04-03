@@ -20,12 +20,19 @@ export interface GithubProvider {
     master?: boolean;
 }
 
-export interface SheetbaseDeployment {
+export interface Deployment {
     provider: 'github' | 'firebase' | 'hosting' | 'server';
-    destination: GithubProvider;
+    destination: any | GithubProvider;
     url?: string;
     wwwDir?: string;
     stagingDir?: string;
+}
+
+export interface ModelExtended {
+    from: string;
+    name: string;
+    gid: string | number;
+    public?: boolean;
 }
 
 export interface SheetbaseDotJson {
@@ -49,7 +56,8 @@ export interface SheetbaseDotJson {
     setupHooks?: {
         [configKey: string]: any[];
     };
-    deployment?: SheetbaseDeployment;
+    models?: Array<string | ModelExtended>;
+    deployment?: Deployment;
 }
 
 export interface PackageDotJson {

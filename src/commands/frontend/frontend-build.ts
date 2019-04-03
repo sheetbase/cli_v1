@@ -5,7 +5,7 @@ import * as del from 'del';
 
 import {
     GithubProvider,
-    SheetbaseDeployment,
+    Deployment,
     getSheetbaseDotJson,
     getPath,
 } from '../../services/project';
@@ -17,7 +17,7 @@ import { exec } from '../../services/command';
 import { logError, logOk, logAction } from '../../services/message';
 
 export async function frontendBuildCommand() {
-    const { deployment = {} as SheetbaseDeployment } = await getSheetbaseDotJson();
+    const { deployment = {} as Deployment } = await getSheetbaseDotJson();
     const {
         provider,
         url = '',

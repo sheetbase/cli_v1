@@ -5,7 +5,7 @@ const superstatic = require('superstatic');
 import { launch } from 'puppeteer-core';
 
 import {
-    SheetbaseDeployment,
+    Deployment,
     getSheetbaseDotJson,
     getFrontendConfigs,
     getPath,
@@ -22,7 +22,7 @@ import { gray, blue, logError, logOk, logAction } from '../../services/message';
 import { Options } from './frontend';
 
 export async function frontendPrerenderCommand(options: Options) {
-    const { deployment = {} as SheetbaseDeployment } = await getSheetbaseDotJson();
+    const { deployment = {} as Deployment } = await getSheetbaseDotJson();
     const {
         provider,
         url = '',

@@ -2,8 +2,8 @@ import { getOAuth2Client } from '../../services/google';
 import { createSheetBySchema, deleteDefaultSheet } from '../../services/spreadsheet';
 import { getBackendConfigs } from '../../services/project';
 import { logError, logOk, logAction } from '../../services/message';
+import { getLocalModels, loadModels } from '../../services/model';
 
-import { getModels, getAvailableModels } from './project-models';
 import { Options } from './project';
 
 export async function projectModelCommand(schemaFiles: string[], options: Options) {
@@ -22,9 +22,9 @@ export async function projectModelCommand(schemaFiles: string[], options: Option
     // load schemas
     let models = {};
     if (schemaFiles.length > 0) {
-        models = await getModels(schemaFiles);
+        models = await getLocalModels(schemaFiles);
     } else {
-        models = await getAvailableModels();
+        models = await loadModels();
     }
 
     // send request

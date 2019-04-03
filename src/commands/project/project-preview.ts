@@ -1,11 +1,11 @@
 const superstatic = require('superstatic');
 
-import { SheetbaseDeployment, getPath, getSheetbaseDotJson } from '../../services/project';
+import { Deployment, getPath, getSheetbaseDotJson } from '../../services/project';
 import { logInfo } from '../../services/message';
 
 export async function projectPreviewCommand() {
     const { deployment } = await getSheetbaseDotJson();
-    const { wwwDir = './frontend/www' } = deployment || {} as SheetbaseDeployment;
+    const { wwwDir = './frontend/www' } = deployment || {} as Deployment;
     const wwwCwd = await getPath(wwwDir);
     // launch server
     superstatic.server({

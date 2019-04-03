@@ -1,20 +1,15 @@
 import { OAuth2Client } from 'google-auth-library';
 
-export interface ItemSchema {
-    name: string;
-    note?: string;
-    width?: number;
-    value?: any;
-    type?: 'any' | 'boolean' | 'number' | 'string' | 'object';
-}
+import { Model } from './model';
 
 export async function createSheetBySchema(
     client: OAuth2Client,
     spreadsheetId: string,
     sheetName: string,
-    schema: ItemSchema[],
+    model: Model,
 ) {
-    const sheetId = Math.round(Math.random() * 1E9);
+    // const sheetId = Math.round(Math.random() * 1E9);
+    const { gid: sheetId, schema } = model;
     const columnCount = schema.length;
 
     // build configs

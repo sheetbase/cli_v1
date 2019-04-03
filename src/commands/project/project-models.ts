@@ -1,21 +1,23 @@
 const ttyTable = require('tty-table');
-import { pathExists, readJson } from 'fs-extra';
 
-import { logOk, green } from '../../services/message';
-import { ItemSchema } from '../../services/spreadsheet';
-import { readdirAsync } from '../../services/file';
+import { loadModels } from '../../services/model';
+import { logOk, green, blue } from '../../services/message';
 
 export async function projectModelsCommand() {
-    const models = await getAvailableModels();
+    const models = await loadModels();
 
     for (const key of Object.keys(models)) {
-        console.log('\n + ' + green(key));
+        const { gid, schema, public: isPublic } = models[key];
+        console.log('\n + ' +
+            green(key) +
+            ` [${ blue('' + (gid || 'auto')) }]` +
+            (isPublic ? ' (public)' : ''),
+        );
         // preview
-        const model = models[key];
         const cols = [];
         const types = [];
-        for (let i = 0; i < model.length; i++) {
-            const item = model[i];
+        for (let i = 0; i < schema.length; i++) {
+            const item = schema[i];
             cols.push({ value: item.name });
             if (!item.type && !!item.value) {
                 if (typeof item.value === 'number') {
@@ -38,28 +40,4 @@ export async function projectModelsCommand() {
 
     // done
     logOk('PROJECT_MODELS__OK', true, [models]);
-}
-
-export async function getAvailableModels(): Promise<{ [name: string]: ItemSchema[] }> {
-    const modelsPath = 'models';
-    // load models
-    let models = {};
-    if (await pathExists(modelsPath)) {
-        const filePaths = (await readdirAsync(modelsPath)).map(x => modelsPath + '/' + x);
-        models = await getModels(filePaths);
-    }
-    return models;
-}
-
-export async function getModels(filePaths: string[]): Promise<{ [name: string]: ItemSchema[] }> {
-    const models = {};
-    for (let i = 0; i < filePaths.length; i++) {
-        const filePath = filePaths[i];
-        if (filePath.endsWith('.json')) {
-            const modelFile = filePath.split('/').pop();
-            const modelName = modelFile.replace('.json', '');
-            models[modelName] = await readJson(filePath);
-        }
-    }
-    return models;
 }

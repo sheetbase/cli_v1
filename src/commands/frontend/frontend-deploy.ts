@@ -2,7 +2,7 @@ import { basename, resolve } from 'path';
 import { homedir, EOL } from 'os';
 import { pathExists } from 'fs-extra';
 
-import { GithubProvider, SheetbaseDeployment, getPath, getSheetbaseDotJson } from '../../services/project';
+import { GithubProvider, Deployment, getPath, getSheetbaseDotJson } from '../../services/project';
 import { exec } from '../../services/command';
 import { logError, logOk, logInfo, logAction } from '../../services/message';
 
@@ -11,7 +11,7 @@ import { Options } from './frontend';
 export async function frontendDeployCommand(options: Options) {
     const name = basename(process.cwd());
     const { deployment } = await getSheetbaseDotJson();
-    const { provider, url = 'n/a', stagingDir, destination } = deployment || {} as SheetbaseDeployment;
+    const { provider, url = 'n/a', stagingDir, destination } = deployment || {} as Deployment;
     const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
         resolve(homedir(), 'sheetbase_staging', name);
     // check if dir exists
