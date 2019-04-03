@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SheetbaseDeployment | @sheetbase/cli</title>
+	<title>ModelSchema | @sheetbase/cli</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="sheetbasedeployment.html">SheetbaseDeployment</a>
+					<a href="modelschema.html">ModelSchema</a>
 				</li>
 			</ul>
-			<h1>Interface SheetbaseDeployment</h1>
+			<h1>Interface ModelSchema</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">SheetbaseDeployment</span>
+						<span class="target">ModelSchema</span>
 					</li>
 				</ul>
 			</section>
@@ -81,11 +81,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sheetbasedeployment.html#destination" class="tsd-kind-icon">destination</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sheetbasedeployment.html#provider" class="tsd-kind-icon">provider</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sheetbasedeployment.html#stagingdir" class="tsd-kind-icon">staging<wbr>Dir</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sheetbasedeployment.html#url" class="tsd-kind-icon">url</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sheetbasedeployment.html#wwwdir" class="tsd-kind-icon">www<wbr>Dir</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="modelschema.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="modelschema.html#note" class="tsd-kind-icon">note</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="modelschema.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="modelschema.html#value" class="tsd-kind-icon">value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="modelschema.html#width" class="tsd-kind-icon">width</a></li>
 							</ul>
 						</section>
 					</div>
@@ -94,52 +94,52 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="destination" class="tsd-anchor"></a>
-					<h3>destination</h3>
-					<div class="tsd-signature tsd-kind-icon">destination<span class="tsd-signature-symbol">:</span> <a href="githubprovider.html" class="tsd-signature-type">GithubProvider</a></div>
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/0e294fc/src/services/project.ts#L25">services/project.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/model.ts#L8">services/model.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="provider" class="tsd-anchor"></a>
-					<h3>provider</h3>
-					<div class="tsd-signature tsd-kind-icon">provider<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"github"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"firebase"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"hosting"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"server"</span></div>
+					<a name="note" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> note</h3>
+					<div class="tsd-signature tsd-kind-icon">note<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/0e294fc/src/services/project.ts#L24">services/project.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/model.ts#L9">services/model.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="stagingdir" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> staging<wbr>Dir</h3>
-					<div class="tsd-signature tsd-kind-icon">staging<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="type" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"any"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/0e294fc/src/services/project.ts#L28">services/project.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/model.ts#L12">services/model.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="url" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> url</h3>
-					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="value" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> value</h3>
+					<div class="tsd-signature tsd-kind-icon">value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/0e294fc/src/services/project.ts#L26">services/project.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/model.ts#L11">services/model.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="wwwdir" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> www<wbr>Dir</h3>
-					<div class="tsd-signature tsd-kind-icon">www<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="width" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> width</h3>
+					<div class="tsd-signature tsd-kind-icon">width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/0e294fc/src/services/project.ts#L27">services/project.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/model.ts#L10">services/model.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -158,22 +158,22 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="sheetbasedeployment.html" class="tsd-kind-icon">Sheetbase<wbr>Deployment</a>
+						<a href="modelschema.html" class="tsd-kind-icon">Model<wbr>Schema</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="sheetbasedeployment.html#destination" class="tsd-kind-icon">destination</a>
+								<a href="modelschema.html#name" class="tsd-kind-icon">name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="sheetbasedeployment.html#provider" class="tsd-kind-icon">provider</a>
+								<a href="modelschema.html#note" class="tsd-kind-icon">note</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="sheetbasedeployment.html#stagingdir" class="tsd-kind-icon">staging<wbr>Dir</a>
+								<a href="modelschema.html#type" class="tsd-kind-icon">type</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="sheetbasedeployment.html#url" class="tsd-kind-icon">url</a>
+								<a href="modelschema.html#value" class="tsd-kind-icon">value</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="sheetbasedeployment.html#wwwdir" class="tsd-kind-icon">www<wbr>Dir</a>
+								<a href="modelschema.html#width" class="tsd-kind-icon">width</a>
 							</li>
 						</ul>
 					</li>

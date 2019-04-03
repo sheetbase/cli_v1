@@ -179,7 +179,8 @@ Run frontend related commands.
 
 - `subCommand`: Optional supported sub-commands.
 - `-m,--message`: Deployment message.
-- `-o,--only`: Force prerender or only certain parts.
+- `-f,--force`: Force prerender all or certain parts.
+- `-o,--only`: Prerender only certain parts.
 
 ### Docs
 

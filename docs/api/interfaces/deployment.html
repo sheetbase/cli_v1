@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>FileCreationRequestBody | @sheetbase/cli</title>
+	<title>Deployment | @sheetbase/cli</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="filecreationrequestbody.html">FileCreationRequestBody</a>
+					<a href="deployment.html">Deployment</a>
 				</li>
 			</ul>
-			<h1>Interface FileCreationRequestBody</h1>
+			<h1>Interface Deployment</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">FileCreationRequestBody</span>
+						<span class="target">Deployment</span>
 					</li>
 				</ul>
 			</section>
@@ -81,9 +81,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="filecreationrequestbody.html#mimetype" class="tsd-kind-icon">mime<wbr>Type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="filecreationrequestbody.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="filecreationrequestbody.html#parents" class="tsd-kind-icon">parents</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="deployment.html#destination" class="tsd-kind-icon">destination</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="deployment.html#provider" class="tsd-kind-icon">provider</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="deployment.html#stagingdir" class="tsd-kind-icon">staging<wbr>Dir</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="deployment.html#url" class="tsd-kind-icon">url</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="deployment.html#wwwdir" class="tsd-kind-icon">www<wbr>Dir</a></li>
 							</ul>
 						</section>
 					</div>
@@ -92,32 +94,52 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="mimetype" class="tsd-anchor"></a>
-					<h3>mime<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">mime<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="destination" class="tsd-anchor"></a>
+					<h3>destination</h3>
+					<div class="tsd-signature tsd-kind-icon">destination<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> | </span><a href="githubprovider.html" class="tsd-signature-type">GithubProvider</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/drive.ts#L5">services/drive.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/project.ts#L25">services/project.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="provider" class="tsd-anchor"></a>
+					<h3>provider</h3>
+					<div class="tsd-signature tsd-kind-icon">provider<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"github"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"firebase"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"hosting"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"server"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/drive.ts#L4">services/drive.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/project.ts#L24">services/project.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="parents" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> parents</h3>
-					<div class="tsd-signature tsd-kind-icon">parents<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="stagingdir" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> staging<wbr>Dir</h3>
+					<div class="tsd-signature tsd-kind-icon">staging<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/drive.ts#L6">services/drive.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/project.ts#L28">services/project.ts:28</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="url" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> url</h3>
+					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/project.ts#L26">services/project.ts:26</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="wwwdir" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> www<wbr>Dir</h3>
+					<div class="tsd-signature tsd-kind-icon">www<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/d6c2de2/src/services/project.ts#L27">services/project.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -136,16 +158,22 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="filecreationrequestbody.html" class="tsd-kind-icon">File<wbr>Creation<wbr>Request<wbr>Body</a>
+						<a href="deployment.html" class="tsd-kind-icon">Deployment</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="filecreationrequestbody.html#mimetype" class="tsd-kind-icon">mime<wbr>Type</a>
+								<a href="deployment.html#destination" class="tsd-kind-icon">destination</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="filecreationrequestbody.html#name" class="tsd-kind-icon">name</a>
+								<a href="deployment.html#provider" class="tsd-kind-icon">provider</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="filecreationrequestbody.html#parents" class="tsd-kind-icon">parents</a>
+								<a href="deployment.html#stagingdir" class="tsd-kind-icon">staging<wbr>Dir</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="deployment.html#url" class="tsd-kind-icon">url</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="deployment.html#wwwdir" class="tsd-kind-icon">www<wbr>Dir</a>
 							</li>
 						</ul>
 					</li>
