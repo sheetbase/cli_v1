@@ -1,6 +1,6 @@
 const randomstring = require('randomstring');
 const inquirer = require('inquirer');
-import { sentenceCase } from 'change-case';
+import { titleCase } from 'change-case';
 import { OAuth2Client } from 'google-auth-library';
 
 import { driveCreateFolder, driveCreateFile, copyFile } from '../services/drive';
@@ -20,7 +20,7 @@ export class BuiltinHooks {
     }
 
     projectPrettyName() {
-        return sentenceCase(this.system.projectName);
+        return titleCase(this.system.projectName);
     }
 
     async randomStr(length = 32, punctuation = false) {

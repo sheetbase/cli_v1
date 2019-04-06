@@ -219,7 +219,7 @@ export async function saveFrontendConfigs(data: {}, customRoot?: string) {
     await saveConfigsToFile(FRONTEND_CONFIG_FILE, data, customRoot);
 }
 
-export async function setInitialConfigs(customRoot?: string) {
+export async function setInitialConfigs(name: string, customRoot?: string) {
     const deployPath = await getPath(customRoot);
     // package.json
     await setPackageDotJson(

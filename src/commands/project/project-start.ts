@@ -46,7 +46,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
 
         // reset configs
         await logAction('Initial config the project', async () => {
-            await setInitialConfigs(deployPath);
+            await setInitialConfigs(name, deployPath);
         });
 
         // run setup

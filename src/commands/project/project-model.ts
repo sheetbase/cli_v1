@@ -1,6 +1,6 @@
 import { getOAuth2Client } from '../../services/google';
 import { createSheetByModel, deleteDefaultSheet } from '../../services/spreadsheet';
-import { getBackendConfigs, setFrontendConfigs } from '../../services/project';
+import { getBackendConfigs, setConfigs } from '../../services/project';
 import { logError, logOk, logAction } from '../../services/message';
 import { Model, getLocalModels, loadModels } from '../../services/model';
 
@@ -92,7 +92,7 @@ export async function projectModelCommand(schemaFiles: string[], options: Option
             }
         }
         // save to configs
-        await setFrontendConfigs({ databaseGids });
+        await setConfigs({ databaseGids });
     });
 
     // done

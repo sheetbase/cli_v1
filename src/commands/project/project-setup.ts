@@ -1,5 +1,5 @@
 import { basename } from 'path';
-import { sentenceCase } from 'change-case';
+import { titleCase } from 'change-case';
 
 import { driveCreateFolder } from '../../services/drive';
 import { gasCreate, gasWebappInit } from '../../services/gas';
@@ -19,7 +19,7 @@ import { Options } from './project';
 
 export async function projectSetupCommand(options: Options) {
     const name = basename(process.cwd());
-    const namePretty = sentenceCase(name);
+    const namePretty = titleCase(name);
 
     // load default google account
     const googleClient = await getOAuth2Client();
@@ -30,7 +30,7 @@ export async function projectSetupCommand(options: Options) {
     // clear configs
     if (options.reSetup) {
         await logAction('Reset configs', async () => {
-            await setInitialConfigs();
+            await setInitialConfigs(name);
         });
     }
 
