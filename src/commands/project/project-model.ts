@@ -1,6 +1,6 @@
 import { getOAuth2Client } from '../../services/google';
 import { createSheetByModel, deleteDefaultSheet } from '../../services/spreadsheet';
-import { getBackendConfigs, setConfigs } from '../../services/project';
+import { getBackendConfigs, getFrontendConfigs, setConfigs } from '../../services/project';
 import { logError, logOk, logAction } from '../../services/message';
 import { Model, getLocalModels, loadModels } from '../../services/model';
 
@@ -20,23 +20,25 @@ export async function projectModelCommand(schemaFiles: string[], options: Option
     }
 
     // load models
-    let projectModels: {[name: string]: Model};
-    let customModels: {[name: string]: Model};
-    let models: {[name: string]: Model};
+    const { databaseGids } = await getFrontendConfigs();
+    let allModels: {[name: string]: Model};
+    const newModels: {[name: string]: Model} = {};
     await logAction('Load models', async () => {
-        projectModels = await loadModels();
+        // load models
+        allModels = await loadModels();
         if (schemaFiles.length > 0) {
-            customModels = await getLocalModels(schemaFiles);
+            const customModels = await getLocalModels(schemaFiles);
+            allModels = { ... allModels, ... customModels };
         }
         // assign gid if not defined
         // and check for duplication
         const gids = {};
-        // project models
-        for (const key of Object.keys(projectModels)) {
-            const gid = projectModels[key].gid;
+        // models
+        for (const key of Object.keys(allModels)) {
+            const gid = allModels[key].gid;
             if (!gid) {
-                projectModels[key].gid = Math.round(Math.random() * 1E9);
-                gids[projectModels[key].gid] = key;
+                allModels[key].gid = Math.round(Math.random() * 1E9);
+                gids[allModels[key].gid] = key;
             } else if (!!gids[gid]) {
                 return logError('PROJECT_MODEL__ERROR__DUPLICATE_GID', true, [
                     key, gids[gid],
@@ -44,35 +46,22 @@ export async function projectModelCommand(schemaFiles: string[], options: Option
             } else {
                 gids[gid] = key;
             }
-        }
-        // custom models
-        if (!!customModels) {
-            for (const key of Object.keys(customModels)) {
-                const gid = customModels[key].gid;
-                if (!gid) {
-                    customModels[key].gid = Math.round(Math.random() * 1E9);
-                    gids[customModels[key].gid] = key;
-                } else if (!!gids[gid]) {
-                    return logError('PROJECT_MODEL__ERROR__DUPLICATE_GID', true, [
-                        key, gids[gid],
-                    ]);
-                } else {
-                    gids[gid] = key;
-                }
+            // new models
+            if (!!databaseGids && !databaseGids[key]) {
+                newModels[key] = allModels[key];
             }
         }
-        // get active models (will be used to create new sheets)
-        models = !!customModels ? customModels : projectModels;
     });
 
     // send request
-    for (const key of Object.keys(models)) {
-        await logAction('Create sheet: ' + key, async () => {
+    await logAction('Create sheet:', async () => {
+        for (const key of Object.keys(newModels)) {
             await createSheetByModel(
-                googleClient, databaseId, key, models[key],
+                googleClient, databaseId, key, newModels[key],
             );
-        });
-    }
+            console.log('   + ' + key);
+        }
+    });
 
     // delete the default 'Sheet1'
     if (options.clean) {
@@ -82,9 +71,8 @@ export async function projectModelCommand(schemaFiles: string[], options: Option
     }
 
     // save gid maps to config
-    const databaseGids = {};
     await logAction('Save public sheet gids', async () => {
-        const allModels = { ... projectModels, ... customModels };
+        const databaseGids = {};
         for (const key of Object.keys(allModels)) {
             const model = allModels[key];
             if (model.public) {
