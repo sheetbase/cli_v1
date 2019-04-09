@@ -1,7 +1,8 @@
+import { OAuth2Client } from 'google-auth-library';
 import { resolve } from 'path';
 import { pathExists, readJson } from 'fs-extra';
 
-import { getServerSheet, getDirectSheet } from './spreadsheet';
+import { getData } from './spreadsheet';
 import { replaceBetween, isHostSubfolder } from './utils';
 
 export type Prerenders = Array<string | Prerender>;
@@ -48,13 +49,10 @@ export function github404HtmlContent(url: string, title = 'Sheetbase') {
     );
 }
 
-export async function loadPrerenderItems(frontendConfigs: any) {
-  const {
-    backendUrl,
-    apiKey = '',
-    databasePublicId,
-    databaseGids,
-  } = frontendConfigs;
+export async function loadPrerendering(
+  googleClient: OAuth2Client,
+  databaseId: string,
+) {
   const prerenderConfigPath = resolve('.', 'prerender.json');
   // load items
   const prerenderItems: Array<PrerenderItem | string> = [''];
@@ -71,14 +69,15 @@ export async function loadPrerenderItems(frontendConfigs: any) {
       if (typeof rawItem === 'string') {
         prerenderItems.push(rawItem);
       } else {
-        const { from, location, keyField, changefreq, priority } = rawItem as Prerender;
+        const {
+          from,
+          location,
+          keyField,
+          changefreq = 'monthly',
+          priority = '0.5',
+        } = rawItem as Prerender;
         // load data
-        let items = [];
-        if (!!databasePublicId && !!databaseGids && !!databaseGids[from]) {
-          items = await getDirectSheet(databasePublicId, databaseGids[from]);
-        } else {
-          items = await getServerSheet(backendUrl, apiKey, from);
-        }
+        const items = await getData(googleClient, databaseId, from);
         // assign item
         for (let j = 0; j < items.length; j++) {
           prerenderItems.push({
@@ -121,8 +120,8 @@ export function prerenderModifier(
       loadingCss = css;
     } else {
       // default
-      loadingHtml = '<div class="prerender-loading-screen"><div class="inner"><img src="assets/icon/favicon.png"><span>LOADING</span></div></div>';
-      loadingCss = '.prerender-loading-screen{display:flex;position:fixed;height:100%;width:100%;left:0;top:0;background:#323639;text-align:center;justify-content:center;align-items:center}.prerender-loading-screen .inner img{width:35px}.prerender-loading-screen .inner span{display:block;font-family:arial,sans-serif;font-size:.9em;color:#FFF}';
+      loadingHtml = '<div class="prerender-loading-screen"><div class="inner">LOADING...</div></div>';
+      loadingCss = '.prerender-loading-screen{display:flex;position:fixed;height:100%;width:100%;left:0;top:0;background:#323639;text-align:center;justify-content:center;align-items:center}.prerender-loading-screen .inner {font-family:arial,sans-serif;color:#FFF}';
     }
     // replacing
     if (!!loadingHtml) {

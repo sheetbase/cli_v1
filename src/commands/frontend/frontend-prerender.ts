@@ -7,16 +7,17 @@ import { launch } from 'puppeteer-core';
 import {
     Deployment,
     getSheetbaseDotJson,
-    getFrontendConfigs,
+    getBackendConfigs,
     getPath,
 } from '../../services/project';
 import {
     PrerenderItem,
     LoadingScreen,
-    loadPrerenderItems,
+    loadPrerendering,
     prerenderModifier,
 } from '../../services/build';
 import { getModifiedTime } from '../../services/file';
+import { getOAuth2Client } from '../../services/google';
 import { gray, blue, logError, logOk, logAction } from '../../services/message';
 
 import { Options } from './frontend';
@@ -40,11 +41,23 @@ export async function frontendPrerenderCommand(options: Options) {
         return logError('FRONTEND_DEPLOY__ERROR__NO_STAGING');
     }
 
+    // load default google account
+    const googleClient = await getOAuth2Client();
+    if (!googleClient) {
+        return logError('GOOGLE__ERROR__NO_ACCOUNT');
+    }
+
+    // get databaseId
+    const { databaseId } = await getBackendConfigs();
+    if (!databaseId) {
+        return logError('FRONTEND_DEPLOY__ERROR__NO_DATABASE');
+    }
+
     // load data
     let prerenderItems: Array<PrerenderItem | string>;
     let prerenderLoading: boolean | LoadingScreen;
     await logAction('Load prerender items', async () => {
-        const { items, loading } = await loadPrerenderItems(await getFrontendConfigs());
+        const { items, loading } = await loadPrerendering(googleClient, databaseId);
         prerenderItems = items;
         prerenderLoading = loading;
     });

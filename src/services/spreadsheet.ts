@@ -1,8 +1,6 @@
 import { OAuth2Client } from 'google-auth-library';
-import { parse as papaparse } from 'papaparse';
 
 import { Model } from './model';
-import { getData } from './fetch';
 
 export async function getSheets(
     client: OAuth2Client,
@@ -181,38 +179,43 @@ export async function deleteSheet(
     });
 }
 
-export async function getServerSheet(
-    backendUrl: string,
-    apiKey: string,
+export async function getData(
+    client: OAuth2Client,
+    spreadsheetId: string,
     sheetName: string,
 ) {
-    const {
-        data: items = [],
-    } = await getData(
-        `${backendUrl}?e=/database&sheet=${sheetName}` +
-        (!!apiKey ? '&apiKey=' + apiKey : ''),
-    );
-    return items;
+    const { data } = await client.request({
+        method: 'GET',
+        url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}!A1:ZZ`,
+    });
+    const { values } = data;
+    return translateRangeValues(values);
 }
 
-export async function getDirectSheet(
-    databasePublicId: string,
-    gid: string,
+// turn [[],[], ...] to [{},{}, ...]
+export function translateRangeValues<Item>(
+    values: any[][],
+    noHeader = false,
+    modifier = (item: Item) => item,
 ) {
-    // url builder
-    const csvUrl =  `https://docs.google.com/spreadsheets/d/e/`
-        + databasePublicId +
-        `/pub?gid=` + gid +
-        `&single=true&output=csv`;
-    // parser
-    const parseCSV = (csv: string) => {
-        return new Promise<any[]>((resolve, reject) => {
-            papaparse(csv, {
-                header: true,
-                complete: (result) => !result.errors.length ? resolve(result.data) : reject(result.errors),
-            });
-        });
-    };
-    const csv = await getData(csvUrl);
-    return await parseCSV(csv);
+    values = values || [];
+    // get header
+    const headers: string[] = !noHeader ? values.shift() : [];
+    // build data
+    const result: Item[] = [];
+    for (let i = 0; i < values.length; i++) {
+        const item = {} as Item;
+        // process columns
+        const rows = values[i] || [];
+        for (let j = 0; j < rows.length; j++) {
+            if (rows[j]) {
+                item[headers[j] || ('value' + (j + 1))] = rows[j];
+            }
+        }
+        if (Object.keys(item).length > 0) {
+            item['_row'] = !noHeader ? i + 2 : i + 1;
+            result.push(modifier(item));
+        }
+    }
+    return result;
 }
