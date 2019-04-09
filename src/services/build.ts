@@ -7,18 +7,26 @@ import { replaceBetween, isHostSubfolder } from './utils';
 
 export type Prerenders = Array<string | Prerender>;
 
-export interface Prerender {
-  from: string;
-  location?: string;
-  keyField?: string; // use different field for key
+export interface Sitemap {
   changefreq?: string;
   priority?: string;
 }
 
-export interface PrerenderItem {
+export interface Prerender extends Sitemap {
+  from: string;
+  location?: string;
+  keyField?: string; // use different field for key
+  segments?: PrerenderSegment[];
+}
+
+export interface PrerenderItem extends Sitemap {
   path: string;
-  changefreq?: string;
-  priority?: string;
+}
+
+export interface PrerenderSegment extends Sitemap {
+  where: string;
+  equal: any;
+  location?: string;
 }
 
 export interface LoadingScreen {
@@ -54,34 +62,72 @@ export async function loadPrerendering(
   databaseId: string,
 ) {
   const prerenderConfigPath = resolve('.', 'prerender.json');
-  // load items
-  const prerenderItems: Array<PrerenderItem | string> = [''];
-  let loading: boolean | LoadingScreen;
+  // load configs
+  let items: Array<PrerenderItem | string> = [''];
+  let loading: boolean | LoadingScreen = false;
   if (await pathExists(prerenderConfigPath)) {
     const {
       items: rawItems = [],
       loading: loadingScreen = false,
     } = await readJson(prerenderConfigPath);
+    // loading screen
     loading = loadingScreen;
-    // process items
-    for (let i = 0; i < rawItems.length; i++) {
-      const rawItem = rawItems[i];
-      if (typeof rawItem === 'string') {
-        prerenderItems.push(rawItem);
-      } else {
-        const {
-          from,
-          location,
-          keyField,
-          changefreq = 'monthly',
-          priority = '0.5',
-        } = rawItem as Prerender;
-        // load data
-        const items = await getData(googleClient, databaseId, from);
-        // assign item
-        for (let j = 0; j < items.length; j++) {
+    // prerender items
+    items = await parsePrerenderItems(googleClient, databaseId, rawItems);
+  }
+  return { items, loading };
+}
+
+export async function parsePrerenderItems(
+  googleClient: OAuth2Client,
+  databaseId: string,
+  rawItems: Prerenders,
+) {
+  const prerenderItems: Array<PrerenderItem | string> = [''];
+  for (let i = 0; i < (rawItems || []).length; i++) {
+    const rawItem = rawItems[i];
+    if (typeof rawItem === 'string') {
+      prerenderItems.push(rawItem);
+    } else {
+      const {
+        from,
+        location,
+        changefreq = 'monthly',
+        priority = '0.5',
+        keyField,
+        segments,
+      } = rawItem as Prerender;
+      // load data
+      const items = await getData(googleClient, databaseId, from);
+      // assign item
+      for (let j = 0; j < items.length; j++) {
+        const item = items[j];
+        // sort item by segment
+        let hasSegment = false;
+        for (let k = 0; k < (segments || []).length; k++) {
+          const {
+            where,
+            equal,
+            location: segmentLocation,
+            changefreq: segmentChangefreq,
+            priority: segmentPriority,
+          } = segments[k];
+          // matching
+          if (!!item[where] && item[where] === equal) {
+            prerenderItems.push({
+              path: (segmentLocation || location) + '/' + item[keyField || '$key'],
+              changefreq: (segmentChangefreq || changefreq),
+              priority: (segmentPriority || priority),
+            });
+            // included in a segment
+            hasSegment = true;
+            break;
+          }
+        }
+        // not have segments or not included in any segment
+        if (!hasSegment) {
           prerenderItems.push({
-            path: location + '/' + items[j][keyField || '$key'],
+            path: location + '/' + item[keyField || '$key'],
             changefreq,
             priority,
           });
@@ -89,7 +135,7 @@ export async function loadPrerendering(
       }
     }
   }
-  return { items: prerenderItems, loading };
+  return prerenderItems;
 }
 
 export function prerenderModifier(

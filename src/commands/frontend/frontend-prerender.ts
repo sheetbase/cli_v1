@@ -62,7 +62,7 @@ export async function frontendPrerenderCommand(options: Options) {
         prerenderLoading = loading;
     });
 
-    // server & browser
+    server & browser
     const server = await superstatic.server({
         port: 7777,
         host: 'localhost',
