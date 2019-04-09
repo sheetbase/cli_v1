@@ -1,5 +1,5 @@
 import { getOAuth2Client } from '../../services/google';
-import { createSheetByModel, deleteDefaultSheet } from '../../services/spreadsheet';
+import { getSheets, createSheetByModel, deleteDefaultSheet } from '../../services/spreadsheet';
 import { getBackendConfigs, getFrontendConfigs, setConfigs } from '../../services/project';
 import { logError, logOk, logAction } from '../../services/message';
 import { Model, getLocalModels, loadModels } from '../../services/model';
@@ -7,6 +7,8 @@ import { Model, getLocalModels, loadModels } from '../../services/model';
 import { Options } from './project';
 
 export async function projectModelCommand(schemaFiles: string[], options: Options) {
+    let allModels: {[name: string]: Model};
+
     // load default google account
     const googleClient = await getOAuth2Client();
     if (!googleClient) {
@@ -20,47 +22,47 @@ export async function projectModelCommand(schemaFiles: string[], options: Option
     }
 
     // load models
-    const { databaseGids } = await getFrontendConfigs();
-    let allModels: {[name: string]: Model};
-    const newModels: {[name: string]: Model} = {};
     await logAction('Load models', async () => {
-        // load models
+        // load project models
         allModels = await loadModels();
+        // load custom files
         if (schemaFiles.length > 0) {
             const customModels = await getLocalModels(schemaFiles);
             allModels = { ... allModels, ... customModels };
         }
         // assign gid if not defined
         // and check for duplication
-        const gids = {};
-        // models
+        const existingGids = {};
         for (const key of Object.keys(allModels)) {
             const gid = allModels[key].gid;
             if (!gid) {
                 allModels[key].gid = Math.round(Math.random() * 1E9);
-                gids[allModels[key].gid] = key;
-            } else if (!!gids[gid]) {
+                existingGids[allModels[key].gid] = key;
+            } else if (!!existingGids[gid]) {
                 return logError('PROJECT_MODEL__ERROR__DUPLICATE_GID', true, [
-                    key, gids[gid],
+                    key, existingGids[gid],
                 ]);
             } else {
-                gids[gid] = key;
-            }
-            // new models
-            if (!!databaseGids && !databaseGids[key]) {
-                newModels[key] = allModels[key];
+                existingGids[gid] = key;
             }
         }
     });
 
     // send request
     await logAction('Create sheet:', async () => {
-        for (const key of Object.keys(newModels)) {
-            await createSheetByModel(
-                googleClient, databaseId, key, newModels[key],
-            );
-            console.log('   + ' + key);
+        const existingSheets = await getSheets(googleClient, databaseId);
+        const skippedSheets = [];
+        for (const key of Object.keys(allModels)) {
+            if (!existingSheets[key]) {
+                await createSheetByModel(
+                    googleClient, databaseId, key, allModels[key],
+                );
+                console.log('   + ' + key);
+            } else {
+                skippedSheets.push(key);
+            }
         }
+        console.log('\n   Skipped: ' + skippedSheets.join(', '));
     });
 
     // delete the default 'Sheet1'
@@ -71,7 +73,7 @@ export async function projectModelCommand(schemaFiles: string[], options: Option
     }
 
     // save gid maps to config
-    await logAction('Save public sheet gids', async () => {
+    await logAction('Save public sheet ids', async () => {
         const databaseGids = {};
         for (const key of Object.keys(allModels)) {
             const model = allModels[key];

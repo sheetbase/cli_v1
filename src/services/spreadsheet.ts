@@ -4,6 +4,28 @@ import { parse as papaparse } from 'papaparse';
 import { Model } from './model';
 import { getData } from './fetch';
 
+export async function getSheets(
+    client: OAuth2Client,
+    spreadsheetId: string,
+) {
+    const { data  } = await client.request({
+        method: 'GET',
+        url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}`,
+        params: {
+            ranges: [],
+            includeGridData: false,
+        },
+    });
+    const { sheets } = data;
+    // get name and gid
+    const result = {};
+    for (let i = 0; i < sheets.length; i++) {
+        const { sheetId, title: name } = sheets[i].properties;
+        result[name] = sheetId;
+    }
+    return result;
+}
+
 export async function createSheetByModel(
     client: OAuth2Client,
     spreadsheetId: string,
