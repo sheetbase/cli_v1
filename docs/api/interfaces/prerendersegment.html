@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>File | @sheetbase/cli</title>
+	<title>PrerenderSegment | @sheetbase/cli</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="file.html">File</a>
+					<a href="prerendersegment.html">PrerenderSegment</a>
 				</li>
 			</ul>
-			<h1>Interface File</h1>
+			<h1>Interface PrerenderSegment</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">File</span>
+						<a href="sitemap.html" class="tsd-signature-type">Sitemap</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">PrerenderSegment</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -81,9 +86,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="file.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="file.html#source" class="tsd-kind-icon">source</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="file.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="prerendersegment.html#changefreq" class="tsd-kind-icon">changefreq</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="prerendersegment.html#equal" class="tsd-kind-icon">equal</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="prerendersegment.html#location" class="tsd-kind-icon">location</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="prerendersegment.html#priority" class="tsd-kind-icon">priority</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="prerendersegment.html#where" class="tsd-kind-icon">where</a></li>
 							</ul>
 						</section>
 					</div>
@@ -91,33 +98,55 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="changefreq" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> changefreq</h3>
+					<div class="tsd-signature tsd-kind-icon">changefreq<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="sitemap.html">Sitemap</a>.<a href="sitemap.html#changefreq">changefreq</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/3af45af/src/services/gas.ts#L39">services/gas.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/3af45af/src/services/build.ts#L11">services/build.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="source" class="tsd-anchor"></a>
-					<h3>source</h3>
-					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="equal" class="tsd-anchor"></a>
+					<h3>equal</h3>
+					<div class="tsd-signature tsd-kind-icon">equal<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/3af45af/src/services/gas.ts#L41">services/gas.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/3af45af/src/services/build.ts#L28">services/build.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="location" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> location</h3>
+					<div class="tsd-signature tsd-kind-icon">location<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/3af45af/src/services/gas.ts#L40">services/gas.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/3af45af/src/services/build.ts#L29">services/build.ts:29</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="priority" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> priority</h3>
+					<div class="tsd-signature tsd-kind-icon">priority<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sitemap.html">Sitemap</a>.<a href="sitemap.html#priority">priority</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/3af45af/src/services/build.ts#L12">services/build.ts:12</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="where" class="tsd-anchor"></a>
+					<h3>where</h3>
+					<div class="tsd-signature tsd-kind-icon">where<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/sheetbase/cli/blob/3af45af/src/services/build.ts#L27">services/build.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -136,16 +165,22 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="file.html" class="tsd-kind-icon">File</a>
+						<a href="prerendersegment.html" class="tsd-kind-icon">Prerender<wbr>Segment</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="file.html#name" class="tsd-kind-icon">name</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="prerendersegment.html#changefreq" class="tsd-kind-icon">changefreq</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="file.html#source" class="tsd-kind-icon">source</a>
+								<a href="prerendersegment.html#equal" class="tsd-kind-icon">equal</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="file.html#type" class="tsd-kind-icon">type</a>
+								<a href="prerendersegment.html#location" class="tsd-kind-icon">location</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="prerendersegment.html#priority" class="tsd-kind-icon">priority</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="prerendersegment.html#where" class="tsd-kind-icon">where</a>
 							</li>
 						</ul>
 					</li>
