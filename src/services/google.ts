@@ -4,7 +4,7 @@ import { pathExists, readJson, remove } from 'fs-extra';
 import * as querystring from 'querystring';
 import { OAuth2Client } from 'google-auth-library';
 import { constantCase } from 'change-case';
-const opn = require('opn');
+const open = require('open');
 const config = require('configstore');
 const configstore = new config('sheetbase_cli');
 
@@ -302,7 +302,7 @@ export function authorizeWithLocalhost(fullDrive?: boolean): Promise<OAuth2Clien
                 }
             }
         }).listen(3160, () => {
-            opn(authorizeUrl, {wait: false});
+            open(authorizeUrl, {wait: false});
         });
     });
 }
