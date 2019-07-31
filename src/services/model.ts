@@ -6,10 +6,8 @@ import { getData } from './fetch';
 
 export interface ModelSchema {
   name: string;
-  note?: string;
   width?: number;
-  value?: any;
-  type?: 'any' | 'boolean' | 'number' | 'string' | 'object';
+  note?: string;
 }
 
 export interface Model {
@@ -23,7 +21,11 @@ export async function loadModels(): Promise<{[name: string]: Model}> {
   let builtInModels: {[name: string]: Model} = {};
   const { models: configBuiltInModels } = await getSheetbaseDotJson();
   if (!!configBuiltInModels) {
-    builtInModels = await getRemoteModels(configBuiltInModels);
+    const { dependencies } = await readJson('frontend/package.json');
+    const version = dependencies['@sheetbase/models']
+      .replace('~', '')
+      .replace('^', '');
+    builtInModels = await getRemoteModels(configBuiltInModels, version);
   }
   // load models in models folder
   const modelsPath = 'models';
@@ -62,10 +64,11 @@ export async function getLocalModels(
 
 export async function getRemoteModels(
   configBuiltInModels: Array<string | ModelExtended>,
+  version = 'latest',
 ): Promise<{[name: string]: Model}> {
   // fetcher
   const modelFetcher = async (name: string) => {
-    const url = `https://unpkg.com/@sheetbase/models@latest/models/${ name }.json`;
+    const url = `https://unpkg.com/@sheetbase/models@${ version }/models/${ name }.json`;
     return await getData(url);
   };
   // get models

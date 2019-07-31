@@ -56,33 +56,6 @@ export async function createSheetByModel(
         }
         values.push(value);
 
-        // initValues
-        let initUserEnteredValue = {};
-        if (!!item.value) {
-            if (typeof item.value === 'number') {
-                initUserEnteredValue = {
-                    numberValue: item.value,
-                };
-            } else if (typeof item.value === 'boolean') {
-                initUserEnteredValue = {
-                    boolValue: item.value,
-                };
-            } else if (item.value.substr(0, 1) === '=') {
-                initUserEnteredValue = {
-                    formulaValue: item.value,
-                };
-            } else if (item.value instanceof Object) {
-                initUserEnteredValue = {
-                    stringValue: JSON.stringify(item.value),
-                };
-            } else {
-                initUserEnteredValue = {
-                    stringValue: item.value,
-                };
-            }
-        }
-        initValues.push(!!initUserEnteredValue ? { userEnteredValue: initUserEnteredValue } : null);
-
         // columns size
         if (item.width) {
             widths.push({
