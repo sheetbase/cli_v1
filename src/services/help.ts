@@ -9,6 +9,7 @@ export function help(): string {
 
     ${green('google [subcommand]')} ........ Manage Google accounts.
     ${green('start [name] [resource]')} .... Start a new project.
+    ${green('database [subcommand]')} ...... Manage the database.
     ${green('docs')} ....................... Open the documentation.
     ${green('update')} ..................... Check and install update.
     ${green('help')} ....................... Display help.
@@ -43,12 +44,16 @@ General commands:
 
     ${green('google [subcommand]')} ........ Manage Google accounts.
     ${green('project [subcommand]')} ....... Project general tasks.
+    ${green('database [subcommand]')} ...... Manage the database.
 
  Google sub-commands:
 ${googleHelp()}
 
  Project sub-commands:
-${projectHelp()}`;
+${projectHelp()}
+
+ Database sub-commands:
+${databaseHelp()}`;
 }
 
 export function googleHelp(): string {
@@ -77,4 +82,14 @@ export function projectHelp(): string {
     ${green('preview')} .................... Preview the project.
     ${green('backend [subcommand]')} ....... Run backend related commands.
     ${green('frontend [subcommand]')} ...... Run frontend related commands.`;
+}
+
+export function databaseHelp(): string {
+    return '' +
+    `
+    ${green('import')} ..................... Import data to a sheet.
+    ${green('export')} ..................... Export data from a sheet.
+    ${green('empty')} ...................... Clear data for a sheet.
+    ${green('backup')} ..................... Export all sheets data.
+    ${green('restore')} .................... Import all sheets data.`;
 }

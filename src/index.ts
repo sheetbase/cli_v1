@@ -30,6 +30,7 @@ import { projectCommand } from './commands/project/project';
 import { docsCommand } from './commands/docs/docs';
 import { backendCommand } from './commands/backend/backend';
 import { frontendCommand } from './commands/frontend/frontend';
+import { databaseCommand } from './commands/database/database';
 import { helpCommand } from './commands/help/help';
 import { updateCommand, checkUpdate } from './commands/update/update';
 import { unknownCommand } from './commands/unknown/unknown';
@@ -277,6 +278,16 @@ program
   .option('-o, --only [value]', `Prerender only certain parts.`)
   .allowUnknownOption()
   .action(frontendCommand);
+
+/**
+ * Manage the database.
+ * Sub-commands: import, export, empty, backup, restore
+ * @name database
+ */
+program
+  .command('database [subCommand] [params...]')
+  .description('Manage the database.')
+  .action(databaseCommand);
 
 /**
  * Open the documentation.
