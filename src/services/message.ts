@@ -94,12 +94,12 @@ export const ERRORS = {
     FRONTEND_DEPLOY__ERROR__NO_PROVIDER: 'No deployment configs.',
     FRONTEND_DEPLOY__ERROR__NO_STAGING: 'No staging found, please build first.',
     FRONTEND_PRERENDER__ERROR__NO_PRERENDER: 'No prerender configs.',
-    GOOGLE_DISCONNECTED__ERROR__NO_VALUE: 'No value provided, available: <id>|all|default|local.',
+    GOOGLE_DISCONNECTED__ERROR__NO_VALUE: `No value provided, available: ${blue('[id]')}|${blue('all')}|${blue('default')}|${blue('local')}.`,
     PROJECT__ERROR__INVALID: 'Invalid project, no "sheetbase.json" found.',
     PROJECT__ERROR__EXISTS: 'Project exists, please choose different name.',
     PROJECT_CONFIG_IMPORT__ERROR__NO_FILE: 'No configs file found.',
     PROJECT_MODEL__ERROR__DUPLICATE_GID: (m1: string, m2: string) => (
-        `Model "${ m1 }" has the same GID as "${ m2 }"`
+        `Model ${blue(m1)} has the same GID as ${blue(m2)}`
     ),
     PROJECT_SETUP__ERROR__NO_GOOGLE_ACCOUNT: (name: string) => {
         return ERRORS['GOOGLE__ERROR__NO_ACCOUNT'] +
@@ -111,8 +111,8 @@ export const ERRORS = {
 };
 
 export const LOGS = {
-    APP__INFO__INVALID_SUBCOMMAND: (cmd: string) => `Invalid sub-command for "${cmd}", available:`,
-    APP__INFO__LINK_OPENED: (link: string) => `Link opened: ${link}`,
+    APP__INFO__INVALID_SUBCOMMAND: (cmd: string) => `Invalid sub-command for ${magenta(cmd)}, available:`,
+    APP__INFO__LINK_OPENED: (link: string) => `Link opened: ${blue(link)}`,
     BACKEND_DEPLOY__OK: `To view newly deployed backend: ` + magenta('sheetbase url -o backend'),
     BACKEND_PUSH__OK: (result: any) => {
         const { files = [] } = result;
@@ -123,14 +123,14 @@ export const LOGS = {
         });
         return message;
     },
-    DATABASE_EXPORT__OK: (path: string) => `Data exported to "${path}".`,
+    DATABASE_EXPORT__OK: (path: string) => `Data exported to: ${blue(path)}.`,
     FRONTEND_BUILD__OK: 'To re-deploy the frontend: ' + magenta('sheetbase frontend deploy'),
-    FRONTEND_DEPLOY__OK: (url: string) => `Frontend deployed. View: ${url}`,
+    FRONTEND_DEPLOY__OK: (url: string) => `Frontend deployed. View: ${blue(url)}`,
     FRONTEND_PRERENDER__OK: 'Prerender completed.',
-    GOOGLE_CONNECT__WARN__CREDS: 'File ".googlerc.json" saved, please keep the file SECRET.',
+    GOOGLE_CONNECT__WARN__CREDS: `File ${blue('.googlerc.json')} saved, please keep the file ${red('SECRET')}.`,
     GOOGLE_CONNECT__OK: 'Account connected, see list: ' + magenta('sheetbase google list'),
-    GOOGLE_DEFAULT__OK: (id: string) => `Default acccount changed to "${id}", detail: ` + magenta('sheetbase google list -d'),
-    GOOGLE_DISCONNECTED__OK: 'You may also want to remove Sheetbase from: https://myaccount.google.com/permissions.',
+    GOOGLE_DEFAULT__OK: (id: string) => `Default acccount changed to ${blue(id)}, for detail: ` + magenta('sheetbase google list -d'),
+    GOOGLE_DISCONNECTED__OK: `You may also want to remove Sheetbase from: ${blue('https://myaccount.google.com/permissions')}.`,
     GOOGLE_DISCONNECTED__INFO__NO_ACCOUNTS: 'No connected accounts.',
     GOOGLE_LIST__OK: `Accounts listed.
     + To disconnect accounts: ${magenta('sheetbase google disconnect <id>|all|default|local')}
@@ -138,16 +138,16 @@ export const LOGS = {
     PROJECT_BUILD__OK: 'Project build completed!' +
         EOL + '    + Preview: ' + magenta('sheetbase preview') +
         EOL + '    + Re-deploy: ' + magenta('sheetbase deploy'),
-    PROJECT_CONFIG_EXPORT__OK: (file: string) => `Project configs exported to "${file}".`,
+    PROJECT_CONFIG_EXPORT__OK: (path: string) => `Project configs exported to ${blue(path)}.`,
     PROJECT_CONFIG_IMPORT__OK: 'Project configs imported, view: ' + magenta('sheetbase configs'),
     PROJECT_CONFIG_UPDATE__OK: 'Project configs updated, view: ' + magenta('sheetbase configs'),
     PROJECT_CONFIGS__OK: 'Project configs listed, to update: ' + magenta('sheetbase config update key=value|...'),
     PROJECT_DEPLOY__OK: 'Project deployed!',
     PROJECT_MODEL__OK: 'Models created.',
     PROJECT_MODELS__OK: (models: any) => {
-        return (Object.keys(models).length > 0 ? 'Models listed' : 'The project has no models') + ', to create a model: ' + magenta('sheetbase model <schemaFile>');
+        return (Object.keys(models).length > 0 ? 'All project models' : 'The project has no models') + ', to create a model: ' + magenta('sheetbase model <schemaFile>');
     },
-    PROJECT_SETUP__WARN__HOOK_ERROR: (name: string) => `Error running hook "${name}".`,
+    PROJECT_SETUP__WARN__HOOK_ERROR: (name: string) => `Error running hook ${blue(name)}.`,
     PROJECT_SETUP__OK: 'Project setup successfully.',
     PROJECT_START__OK__THEME: (name: string, options: any) => {
         let message = 'Sheetbase theme project created, next steps:';
@@ -170,6 +170,6 @@ export const LOGS = {
         message += EOL + '    + Great, start developing :)';
         return message;
     },
-    PROJECT_URL__OK: (name: string, url: string) => `Link of [${name}]: ${green(url)}.\n    + To open, include "-o" flag.`,
+    PROJECT_URL__OK: (name: string, url: string) => `Link of ${green(name)}: ${blue(url)}.\n    + To open, include "-o" flag.`,
     PROJECT_URLS__OK: 'Links listed, to open a link: ' + magenta('sheetbase url -o <name>'),
 };

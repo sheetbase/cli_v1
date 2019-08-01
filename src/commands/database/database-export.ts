@@ -4,7 +4,7 @@ import { ensureFile, writeJson } from 'fs-extra';
 import { buildValidFileName } from '../../services/utils';
 import { getOAuth2Client } from '../../services/google';
 import { getRawData } from '../../services/spreadsheet';
-import { isValid, getBackendConfigs } from '../../services/project';
+import { isValid, getConfigs } from '../../services/project';
 import { logError, logOk } from '../../services/message';
 
 import { Options } from './database';
@@ -25,8 +25,8 @@ export async function databaseExportCommand(tableName: string, options: Options)
   // get databaseId
   let databaseId = options.id;
   if (!databaseId && !! await isValid()) {
-    const { databaseId: localId } = await getBackendConfigs();
-    databaseId = localId;
+    const { backend, frontend } = await getConfigs();
+    databaseId = backend.databaseId || frontend.databaseId;
   }
   if (!databaseId) {
     return logError('DATABASE__ERROR__NO_DATABASE');
@@ -35,8 +35,8 @@ export async function databaseExportCommand(tableName: string, options: Options)
   // saving location
   const dir = !!options.dir ? options.dir : 'data';
   const fileName = buildValidFileName(
-    tableName + '-exported-' + new Date().toISOString() + '.json',
-  );
+    tableName + '-exported-' + new Date().toISOString(),
+  ) + '.json';
   const savingPath = resolve(dir, fileName);
 
   // save the file
