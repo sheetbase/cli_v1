@@ -10,6 +10,8 @@ import { logError, logOk } from '../../services/message';
 import { Options } from './database';
 
 export async function databaseExportCommand(tableName: string, options: Options) {
+  const isProject = await isValid();
+
   // no table name
   if (!tableName) {
     return logError('DATABASE__ERROR__NO_TABLE');
@@ -23,7 +25,7 @@ export async function databaseExportCommand(tableName: string, options: Options)
 
   // get databaseId
   let databaseId = options.id;
-  if (!databaseId && !! await isValid()) {
+  if (!databaseId && isProject) {
     const { backend, frontend } = await getConfigs();
     databaseId = backend.databaseId || frontend.databaseId;
   }
@@ -32,7 +34,13 @@ export async function databaseExportCommand(tableName: string, options: Options)
   }
 
   // saving location
-  const dir = !!options.dir ? options.dir : '__exported__';
+  const dir = !!options.dir ?
+    options.dir : // custom
+    // default
+    (!isProject ?
+      `sheetbase_db_${databaseId}` : // outside a project
+      '__exported__' // inside a project
+    );
   const fileName = buildValidFileName(
     'data-' + tableName + '-exported-' + new Date().toISOString(),
   ) + '.json';
