@@ -94,7 +94,7 @@ export const ERRORS = {
     FRONTEND_DEPLOY__ERROR__NO_PROVIDER: 'No deployment configs.',
     FRONTEND_DEPLOY__ERROR__NO_STAGING: 'No staging found, please build first.',
     FRONTEND_PRERENDER__ERROR__NO_PRERENDER: 'No prerender configs.',
-    GOOGLE_DISCONNECTED__ERROR__NO_VALUE: `No value provided, available: ${blue('[id]')}|${blue('all')}|${blue('default')}|${blue('local')}.`,
+    GOOGLE_DISCONNECTED__ERROR__NO_VALUE: `No value provided, available: ${blue('[id]')}|${blue('all')}|${blue('default')}|${blue('local')}`,
     PROJECT__ERROR__INVALID: 'Invalid project, no "sheetbase.json" found.',
     PROJECT__ERROR__EXISTS: 'Project exists, please choose different name.',
     PROJECT_CONFIG_IMPORT__ERROR__NO_FILE: 'No configs file found.',
@@ -123,18 +123,18 @@ export const LOGS = {
         });
         return message;
     },
-    DATABASE_EXPORT__OK: (path: string) => `Data exported to: ${blue(path)}.`,
+    DATABASE_EXPORT__OK: (path: string) => `Data exported to: ${blue(path)}`,
     FRONTEND_BUILD__OK: 'To re-deploy the frontend: ' + magenta('sheetbase frontend deploy'),
     FRONTEND_DEPLOY__OK: (url: string) => `Frontend deployed. View: ${blue(url)}`,
     FRONTEND_PRERENDER__OK: 'Prerender completed.',
     GOOGLE_CONNECT__WARN__CREDS: `File ${blue('.googlerc.json')} saved, please keep the file ${red('SECRET')}.`,
     GOOGLE_CONNECT__OK: 'Account connected, see list: ' + magenta('sheetbase google list'),
     GOOGLE_DEFAULT__OK: (id: string) => `Default acccount changed to ${blue(id)}, for detail: ` + magenta('sheetbase google list -d'),
-    GOOGLE_DISCONNECTED__OK: `You may also want to remove Sheetbase from: ${blue('https://myaccount.google.com/permissions')}.`,
+    GOOGLE_DISCONNECTED__OK: `You may also want to remove Sheetbase from: ${blue('https://myaccount.google.com/permissions')}`,
     GOOGLE_DISCONNECTED__INFO__NO_ACCOUNTS: 'No connected accounts.',
     GOOGLE_LIST__OK: `Accounts listed.
-    + To disconnect accounts: ${magenta('sheetbase google disconnect <id>|all|default|local')}
-    + To change default account: ${magenta('sheetbase google default <id>')}`,
+    + To disconnect accounts: ${magenta('sheetbase google disconnect [id]|all|default|local')}
+    + To change default account: ${magenta('sheetbase google default [id]')}`,
     PROJECT_BUILD__OK: 'Project build completed!' +
         EOL + '    + Preview: ' + magenta('sheetbase preview') +
         EOL + '    + Re-deploy: ' + magenta('sheetbase deploy'),
@@ -170,6 +170,6 @@ export const LOGS = {
         message += EOL + '    + Great, start developing :)';
         return message;
     },
-    PROJECT_URL__OK: (name: string, url: string) => `Link of ${green(name)}: ${blue(url)}.\n    + To open, include "-o" flag.`,
+    PROJECT_URL__OK: (name: string, url: string) => `Link of ${green(name)}: ${blue(url)}\n    + To open, include "-o" flag.`,
     PROJECT_URLS__OK: 'Links listed, to open a link: ' + magenta('sheetbase url -o <name>'),
 };
