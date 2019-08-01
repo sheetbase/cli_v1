@@ -1,6 +1,6 @@
 import { getOAuth2Client } from '../../services/google';
 import { getSheets, createSheetByModel, deleteDefaultSheet } from '../../services/spreadsheet';
-import { getBackendConfigs, getFrontendConfigs, setConfigs } from '../../services/project';
+import { getBackendConfigs, setConfigs } from '../../services/project';
 import { logError, logOk, logAction } from '../../services/message';
 import { Model, getLocalModels, loadModels } from '../../services/model';
 
@@ -18,7 +18,7 @@ export async function projectModelCommand(schemaFiles: string[], options: Option
     // get databaseId
     const databaseId = options.database || (await getBackendConfigs()).databaseId;
     if (!databaseId) {
-        return logError('PROJECT_MODEL__ERROR__NO_DATABASE');
+        return logError('DATABASE__ERROR__NO_DATABASE');
     }
 
     // load models

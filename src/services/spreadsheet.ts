@@ -152,7 +152,7 @@ export async function deleteSheet(
     });
 }
 
-export async function getData(
+export async function getRawData(
     client: OAuth2Client,
     spreadsheetId: string,
     sheetName: string,
@@ -161,7 +161,15 @@ export async function getData(
         method: 'GET',
         url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}!A1:ZZ`,
     });
-    const { values } = data;
+    return data.values;
+}
+
+export async function getData(
+    client: OAuth2Client,
+    spreadsheetId: string,
+    sheetName: string,
+) {
+    const values = await getRawData(client, spreadsheetId, sheetName);
     return translateRangeValues(values);
 }
 

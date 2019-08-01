@@ -87,8 +87,10 @@ export async function logAction(
 }
 
 export const ERRORS = {
-    GOOGLE__ERROR__NO_ACCOUNT: 'No Google accounts connected, to connect: ' + magenta('sheetbase google connect') + ' and try again.',
     BACKEND__ERROR__INVALID: 'No backend found or invalid.',
+    DATABASE__ERROR__NO_DATABASE: 'No database found or invalid.',
+    DATABASE__ERROR__NO_TABLE: 'No table name provided for this action.',
+    GOOGLE__ERROR__NO_ACCOUNT: 'No Google accounts connected, to connect: ' + magenta('sheetbase google connect') + ' and try again.',
     FRONTEND_DEPLOY__ERROR__NO_PROVIDER: 'No deployment configs.',
     FRONTEND_DEPLOY__ERROR__NO_STAGING: 'No staging found, please build first.',
     FRONTEND_PRERENDER__ERROR__NO_PRERENDER: 'No prerender configs.',
@@ -96,7 +98,6 @@ export const ERRORS = {
     PROJECT__ERROR__INVALID: 'Invalid project, no "sheetbase.json" found.',
     PROJECT__ERROR__EXISTS: 'Project exists, please choose different name.',
     PROJECT_CONFIG_IMPORT__ERROR__NO_FILE: 'No configs file found.',
-    PROJECT_MODEL__ERROR__NO_DATABASE: 'No database found or invalid.',
     PROJECT_MODEL__ERROR__DUPLICATE_GID: (m1: string, m2: string) => (
         `Model "${ m1 }" has the same GID as "${ m2 }"`
     ),
@@ -122,6 +123,7 @@ export const LOGS = {
         });
         return message;
     },
+    DATABASE_EXPORT__OK: (path: string) => `Data exported to "${path}".`,
     FRONTEND_BUILD__OK: 'To re-deploy the frontend: ' + magenta('sheetbase frontend deploy'),
     FRONTEND_DEPLOY__OK: (url: string) => `Frontend deployed. View: ${url}`,
     FRONTEND_PRERENDER__OK: 'Prerender completed.',

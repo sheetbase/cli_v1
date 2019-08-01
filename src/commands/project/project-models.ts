@@ -15,26 +15,13 @@ export async function projectModelsCommand() {
         );
         // preview
         const cols = [];
-        const types = [];
+        const widths = [];
         for (let i = 0; i < schema.length; i++) {
             const item = schema[i];
             cols.push({ value: item.name });
-            if (!item.type && !!item.value) {
-                if (typeof item.value === 'number') {
-                    item.type = 'number';
-                } else if (typeof item.value === 'boolean') {
-                    item.type = 'boolean';
-                } else if (item.value.substr(0, 1) === '=') {
-                    item.type = 'any';
-                } else if (item.value instanceof Object) {
-                    item.type = 'object';
-                } else {
-                    item.type = 'string';
-                }
-            }
-            types.push(item.type || 'string');
+            widths.push(item.width || 100);
         }
-        const table = ttyTable(cols, [types]);
+        const table = ttyTable(cols, [widths]);
         console.log(table.render());
     }
 

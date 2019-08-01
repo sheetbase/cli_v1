@@ -287,6 +287,8 @@ program
 program
   .command('database [subCommand] [params...]')
   .description('Manage the database.')
+  .option('-i, --id [value]', `The database id.`)
+  .option('-d, --dir [value]', `Dir for saving files.`)
   .action(databaseCommand);
 
 /**

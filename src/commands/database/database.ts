@@ -1,8 +1,11 @@
 import { databaseHelp } from '../../services/help';
 import { logInfo } from '../../services/message';
 
-export interface Options {
+import { databaseExportCommand } from './database-export';
 
+export interface Options {
+  id?: string;
+  dir?: string;
 }
 
 export async function databaseCommand(command: string, params: string[] = [], options: Options = {}) {
@@ -10,12 +13,12 @@ export async function databaseCommand(command: string, params: string[] = [], op
   switch (command) {
     // import sheet data
     case 'import':
-      //
+
     break;
 
     // export sheet data
     case 'export':
-      //
+      await databaseExportCommand(params.shift(), options);
     break;
 
     // clear sheet data
