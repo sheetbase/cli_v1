@@ -8,7 +8,7 @@ import { logOk } from '../../services/message';
 export async function projectConfigExportCommand() {
     // get the path
     const fileName = buildValidFileName(
-        'sheetbase-configs-exported-' + new Date().toISOString(),
+        'configs-exported-' + new Date().toISOString().split('T').shift(),
     ) + '.json';
     const savingPath = resolve('__exported__', fileName);
 
