@@ -12,12 +12,12 @@ export async function projectConfigCommand(command: string, params: string[]) {
 
         case 'import':
         case 'im':
-            await projectConfigImportCommand(params);
+            await projectConfigImportCommand(params.shift());
         break;
 
         case 'export':
         case 'ex':
-            await projectConfigExportCommand(params);
+            await projectConfigExportCommand();
         break;
 
         case 'list':

@@ -141,7 +141,7 @@ export const LOGS = {
     PROJECT_BUILD__OK: 'Project build completed!' +
         EOL + '    + Preview: ' + magenta('sheetbase preview') +
         EOL + '    + Re-deploy: ' + magenta('sheetbase deploy'),
-    PROJECT_CONFIG_EXPORT__OK: (path: string) => `Project configs exported to ${blue(path)}.`,
+    PROJECT_CONFIG_EXPORT__OK: (path: string) => `Project configs exported to ${blue(path)}`,
     PROJECT_CONFIG_IMPORT__OK: 'Project configs imported, view: ' + magenta('sheetbase configs'),
     PROJECT_CONFIG_UPDATE__OK: 'Project configs updated, view: ' + magenta('sheetbase configs'),
     PROJECT_CONFIGS__OK: 'Project configs listed, to update: ' + magenta('sheetbase config update key=value|...'),
