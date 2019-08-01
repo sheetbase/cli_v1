@@ -16,16 +16,20 @@ export interface Model {
   schema: ModelSchema[];
 }
 
+export async function getModelsVersion(): Promise<string> {
+  const { dependencies } = await readJson('frontend/package.json');
+  return dependencies['@sheetbase/models'].replace('~', '').replace('^', '');
+}
+
 export async function loadModels(): Promise<{[name: string]: Model}> {
   // built-in models
   let builtInModels: {[name: string]: Model} = {};
   const { models: configBuiltInModels } = await getSheetbaseDotJson();
   if (!!configBuiltInModels) {
-    const { dependencies } = await readJson('frontend/package.json');
-    const version = dependencies['@sheetbase/models']
-      .replace('~', '')
-      .replace('^', '');
-    builtInModels = await getRemoteModels(configBuiltInModels, version);
+    builtInModels = await getRemoteModels(
+      configBuiltInModels,
+      await getModelsVersion(),
+    );
   }
   // load models in models folder
   const modelsPath = 'models';

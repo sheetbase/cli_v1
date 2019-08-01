@@ -10,7 +10,6 @@ import { logError, logOk } from '../../services/message';
 import { Options } from './database';
 
 export async function databaseExportCommand(tableName: string, options: Options) {
-
   // no table name
   if (!tableName) {
     return logError('DATABASE__ERROR__NO_TABLE');

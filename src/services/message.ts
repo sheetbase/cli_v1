@@ -90,6 +90,7 @@ export const ERRORS = {
     BACKEND__ERROR__INVALID: 'No backend found or invalid.',
     DATABASE__ERROR__NO_DATABASE: 'No database found or invalid.',
     DATABASE__ERROR__NO_TABLE: 'No table name provided for this action.',
+    DATABASE_IMPORT__ERROR__NO_SOURCE: 'No data source, it can be a built-in model, a local path or an url.',
     GOOGLE__ERROR__NO_ACCOUNT: 'No Google accounts connected, to connect: ' + magenta('sheetbase google connect') + ' and try again.',
     FRONTEND_DEPLOY__ERROR__NO_PROVIDER: 'No deployment configs.',
     FRONTEND_DEPLOY__ERROR__NO_STAGING: 'No staging found, please build first.',
