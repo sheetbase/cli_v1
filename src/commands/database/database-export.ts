@@ -32,9 +32,9 @@ export async function databaseExportCommand(tableName: string, options: Options)
   }
 
   // saving location
-  const dir = !!options.dir ? options.dir : 'data';
+  const dir = !!options.dir ? options.dir : '__exported__';
   const fileName = buildValidFileName(
-    tableName + '-exported-' + new Date().toISOString(),
+    'data-' + tableName + '-exported-' + new Date().toISOString(),
   ) + '.json';
   const savingPath = resolve(dir, fileName);
 
