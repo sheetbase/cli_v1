@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import { readJson } from 'fs-extra';
 
 import { getOAuth2Client } from '../../services/google';
-import { getRawData } from '../../services/spreadsheet';
+import { addData } from '../../services/spreadsheet';
 import { isValid, getConfigs } from '../../services/project';
 import { getModelsVersion } from '../../services/model';
 import { getData } from '../../services/fetch';
@@ -47,21 +47,30 @@ export async function databaseImportCommand(params: string[], options: Options) 
     source = `https://unpkg.com/@sheetbase/models@${version}/data/${source}.json`;
   }
 
-  // get data
-  let data = [];
+  // get values
+  let values = [];
   if (
     source.indexOf('http') > -1 &&
     source.indexOf('://') > -1
   ) {
-    data = await getData(source);
+    values = await getData(source);
   } else {
     source = resolve(
       source.replace(/\\/g, '/'), // replace Windows \
     );
-    data = await readJson(source);
+    values = await readJson(source);
   }
 
-  // import the data
+  // refine and checking the values
+  if (!!values && !!values[0] && values[0][0] === '#') {
+    values.shift(); // remove the header
+  }
+  if (!values || !values.length) {
+    return logError('DATABASE_IMPORT__ERROR__NO_DATA', true, [ source ]);
+  }
+
+  // import the values
+  await addData(googleClient, databaseId, tableName, values);
 
   // done
   logOk('DATABASE_IMPORT__OK', true, [ tableName, source ]);

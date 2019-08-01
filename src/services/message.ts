@@ -91,6 +91,7 @@ export const ERRORS = {
     DATABASE__ERROR__NO_DATABASE: 'No database found or invalid.',
     DATABASE__ERROR__NO_TABLE: 'No table name provided for this action.',
     DATABASE_IMPORT__ERROR__NO_SOURCE: 'No data source, it can be a built-in model, a local path or an url.',
+    DATABASE_IMPORT__ERROR__NO_DATA: (source: string) => `No data found for the source: ${blue(source)}`,
     GOOGLE__ERROR__NO_ACCOUNT: 'No Google accounts connected, to connect: ' + magenta('sheetbase google connect') + ' and try again.',
     FRONTEND_DEPLOY__ERROR__NO_PROVIDER: 'No deployment configs.',
     FRONTEND_DEPLOY__ERROR__NO_STAGING: 'No staging found, please build first.',
@@ -125,6 +126,7 @@ export const LOGS = {
         return message;
     },
     DATABASE_EXPORT__OK: (path: string) => `Data exported to: ${blue(path)}`,
+    DATABASE_IMPORT__OK: (tableName: string, source: string) => `Data imported to ${blue(tableName)} from source ${blue(source)}`,
     FRONTEND_BUILD__OK: 'To re-deploy the frontend: ' + magenta('sheetbase frontend deploy'),
     FRONTEND_DEPLOY__OK: (url: string) => `Frontend deployed. View: ${blue(url)}`,
     FRONTEND_PRERENDER__OK: 'Prerender completed.',

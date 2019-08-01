@@ -35,7 +35,6 @@ export async function createSheetByModel(
 
     // build configs
     const values = [];
-    const initValues = [];
     const widths = [];
     for (let i = 0; i < schema.length; i++) {
         const item = schema[i];
@@ -98,7 +97,7 @@ export async function createSheetByModel(
             // set values
             {
                 updateCells: {
-                    rows: [ { values }, { values: initValues } ],
+                    rows: [ { values }, { values: [] } ],
                     fields: '*',
                     range: {
                         sheetId,
@@ -122,6 +121,31 @@ export async function createSheetByModel(
         data: requestData,
     });
 
+}
+
+export async function addData(
+    client: OAuth2Client,
+    spreadsheetId: string,
+    sheetName: string,
+    values: any[],
+) {
+    // range
+    const range = sheetName + '!A:A';
+
+    // prepare the request data
+    const requestData = {
+        majorDimension: 'ROWS',
+        values,
+    };
+
+    // send the request
+    await client.request({
+        method: 'POST',
+        url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}:append?` +
+        'valueInputOption=USER_ENTERED&' +
+        'insertDataOption=OVERWRITE',
+        data: requestData,
+    });
 }
 
 export async function deleteDefaultSheet(

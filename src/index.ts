@@ -282,13 +282,13 @@ program
 /**
  * Manage the database.
  * Sub-commands: import, export, empty, backup, restore
- * @name database
+ * @name db
  */
 program
-  .command('database [subCommand] [params...]')
+  .command('db [subCommand] [params...]')
   .description('Manage the database.')
   .option('-i, --id [value]', `The database id.`)
-  .option('-d, --dir [value]', `Dir for saving files.`)
+  .option('-d, --dir [value]', `Dir for exporting files.`)
   .action(databaseCommand);
 
 /**
