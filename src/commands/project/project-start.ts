@@ -57,10 +57,8 @@ export async function projectStartCommand(params: string[], options?: Options) {
         // create models
         const { databaseId } = await getBackendConfigs(deployPath);
         if (!!databaseId) {
-            exec('sheetbase model -c', deployPath);
+            exec('sheetbase db create * --data', deployPath);
         }
-
-        // TODO: add sample data
 
         // install packages
         if (options.install) {
