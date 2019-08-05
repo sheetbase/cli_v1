@@ -5,7 +5,7 @@ import { Model } from './model';
 export async function getSheets(
     client: OAuth2Client,
     spreadsheetId: string,
-) {
+): Promise<{[sheetName: string]: string}> {
     const { data  } = await client.request({
         method: 'GET',
         url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}`,
@@ -19,7 +19,7 @@ export async function getSheets(
     const result = {};
     for (let i = 0; i < sheets.length; i++) {
         const { sheetId, title: name } = sheets[i].properties;
-        result[name] = sheetId;
+        result[name] = '' + sheetId;
     }
     return result;
 }
@@ -115,7 +115,7 @@ export async function createSheetByModel(
     };
 
     // send the request
-    await client.request({
+    return await client.request({
         method: 'POST',
         url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`,
         data: requestData,
@@ -139,7 +139,7 @@ export async function addData(
     };
 
     // send the request
-    await client.request({
+    return await client.request({
         method: 'POST',
         url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}:append?` +
         'valueInputOption=USER_ENTERED&' +
@@ -152,13 +152,13 @@ export async function deleteDefaultSheet(
     client: OAuth2Client,
     spreadsheetId: string,
 ) {
-    await deleteSheet(client, spreadsheetId, 0);
+    return await deleteSheet(client, spreadsheetId, '0');
 }
 
 export async function deleteSheet(
     client: OAuth2Client,
     spreadsheetId: string,
-    sheetId: number,
+    sheetId: string | number,
 ) {
     const requestData = {
         requests: [
@@ -169,7 +169,7 @@ export async function deleteSheet(
     };
 
     // send the request
-    await client.request({
+    return await client.request({
         method: 'POST',
         url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`,
         data: requestData,

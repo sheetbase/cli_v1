@@ -4,15 +4,15 @@ import { readJson } from 'fs-extra';
 import { getOAuth2Client } from '../../services/google';
 import { addData } from '../../services/spreadsheet';
 import { isValid, getConfigs } from '../../services/project';
-import { getModelsVersion } from '../../services/model';
+import { getModelsPackageVersion } from '../../services/model';
 import { getData } from '../../services/fetch';
 import { logError, logOk } from '../../services/message';
 
 import { Options } from './database';
 
 export async function databaseImportCommand(params: string[], options: Options) {
-  const tableName = params[0];
-  let source = params[1] || params[0];
+  const [ tableName ] = params;
+  let source = params[1] || tableName;
   const isProject = await isValid();
 
   // no table name
@@ -43,7 +43,7 @@ export async function databaseImportCommand(params: string[], options: Options) 
 
   // get built-in model
   if (source.indexOf('.json') < 0) {
-    const version = isProject ? await getModelsVersion() : 'latest';
+    const version = isProject ? await getModelsPackageVersion() : 'latest';
     source = `https://unpkg.com/@sheetbase/models@${version}/data/${source}.json`;
   }
 

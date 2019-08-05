@@ -1,44 +1,34 @@
 import { databaseHelp } from '../../services/help';
 import { logInfo } from '../../services/message';
 
+import { databaseListCommand } from './database-list';
+import { databaseCreateCommand } from './database-create';
 import { databaseExportCommand } from './database-export';
 import { databaseImportCommand } from './database-import';
 
 export interface Options {
   id?: string;
-  dir?: string;
 }
 
 export async function databaseCommand(command: string, params: string[] = [], options: Options = {}) {
+
   switch (command) {
-    // import sheet data
+    case 'list':
+      await databaseListCommand();
+    break;
+
+    case 'create':
+      await databaseCreateCommand(params, options);
+    break;
+
     case 'import':
     case 'im':
       await databaseImportCommand(params, options);
     break;
 
-    // export sheet data
     case 'export':
     case 'ex':
-      await databaseExportCommand(params.shift(), options);
-    break;
-
-    // clear sheet data
-    case 'empty':
-    case 'rm':
-      //
-    break;
-
-    // export all data
-    case 'backup':
-    case 'bk':
-      //
-    break;
-
-    // import all data
-    case 'restore':
-    case 'rs':
-      //
+      await databaseExportCommand(params, options);
     break;
 
     default:
@@ -46,4 +36,5 @@ export async function databaseCommand(command: string, params: string[] = [], op
       console.log(databaseHelp());
     break;
   }
+
 }

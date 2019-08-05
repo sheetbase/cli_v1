@@ -9,8 +9,6 @@ import { projectConfigCommand } from './project-config';
 import { projectInfoCommand } from './project-info';
 import { projectUrlsCommand } from './project-urls';
 import { projectUrlCommand } from './project-url';
-import { projectModelsCommand } from './project-models';
-import { projectModelCommand } from './project-model';
 import { projectBuildCommand } from './project-build';
 import { projectDeployCommand } from './project-deploy';
 import { projectPreviewCommand } from './project-preview';
@@ -20,8 +18,6 @@ export interface Options {
     setup?: boolean;
     reSetup?: boolean;
     open?: boolean;
-    database?: string;
-    clean?: boolean;
     backend?: boolean;
     frontend?: boolean;
     message?: string;
@@ -60,14 +56,6 @@ export async function projectCommand(command: string, params: string[] = [], opt
 
         case 'url':
             await projectUrlCommand(params.shift(), options);
-        break;
-
-        case 'models':
-            await projectModelsCommand();
-        break;
-
-        case 'model':
-            await projectModelCommand(params, options);
         break;
 
         case 'info':

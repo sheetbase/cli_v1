@@ -21,8 +21,6 @@ export function help(): string {
     ${green('config [subcommand]')} ........ Config the project.
     ${green('urls')} ....................... View project URLs.
     ${green('url [name]')} ................. View or open a project URL.
-    ${green('models')} ..................... View project models.
-    ${green('model [schemaFiles]')} ........ Create database models.
     ${green('info')} ....................... Output project info.
     ${green('build')} ...................... Build the project.
     ${green('deploy')} ..................... Deploy the project.
@@ -74,8 +72,6 @@ export function projectHelp(): string {
     ${green('config [subcommand]')} ........ Config the project.
     ${green('urls')} ....................... View project URLs.
     ${green('url [name]')} ................. View or open a project URL.
-    ${green('models')} ..................... View project models.
-    ${green('model [schemaFiles]')} ........ Create database models.
     ${green('info')} ....................... Output project info.
     ${green('build')} ...................... Build the project.
     ${green('deploy')} ..................... Deploy the project.
@@ -87,9 +83,8 @@ export function projectHelp(): string {
 export function databaseHelp(): string {
     return '' +
     `
+    ${green('list')} ....................... List database tables and project models.
+    ${green('create')} ..................... Create database tables.
     ${green('import')} ..................... Import data to a sheet.
-    ${green('export')} ..................... Export data from a sheet.
-    ${green('empty')} ...................... Clear data for a sheet.
-    ${green('backup')} ..................... Export all sheets data.
-    ${green('restore')} .................... Import all sheets data.`;
+    ${green('export')} ..................... Export data from a sheet.`;
 }

@@ -91,8 +91,6 @@ program
   .option('-x, --no-setup', `(${chalk.green('start')}) Do not run setup command.`)
   .option('-r, --re-setup', `(${chalk.green('setup')}) Force re-setup.`)
   .option('-o, --open', `(${chalk.green('url')}) Open the url in browser.`)
-  .option('-d, --database [value]', `(${chalk.green('model')}) Custom database.`)
-  .option('-c, --clean', `(${chalk.green('model')}) Remove the default 'Sheet1'.`)
   .option('-b, --backend', `(${chalk.green('build, deploy')}) Build or deploy backend only.`)
   .option('-f, --frontend', `(${chalk.green('build, deploy')}) Build or deploy frontend only.`)
   .option('-m, --message [value]', `(${chalk.green('deploy')}) Deployment message.`)
@@ -173,31 +171,6 @@ program
   .description(`View or open a project URL.`)
   .option('-o, --open', `Open the url in browser.`)
   .action((name, options) => projectCommand('url', [name], options));
-
-/**
- * View project models.
- * Proxy of **project models**
- * @name models
- */
-program
-  .command('models')
-  .description(`View project models.`)
-  .action(() => projectCommand('models'));
-
-/**
- * Create database models.
- * Proxy of **project model**
- * @name model
- * @param {string[]?} [schemaFiles] List of schema files.
- * @param {string?} [-d,--database] Custom database.
- * @param {boolean?} [-c,--clean] Remove the default 'Sheet1'.
- */
-program
-  .command('model [schemaFiles...]')
-  .description(`Create database models.`)
-  .option('-d, --database [value]', `Custom database.`)
-  .option('-c, --clean', `Remove the default 'Sheet1'.`)
-  .action((schemaFiles, options) => projectCommand('model', schemaFiles, options));
 
 /**
  * Output project info.
@@ -281,14 +254,13 @@ program
 
 /**
  * Manage the database.
- * Sub-commands: import, export, empty, backup, restore
+ * Sub-commands: list, create, import, export
  * @name db
  */
 program
   .command('db [subCommand] [params...]')
   .description('Manage the database.')
   .option('-i, --id [value]', `The database id.`)
-  .option('-d, --dir [value]', `Dir for exporting files.`)
   .action(databaseCommand);
 
 /**

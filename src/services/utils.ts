@@ -118,3 +118,7 @@ export function replaceBetween(
 export function isHostSubfolder(url: string) {
     return url.split('/').filter(Boolean).length > 2;
 }
+
+export function isUrl(str: string) {
+    return str.indexOf('http') > -1 && str.indexOf('://') > -1;
+}

@@ -9,8 +9,9 @@ import { logError, logOk } from '../../services/message';
 
 import { Options } from './database';
 
-export async function databaseExportCommand(tableName: string, options: Options) {
+export async function databaseExportCommand(params: string[], options: Options) {
   const isProject = await isValid();
+  const [ tableName, customDir ] = params;
 
   // no table name
   if (!tableName) {
@@ -34,8 +35,7 @@ export async function databaseExportCommand(tableName: string, options: Options)
   }
 
   // saving location
-  const dir = !!options.dir ?
-    options.dir : // custom
+  const dir = !!customDir ? customDir : // custom
     // default
     (!isProject ?
       `sheetbase_db_${databaseId}` : // outside a project
