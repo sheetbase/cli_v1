@@ -8,6 +8,7 @@ import { databaseImportCommand } from './database-import';
 
 export interface Options {
   id?: string;
+  data?: boolean;
 }
 
 export async function databaseCommand(command: string, params: string[] = [], options: Options = {}) {

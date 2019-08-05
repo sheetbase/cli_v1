@@ -261,6 +261,7 @@ program
   .command('db [subCommand] [params...]')
   .description('Manage the database.')
   .option('-i, --id [value]', `The database id.`)
+  .option('-d, --data', `(${chalk.green('create')}) Create table with sample data.`)
   .action(databaseCommand);
 
 /**

@@ -2,12 +2,14 @@ import { isUrl } from '../../services/utils';
 import { getOAuth2Client } from '../../services/google';
 import { getSheets, createSheetByModel, deleteDefaultSheet } from '../../services/spreadsheet';
 import { isValid, getConfigs, setConfigs } from '../../services/project';
-import { logError, logOk, logAction } from '../../services/message';
+import { logError, logAction } from '../../services/message';
 import {
   Model,
   getBuiltinModels, getLocalModels, getRemoteModels,
   loadProjectModels,
 } from '../../services/model';
+import { getData } from '../../services/fetch';
+import { addData } from '../../services/spreadsheet';
 
 import { Options } from './database';
 
@@ -126,6 +128,19 @@ export async function databaseCreateCommand(inputs: string[], options: Options) 
       const inputModel = inputModels[modelName];
       await createSheetByModel(googleClient, databaseId, modelName, inputModel);
       console.log('   + ' + modelName + ' (' + inputModel.gid + ')');
+      // add sample data
+      if (!!inputModel.dataUrl && options.data) {
+        // get data from url
+        const values = await getData(inputModel.dataUrl);
+        // refine and checking the values
+        if (!!values && !!values[0] && values[0][0] === '#') {
+          values.shift(); // remove the header
+        }
+        // import the values
+        if (!!values && !!values.length) {
+          await addData(googleClient, databaseId, modelName, values);
+        }
+      }
     }
     // save gid maps to config
     if (isProject) {

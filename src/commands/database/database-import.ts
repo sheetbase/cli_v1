@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import { readJson } from 'fs-extra';
 
+import { isUrl } from '../../services/utils';
 import { getOAuth2Client } from '../../services/google';
 import { addData } from '../../services/spreadsheet';
 import { isValid, getConfigs } from '../../services/project';
@@ -49,10 +50,7 @@ export async function databaseImportCommand(params: string[], options: Options) 
 
   // get values
   let values = [];
-  if (
-    source.indexOf('http') > -1 &&
-    source.indexOf('://') > -1
-  ) {
+  if (isUrl(source)) {
     values = await getData(source);
   } else {
     source = resolve(
