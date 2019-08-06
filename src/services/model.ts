@@ -49,23 +49,17 @@ export async function getBuiltinModels(
   version = 'latest',
 ): Promise<{[name: string]: Model}> {
   const models = {};
-  // fetcher
-  const fetcher = async (name: string) => {
-    const url = `https://unpkg.com/@sheetbase/models@${ version }/models/${ name }.json`;
-    return await getData(url);
-  };
   // get models
   for (let i = 0; i < items.length; i++) {
     const builtInModel = items[i];
-    // retrieve name
-    let modelName = (typeof builtInModel === 'string') ? builtInModel : builtInModel.from;
     // get data
-    let data: ModelSchema[] | Model = await fetcher(modelName);
-    if (data instanceof Array) {
-      data = { gid: null, schema: data };
-    }
+    let modelName = (typeof builtInModel === 'string') ?
+      builtInModel : builtInModel.from;
+    const data: Model = await getData(
+      `https://unpkg.com/@sheetbase/models@${ version }/models/${ modelName }.json`,
+    );
     // extends
-    if (builtInModel instanceof Object) {
+    if (typeof builtInModel !== 'string') {
       const { name, gid, public: isPublic } = builtInModel;
       modelName = name; // rename
       data.gid = gid; // change gid
@@ -75,6 +69,9 @@ export async function getBuiltinModels(
         delete data.public; // remove public
       }
     }
+    // default sample data
+    data.dataUrl = data.dataUrl ||
+      `https://unpkg.com/@sheetbase/models@${ version }/data/${ modelName }.json`;
     // save to builtin
     models[modelName] = data;
   }

@@ -152,7 +152,7 @@ export async function deleteDefaultSheet(
     client: OAuth2Client,
     spreadsheetId: string,
 ) {
-    return await deleteSheet(client, spreadsheetId, '0');
+    return await deleteSheet(client, spreadsheetId, 0);
 }
 
 export async function deleteSheet(
@@ -163,7 +163,7 @@ export async function deleteSheet(
     const requestData = {
         requests: [
             {
-                deleteSheet: { sheetId },
+                deleteSheet: { sheetId: Number(sheetId) },
             },
         ],
     };

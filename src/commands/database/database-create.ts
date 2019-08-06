@@ -126,15 +126,19 @@ export async function databaseCreateCommand(inputs: string[], options: Options) 
     // create table by table
     for (const modelName of Object.keys(inputModels)) {
       const inputModel = inputModels[modelName];
+      const withData = (!!inputModel.dataUrl && options.data);
       await createSheetByModel(googleClient, databaseId, modelName, inputModel);
-      console.log('   + ' + modelName + ' (' + inputModel.gid + ')');
+      console.log(
+        '   + ' + modelName +
+        ' (' + inputModel.gid + ')' +
+        (withData ? ' [data]' : ''),
+      );
       // add sample data
-      if (!!inputModel.dataUrl && options.data) {
-        // get data from url
+      if (withData) {
         const values = await getData(inputModel.dataUrl);
-        // refine and checking the values
+        // remove the header
         if (!!values && !!values[0] && values[0][0] === '#') {
-          values.shift(); // remove the header
+          values.shift();
         }
         // import the values
         if (!!values && !!values.length) {
