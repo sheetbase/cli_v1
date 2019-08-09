@@ -69,9 +69,10 @@ export async function getBuiltinModels(
         delete data.public; // remove public
       }
     }
-    // default sample data
-    data.dataUrl = data.dataUrl ||
-      `https://unpkg.com/@sheetbase/models@${ version }/data/${ modelName }.json`;
+    // default sample data (for public table only)
+    if (!!data.public && !data.dataUrl) {
+      data.dataUrl = `https://unpkg.com/@sheetbase/models@${ version }/data/${ modelName }.json`;
+    }
     // save to builtin
     models[modelName] = data;
   }

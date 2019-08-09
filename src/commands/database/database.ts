@@ -15,6 +15,7 @@ export async function databaseCommand(command: string, params: string[] = [], op
 
   switch (command) {
     case 'list':
+    case 'ls':
       await databaseListCommand();
     break;
 

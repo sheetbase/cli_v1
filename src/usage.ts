@@ -29,13 +29,13 @@ for (const command of comments) {
   // Only print valid commands.
   if (sheetbaseCommand && sheetbaseCommand.description && sheetbaseCommand.name) {
     readme.push('');
-    readme.push(`### ${ucfirst(sheetbaseCommand.name)}`);
+    readme.push(`### \`${ucfirst(sheetbaseCommand.name)}\``);
     readme.push('');
     readme.push(sheetbaseCommand.description);
     // Parameters (@param)
     if (sheetbaseCommand.params && sheetbaseCommand.params.length) {
       readme.push('');
-      readme.push('#### Options\n');
+      // readme.push('#### Options\n');
       sheetbaseCommand.params.map(param => {
         const isOptional = param.type.indexOf('?') !== -1;
         // readme.push(JSON.stringify(param));

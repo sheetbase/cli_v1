@@ -78,8 +78,6 @@ program
  * @param {boolean?} [-x,--no-setup] (start) Do not run setup command.
  * @param {boolean?} [-r,--re-setup] (setup) Force re-setup.
  * @param {boolean?} [-o,--open] (url) Open the url in browser.
- * @param {string?} [-d,--database] (model) Custom database.
- * @param {boolean?} [-c,--clean] (model) Remove the default 'Sheet1'.
  * @param {boolean?} [-b,--backend] (build, deploy) Build or deploy backend only.
  * @param {boolean?} [-f,--frontend] (build, deploy) Build or deploy frontend only.
  * @param {string?} [-m,--message] (deploy) Deployment message.
@@ -254,8 +252,12 @@ program
 
 /**
  * Manage the database.
- * Sub-commands: list, create, import, export
+ * Sub-commands: list|ls, create, import|im, export|ex
  * @name db
+ * @param {string?} [subCommand] Supported sub-commands.
+ * @param {string[]?} [params] Command params, comma-separated.
+ * @param {string?} [-i,--id] The database id.
+ * @param {boolean?} [-d,--data] (create) Create table with sample data.
  */
 program
   .command('db [subCommand] [params...]')
