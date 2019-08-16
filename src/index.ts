@@ -70,7 +70,7 @@ program
 
 /**
  * Project general tasks.
- * Sub-commands: start, setup, configs, config, urls, url, info, build, deploy, preview, models, model.
+ * Sub-commands: start, setup, configs, config, urls, url, info, build, deploy, preview.
  * @name project
  * @param {string?} [subCommand] Supported sub-commands.
  * @param {string[]?} [params] Command params, comma-separated.
@@ -222,31 +222,33 @@ program
 
 /**
  * Run backend related commands.
+ * Sub-commands: build, push, deploy, install|i, uninstall|un, run, *.
  * @name backend
  * @param {string?} [subCommand] Optional supported sub-commands.
- * @param {string?} [-m,--message] Deployment message.
+ * @param {string?} [-m,--message] (deploy) Deployment message.
  */
 program
   .command('backend [subCommand]')
   .description('Run backend related commands.')
-  .option('-m, --message [value]', `Deployment message.`)
+  .option('-m, --message [value]', `(${chalk.green('deploy')}) Deployment message.`)
   .allowUnknownOption()
   .action(backendCommand);
 
 /**
  * Run frontend related commands.
+ * Sub-commands: build, deploy, prerender, install|i, uninstall|un, run, *.
  * @name frontend
  * @param {string?} [subCommand] Optional supported sub-commands.
- * @param {string?} [-m,--message] Deployment message.
- * @param {string?} [-f,--force] Force prerender all or certain parts.
- * @param {string?} [-o,--only] Prerender only certain parts.
+ * @param {string?} [-m,--message] (deploy) Deployment message.
+ * @param {string?} [-f,--force] (prerender) Force prerender all or certain parts.
+ * @param {string?} [-o,--only] (prerender) Prerender only certain parts.
  */
 program
   .command('frontend [subCommand]')
   .description('Run frontend related commands.')
-  .option('-m, --message [value]', `Deployment message.`)
-  .option('-f, --force [value]', `Force prerender all or certain parts.`)
-  .option('-o, --only [value]', `Prerender only certain parts.`)
+  .option('-m, --message [value]', `(${chalk.green('deploy')}) Deployment message.`)
+  .option('-f, --force [value]', `(${chalk.green('prerender')}) Force prerender all or certain parts.`)
+  .option('-o, --only [value]', `(${chalk.green('prerender')}) Prerender only certain parts.`)
   .allowUnknownOption()
   .action(frontendCommand);
 

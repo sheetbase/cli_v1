@@ -28,7 +28,70 @@ Recommended for developing Google Apps Script, <https://github.com/google/clasp>
 
 `npm install -g @google/clasp`
 
-## Usage
+## Commands
+
+The following commands provide many convinient methods to manage a Sheetbase project.
+
+> Note: Some of them require you to connect a Google account by `sheetbase google login`; project-related command needs to be run inside a Sheetbase project.
+
+### Google
+
+- [`sheetbase google list|ls [-d,--default]`](#google)
+- [`sheetbase google connect|add [-y,--yes] [-c,--creds] [-f,--full]`](#google)
+- [`sheetbase google disconnect|remove|rm <id>|all|default|local`](#google)
+- [`sheetbase google default [<id>]`](#google)
+
+### Project
+
+- [`sheetbase [project] start [<projectName>] [<resource>] [-i,--install] [-x,--no-setup]`](#project)
+- [`sheetbase [project] setup [-r,--re-setup]`](#project)
+- [`sheetbase [project] configs`](#project)
+- [`sheetbase [project] config list|ls`](#project)
+- [`sheetbase [project] config update|set <key=value> ...`](#project)
+- [`sheetbase [project] config import|im <path>`](#project)
+- [`sheetbase [project] config export|ex`](#project)
+- [`sheetbase [project] urls`](#project)
+- [`sheetbase [project] url [<name>] [-o,--open]`](#project)
+- [`sheetbase [project] info`](#project)
+- [`sheetbase [project] build [-b,--backend] [-f,--frontend]`](#project)
+- [`sheetbase [project] deploy [-m,--message <value>] [-b,--backend] [-f,--frontend]`](#project)
+- [`sheetbase [project] preview`](#project)
+
+---
+
+- [`sheetbase backend build`](#backend)
+- [`sheetbase backend push`](#backend)
+- [`sheetbase backend deploy [-m,--message <value>]`](#backend)
+- [`sheetbase backend install|i`](#backend)
+- [`sheetbase backend uninstall|un`](#backend)
+- [`sheetbase backend run <script>`](#backend)
+- [`sheetbase backend *`](#backend)
+
+---
+
+- [`sheetbase frontend build`](#frontend)
+- [`sheetbase frontend deploy [-m,--message <value>]`](#frontend)
+- [`sheetbase frontend prerender [-f,--force <value>] [-o,--only <value>]`](#frontend)
+- [`sheetbase frontend install|i`](#frontend)
+- [`sheetbase frontend uninstall|un`](#frontend)
+- [`sheetbase frontend run <script>`](#frontend)
+- [`sheetbase frontend *`](#frontend)
+
+### Database
+
+- [`sheetbase db list|ls`](#db)
+- [`sheetbase db create [input] [-i,--id <value>] [-d,--data]`](#db)
+- [`sheetbase db import|im <name> [source] [-i,--id <value>]`](#db)
+- [`sheetbase db export|ex <name> [-i,--id <value>]`](#db)
+
+### Misc
+
+- [`sheetbase docs`](#docs)
+- [`sheetbase update [-y,--yes]`](#update)
+- [`sheetbase help [-d,--detail]`](#help)
+- [`sheetbase *`](#*)
+
+## Reference
 
 ### `Google`
 
@@ -45,7 +108,7 @@ Sub-commands: list|ls, connect|add, disconnect|remove|rm, default.
 ### `Project`
 
 Project general tasks.
-Sub-commands: start, setup, configs, config, urls, url, info, build, deploy, preview, models, model.
+Sub-commands: start, setup, configs, config, urls, url, info, build, deploy, preview.
 
 - `subCommand`: Supported sub-commands.
 - `params`: Command params, comma-separated.
@@ -131,18 +194,20 @@ Proxy of **project preview**
 ### `Backend`
 
 Run backend related commands.
+Sub-commands: build, push, deploy, install|i, uninstall|un, run, *.
 
 - `subCommand`: Optional supported sub-commands.
-- `-m,--message`: Deployment message.
+- `-m,--message`: (deploy) Deployment message.
 
 ### `Frontend`
 
 Run frontend related commands.
+Sub-commands: build, deploy, prerender, install|i, uninstall|un, run, *.
 
 - `subCommand`: Optional supported sub-commands.
-- `-m,--message`: Deployment message.
-- `-f,--force`: Force prerender all or certain parts.
-- `-o,--only`: Prerender only certain parts.
+- `-m,--message`: (deploy) Deployment message.
+- `-f,--force`: (prerender) Force prerender all or certain parts.
+- `-o,--only`: (prerender) Prerender only certain parts.
 
 ### `Db`
 

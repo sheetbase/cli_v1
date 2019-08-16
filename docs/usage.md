@@ -15,7 +15,7 @@ Sub-commands: list|ls, connect|add, disconnect|remove|rm, default.
 ### `Project`
 
 Project general tasks.
-Sub-commands: start, setup, configs, config, urls, url, info, build, deploy, preview, models, model.
+Sub-commands: start, setup, configs, config, urls, url, info, build, deploy, preview.
 
 - `subCommand`: Supported sub-commands.
 - `params`: Command params, comma-separated.
@@ -101,18 +101,20 @@ Proxy of **project preview**
 ### `Backend`
 
 Run backend related commands.
+Sub-commands: build, push, deploy, install|i, uninstall|un, run, *.
 
 - `subCommand`: Optional supported sub-commands.
-- `-m,--message`: Deployment message.
+- `-m,--message`: (deploy) Deployment message.
 
 ### `Frontend`
 
 Run frontend related commands.
+Sub-commands: build, deploy, prerender, install|i, uninstall|un, run, *.
 
 - `subCommand`: Optional supported sub-commands.
-- `-m,--message`: Deployment message.
-- `-f,--force`: Force prerender all or certain parts.
-- `-o,--only`: Prerender only certain parts.
+- `-m,--message`: (deploy) Deployment message.
+- `-f,--force`: (prerender) Force prerender all or certain parts.
+- `-o,--only`: (prerender) Prerender only certain parts.
 
 ### `Db`
 
