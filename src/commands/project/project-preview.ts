@@ -4,8 +4,8 @@ import { Deployment, getPath, getSheetbaseDotJson } from '../../services/project
 import { logInfo } from '../../services/message';
 
 export async function projectPreviewCommand() {
-    const { deployment } = await getSheetbaseDotJson();
-    const { wwwDir = './frontend/www' } = deployment || {} as Deployment;
+    const { deployment = {} as Deployment } = await getSheetbaseDotJson();
+    const { wwwDir = './frontend/www' } = deployment;
     const wwwCwd = await getPath(wwwDir);
     // launch server
     superstatic.server({
