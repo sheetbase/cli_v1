@@ -46,7 +46,7 @@ export async function projectSetupCommand(options: Options) {
     // drive folder
     if (!driveFolder) {
         await logAction('Create the Drive folder', async () => {
-            driveFolder = await driveCreateFolder(googleClient, `Sheetbase Project: ${namePretty}`);
+            driveFolder = await driveCreateFolder(googleClient, `Sheetbase: ${namePretty}`);
             await setSheetbaseDotJson({ driveFolder });
         });
     }
