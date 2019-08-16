@@ -34,30 +34,30 @@ The following commands provide many convinient methods to manage a Sheetbase pro
 
 > Note: Some of them require you to connect a Google account by `sheetbase google login`; project-related command needs to be run inside a Sheetbase project.
 
-### Google
+### Google account
 
 - [`sheetbase google list|ls [-d,--default]`](#google)
 - [`sheetbase google connect|add [-y,--yes] [-c,--creds] [-f,--full]`](#google)
 - [`sheetbase google disconnect|remove|rm <id>|all|default|local`](#google)
 - [`sheetbase google default [<id>]`](#google)
 
-### Project
+### Project related
 
-- [`sheetbase [project] start [<projectName>] [<resource>] [-i,--install] [-x,--no-setup]`](#project)
-- [`sheetbase [project] setup [-r,--re-setup]`](#project)
-- [`sheetbase [project] configs`](#project)
-- [`sheetbase [project] config list|ls`](#project)
-- [`sheetbase [project] config update|set <key=value> ...`](#project)
-- [`sheetbase [project] config import|im <path>`](#project)
-- [`sheetbase [project] config export|ex`](#project)
-- [`sheetbase [project] urls`](#project)
-- [`sheetbase [project] url [<name>] [-o,--open]`](#project)
-- [`sheetbase [project] info`](#project)
-- [`sheetbase [project] build [-b,--backend] [-f,--frontend]`](#project)
-- [`sheetbase [project] deploy [-m,--message <value>] [-b,--backend] [-f,--frontend]`](#project)
-- [`sheetbase [project] preview`](#project)
+- [`sheetbase [project] start [<projectName>] [<resource>] [-i,--install] [-x,--no-setup]`](#start)
+- [`sheetbase [project] setup [-r,--re-setup]`](#setup)
+- [`sheetbase [project] configs`](#configs)
+- [`sheetbase [project] config list|ls`](#config)
+- [`sheetbase [project] config update|set <key=value> ...`](#config)
+- [`sheetbase [project] config import|im <path>`](#config)
+- [`sheetbase [project] config export|ex`](#config)
+- [`sheetbase [project] urls`](#urls)
+- [`sheetbase [project] url [<name>] [-o,--open]`](#url)
+- [`sheetbase [project] info`](#info)
+- [`sheetbase [project] build [-b,--backend] [-f,--frontend]`](#build)
+- [`sheetbase [project] deploy [-m,--message <value>] [-b,--backend] [-f,--frontend]`](#deploy)
+- [`sheetbase [project] preview`](#preview)
 
----
+#### Backend specific
 
 - [`sheetbase backend build`](#backend)
 - [`sheetbase backend push`](#backend)
@@ -67,7 +67,7 @@ The following commands provide many convinient methods to manage a Sheetbase pro
 - [`sheetbase backend run <script>`](#backend)
 - [`sheetbase backend *`](#backend)
 
----
+#### Frontend specific
 
 - [`sheetbase frontend build`](#frontend)
 - [`sheetbase frontend deploy [-m,--message <value>]`](#frontend)
@@ -77,19 +77,19 @@ The following commands provide many convinient methods to manage a Sheetbase pro
 - [`sheetbase frontend run <script>`](#frontend)
 - [`sheetbase frontend *`](#frontend)
 
-### Database
+### Database related
 
 - [`sheetbase db list|ls`](#db)
 - [`sheetbase db create [input] [-i,--id <value>] [-d,--data]`](#db)
 - [`sheetbase db import|im <name> [source] [-i,--id <value>]`](#db)
 - [`sheetbase db export|ex <name> [-i,--id <value>]`](#db)
 
-### Misc
+### Misc actions
 
 - [`sheetbase docs`](#docs)
 - [`sheetbase update [-y,--yes]`](#update)
 - [`sheetbase help [-d,--detail]`](#help)
-- [`sheetbase *`](#*)
+- [`sheetbase *`](#)
 
 ## Reference
 
