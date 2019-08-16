@@ -115,8 +115,17 @@ export async function databaseCreateCommand(inputs: string[], options: Options) 
         }
       }
       // save public gids
-      if (inputModel.public) {
-        databaseGids[modelName] = '' + inputModel.gid;
+      const inputModelGid = '' + inputModel.gid; // convert to string
+      if (
+        // must be public
+        inputModel.public &&
+        // not a builtin gid
+        (
+          inputModelGid.length !== 3 ||
+          inputModelGid[0] !== '1'
+        )
+      ) {
+        databaseGids[modelName] = inputModelGid;
       }
     }
   });
