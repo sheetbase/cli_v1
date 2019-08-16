@@ -27,14 +27,13 @@ export async function frontendPrerenderCommand(options: Options) {
     const {
         provider,
         url = '',
-        stagingDir,
         wwwDir = './frontend/www',
+        stagingDir = './frontend/www-prod',
     } = deployment;
 
     // folders
-    const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
-        resolve(homedir(), 'sheetbase_staging', name);
     const wwwCwd = await getPath(wwwDir);
+    const stagingCwd = await getPath(stagingDir);
 
     // check if dir exists
     if (!await pathExists(stagingCwd)) {

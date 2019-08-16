@@ -1,5 +1,4 @@
-import { basename, resolve } from 'path';
-import { homedir, EOL } from 'os';
+import { EOL } from 'os';
 import { pathExists } from 'fs-extra';
 
 import { GithubProvider, Deployment, getPath, getSheetbaseDotJson } from '../../services/project';
@@ -9,11 +8,14 @@ import { logError, logOk, logInfo, logAction } from '../../services/message';
 import { Options } from './frontend';
 
 export async function frontendDeployCommand(options: Options) {
-    const name = basename(process.cwd());
-    const { deployment } = await getSheetbaseDotJson();
-    const { provider, url = 'n/a', stagingDir, destination } = deployment || {} as Deployment;
-    const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
-        resolve(homedir(), 'sheetbase_staging', name);
+    const { deployment = {} as Deployment } = await getSheetbaseDotJson();
+    const {
+        provider,
+        url = 'n/a',
+        stagingDir = './frontend/www-prod',
+        destination = {},
+    } = deployment;
+    const stagingCwd = await getPath(stagingDir);
     // check if dir exists
     if (!await pathExists(stagingCwd)) {
         return logError('FRONTEND_DEPLOY__ERROR__NO_STAGING');
@@ -24,7 +26,7 @@ export async function frontendDeployCommand(options: Options) {
     }
     // deploy
     if (provider === 'github') {
-        const { master } = destination || {} as GithubProvider;
+        const { master } = destination as GithubProvider;
 
         // add
         const addCmd = 'git add .';

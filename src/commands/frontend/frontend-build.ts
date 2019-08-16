@@ -1,5 +1,4 @@
 import { resolve } from 'path';
-import { homedir } from 'os';
 import { pathExists, readFile, outputFile, ensureDir, copy } from 'fs-extra';
 import * as del from 'del';
 
@@ -21,18 +20,17 @@ export async function frontendBuildCommand() {
     const {
         provider,
         url = '',
-        stagingDir,
         wwwDir = './frontend/www',
-        destination = {} as any,
+        stagingDir = './frontend/www-prod',
+        destination = {},
     } = deployment;
     const {
         gitUrl, master, // github
     } = destination as GithubProvider;
 
     // folders
-    const stagingCwd = !!stagingDir ? await getPath(stagingDir) :
-        resolve(homedir(), 'sheetbase_staging', name);
     const wwwCwd = await getPath(wwwDir);
+    const stagingCwd = await getPath(stagingDir);
 
     // malform provider
     if (
