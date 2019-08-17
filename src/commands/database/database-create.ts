@@ -156,7 +156,10 @@ export async function databaseCreateCommand(inputs: string[], options: Options) 
       }
     }
     // save gid maps to config
-    if (isProject) {
+    if (
+      isProject &&
+      !!Object.keys(databaseGids).length
+    ) {
       await setConfigs({ databaseGids });
     }
     // delete the default 'Sheet1'
