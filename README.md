@@ -46,7 +46,6 @@ The following commands provide many convinient methods to manage a Sheetbase pro
 - [`sheetbase [project] start [<projectName>] [<resource>] [-i,--install] [-x,--not-setup]`](#start)
 - [`sheetbase [project] setup [-r,--fresh]`](#setup)
 - [`sheetbase [project] configs`](#configs)
-- [`sheetbase [project] config list|ls`](#config)
 - [`sheetbase [project] config update|set <key=value> ...`](#config)
 - [`sheetbase [project] config import|im <path>`](#config)
 - [`sheetbase [project] config export|ex`](#config)
