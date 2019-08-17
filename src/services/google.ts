@@ -19,6 +19,7 @@ export interface GoogleAccount {
     refreshToken: string;
     profile: GoogleAccountProfile;
     grantedAt?: number;
+    fullDrive?: boolean;
 }
 
 export interface GoogleAccounts {
@@ -153,7 +154,7 @@ export async function setGoogleAccount(googleAccount: GoogleAccount): Promise<Go
     }
     return await getAllGoogleAccounts();
 }
-export async function retrieveTemporaryRefeshToken(): Promise<GoogleAccount> {
+export async function retrieveTemporaryAccount(fullDrive = false): Promise<GoogleAccount> {
     let account: GoogleAccount;
     try {
         const tempRefreshToken: string = getTemporaryRefeshToken();
@@ -163,6 +164,7 @@ export async function retrieveTemporaryRefeshToken(): Promise<GoogleAccount> {
                 refreshToken: tempRefreshToken,
                 profile,
                 grantedAt: (new Date()).getTime(),
+                fullDrive,
             };
             const accounts = await setGoogleAccount(googleAccount);
             account = accounts[googleAccount.profile.id];

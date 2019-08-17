@@ -8,7 +8,7 @@ import {
     GoogleAccounts,
 } from '../../services/google';
 import { formatDate } from '../../services/utils';
-import { logOk, logError } from '../../services/message';
+import { red, green, logOk, logError } from '../../services/message';
 
 import { Options } from './google';
 
@@ -28,9 +28,22 @@ export async function googleListCommand(options: Options) {
         {value: 'Name', width: 100},
         {value: 'Email', width: 100},
         {value: 'Since', width: 100},
+        {value: 'Mode', width: 50},
     ], []);
-    const row = (id, name, email, at) => {
-        return [id, name || '?', email || '?', formatDate(new Date(at))];
+    const row = (
+        id: string,
+        name: string,
+        email: string,
+        at: any,
+        fullDrive: boolean,
+    ) => {
+        return [
+            id,
+            name || '?',
+            email || '?',
+            formatDate(new Date(at)),
+            !!fullDrive ? red('FULL') : green('RESTRICTED'),
+        ];
     };
 
     // print out data
@@ -40,20 +53,23 @@ export async function googleListCommand(options: Options) {
             const { [defaultGoogleAccountId]: defaultGoogleAccount } = googleAccounts;
             const { id, name, email } = defaultGoogleAccount.profile;
             const grantedAt: string = formatDate(new Date(defaultGoogleAccount.grantedAt));
+            const { fullDrive } = defaultGoogleAccount;
             table.push(
-                row(`${id} (default)`, name, email, grantedAt),
+                row(`${id} (default)`, name, email, grantedAt, fullDrive),
             );
         } else {
             // all accounts
             for (const key of Object.keys(googleAccounts)) {
-                let { id } = googleAccounts[key].profile;
-                const { name, email } = googleAccounts[key].profile;
-                const grantedAt: string = formatDate(new Date(googleAccounts[key].grantedAt));
+                const googleAccount = googleAccounts[key];
+                let { id } = googleAccount.profile;
+                const { name, email } = googleAccount.profile;
+                const grantedAt: string = formatDate(new Date(googleAccount.grantedAt));
+                const { fullDrive } = googleAccount;
                 if (id === defaultGoogleAccountId) {
                     id = `${id} (default)`;
                 }
                 table.push(
-                    row(id, name, email, grantedAt),
+                    row(id, name, email, grantedAt, fullDrive),
                 );
             }
         }
@@ -61,8 +77,9 @@ export async function googleListCommand(options: Options) {
     if (rcAccount) {
         const { id, name, email } = rcAccount.profile;
         const grantedAt: string = formatDate(new Date(rcAccount.grantedAt));
+        const { fullDrive } = rcAccount;
         table.push(
-            row(`${id} (local)`, name, email, grantedAt),
+            row(`${id} (local)`, name, email, grantedAt, fullDrive),
         );
     }
     console.log(table.render());

@@ -3,7 +3,7 @@ import { writeJson } from 'fs-extra';
 import { askForGoogleOAuth2 } from '../../services/inquirer';
 import {
     authorizeWithLocalhost,
-    retrieveTemporaryRefeshToken,
+    retrieveTemporaryAccount,
 } from '../../services/google';
 import { logOk, logWarn } from '../../services/message';
 
@@ -26,9 +26,9 @@ export async function googleConnectCommand(options: Options = {}) {
 
     // go for authorization
     await authorizeWithLocalhost(options.fullDrive);
+    const account = await retrieveTemporaryAccount(options.fullDrive);
 
     // save RC
-    const account = await retrieveTemporaryRefeshToken();
     if (options.creds) {
         await writeJson('.googlerc.json', account);
         logWarn('GOOGLE_CONNECT__WARN__CREDS', true);
