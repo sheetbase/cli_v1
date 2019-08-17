@@ -28,8 +28,8 @@ export interface GoogleAccounts {
 
 export const GOOGLE_RC = '.googlerc.json';
 export const OAUHT2_CLIENT_SETTINGS = {
-    clientId: '719937802037-rc4r6ct75hhu7ns5e6nomptvb37e84mj.apps.googleusercontent.com',
-    clientSecret: 'np2V_mWKlsrZP314tArUJ0sg',
+    clientId: '352194396091-6vcd921aj9g8vaovl20su2trgdhcdocq.apps.googleusercontent.com',
+    clientSecret: 'Y_0P-DwQCv_40MQWxM-PlruO',
     redirectUri: 'http://localhost:3160/oauth2callback',
 };
 export const OAUTH2_URL_OPTS = (fullDrive = false) => {
