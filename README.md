@@ -37,14 +37,14 @@ The following commands provide many convinient methods to manage a Sheetbase pro
 ### Google account
 
 - [`sheetbase google list|ls [-d,--default]`](#google)
-- [`sheetbase google connect|add [-y,--yes] [-c,--creds] [-f,--full]`](#google)
-- [`sheetbase google disconnect|remove|rm <id>|all|default|local`](#google)
+- [`sheetbase google connect|login|add [-y,--yes] [-c,--creds] [-f,--full-drive]`](#google)
+- [`sheetbase google disconnect|logout|remove|rm <id>|all|default|local`](#google)
 - [`sheetbase google default [<id>]`](#google)
 
 ### Project related
 
-- [`sheetbase [project] start [<projectName>] [<resource>] [-i,--install] [-x,--no-setup]`](#start)
-- [`sheetbase [project] setup [-r,--re-setup]`](#setup)
+- [`sheetbase [project] start [<projectName>] [<resource>] [-i,--install] [-x,--not-setup]`](#start)
+- [`sheetbase [project] setup [-r,--fresh]`](#setup)
 - [`sheetbase [project] configs`](#configs)
 - [`sheetbase [project] config list|ls`](#config)
 - [`sheetbase [project] config update|set <key=value> ...`](#config)
@@ -89,20 +89,20 @@ The following commands provide many convinient methods to manage a Sheetbase pro
 - [`sheetbase docs`](#docs)
 - [`sheetbase update [-y,--yes]`](#update)
 - [`sheetbase help [-d,--detail]`](#help)
-- [`sheetbase *`](#)
+- [`sheetbase *`](#*)
 
 ## Reference
 
 ### `Google`
 
 Manage Google accounts.
-Sub-commands: list|ls, connect|add, disconnect|remove|rm, default.
+Sub-commands: list|ls, connect|login|add, disconnect|logout|remove|rm, default.
 
 - `subCommand`: Supported sub-commands.
 - `params`: Command params, comma-separated.
 - `-y,--yes`: (connect) Agree on account connection.
 - `-c,--creds`: (connect) Save credential to .googlerc.json.
-- `-f,--full`: (connect) Not recommended, grant full access to Drive.
+- `-f,--full-drive`: (connect) Not recommended, grant full access to Drive.
 - `-d,--default`: (list) Show default account only.
 
 ### `Project`
@@ -113,8 +113,8 @@ Sub-commands: start, setup, configs, config, urls, url, info, build, deploy, pre
 - `subCommand`: Supported sub-commands.
 - `params`: Command params, comma-separated.
 - `-i,--install`: (start) Install npm packages.
-- `-x,--no-setup`: (start) Do not run setup command.
-- `-r,--re-setup`: (setup) Force re-setup.
+- `-x,--not-setup`: (start) Do not run setup command.
+- `-r,--fresh`: (setup) Force re-setup.
 - `-o,--open`: (url) Open the url in browser.
 - `-b,--backend`: (build, deploy) Build or deploy backend only.
 - `-f,--frontend`: (build, deploy) Build or deploy frontend only.
@@ -128,14 +128,14 @@ Proxy of **project start**
 - `projectName`: Name of the project, auto default.
 - `resource`: Resource to create the project with, default to theme **blank_angular**.
 - `-i,--install`: Install npm packages.
-- `-x,--no-setup`: Do not run setup command.
+- `-x,--not-setup`: Do not run setup command.
 
 ### `Setup`
 
 Setup the project.
 Proxy of **project setup**
 
-- `-r,--re-setup`: Force re-setup.
+- `-r,--fresh`: Force re-setup.
 
 ### `Configs`
 

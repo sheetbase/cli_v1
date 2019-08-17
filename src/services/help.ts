@@ -8,8 +8,8 @@ export function help(): string {
  Global commands:
 
     ${green('google [subcommand]')} ........ Manage Google accounts.
-    ${green('start [name] [resource]')} .... Start a new project.
     ${green('db [subcommand]')} ............ Manage the database.
+    ${green('start [name] [resource]')} .... Start a new project.
     ${green('docs')} ....................... Open the documentation.
     ${green('update')} ..................... Check and install update.
     ${green('help')} ....................... Display help.

@@ -28,7 +28,7 @@ export async function projectSetupCommand(options: Options) {
     }
 
     // clear configs
-    if (options.reSetup) {
+    if (options.fresh) {
         await logAction('Reset configs', async () => {
             await setInitialConfigs(name);
         });

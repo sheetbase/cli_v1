@@ -15,8 +15,8 @@ import { projectPreviewCommand } from './project-preview';
 
 export interface Options {
     install?: boolean;
-    noSetup?: boolean;
-    reSetup?: boolean;
+    notSetup?: boolean;
+    fresh?: boolean;
     open?: boolean;
     backend?: boolean;
     frontend?: boolean;

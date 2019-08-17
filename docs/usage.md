@@ -1,15 +1,15 @@
-## Usage
+## Reference
 
 ### `Google`
 
 Manage Google accounts.
-Sub-commands: list|ls, connect|add, disconnect|remove|rm, default.
+Sub-commands: list|ls, connect|login|add, disconnect|logout|remove|rm, default.
 
 - `subCommand`: Supported sub-commands.
 - `params`: Command params, comma-separated.
 - `-y,--yes`: (connect) Agree on account connection.
 - `-c,--creds`: (connect) Save credential to .googlerc.json.
-- `-f,--full`: (connect) Not recommended, grant full access to Drive.
+- `-f,--full-drive`: (connect) Not recommended, grant full access to Drive.
 - `-d,--default`: (list) Show default account only.
 
 ### `Project`

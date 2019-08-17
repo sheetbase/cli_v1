@@ -50,7 +50,7 @@ export async function projectStartCommand(params: string[], options?: Options) {
         });
 
         // run setup
-        if (!options.noSetup) {
+        if (!options.notSetup) {
             exec('sheetbase setup', deployPath);
         }
 

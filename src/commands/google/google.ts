@@ -16,11 +16,13 @@ export interface Options {
 export async function googleCommand(command: string, params?: string[], options?: Options) {
     switch (command) {
         case 'connect':
+        case 'login':
         case 'add':
             await googleConnectCommand(options);
         break;
 
         case 'disconnect':
+        case 'logout':
         case 'remove':
         case 'rm':
             await googleDisconnectCommand(params);

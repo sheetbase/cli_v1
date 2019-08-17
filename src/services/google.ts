@@ -278,7 +278,7 @@ export function authorizeWithLocalhost(fullDrive?: boolean): Promise<OAuth2Clien
                     res.end(message(
                         'https://png.icons8.com/dusk/128/000000/cancel.png',
                         'Failed!',
-                        'Please try again.',
+                        'There is something wrong with the authorization process. Please try again!',
                     ));
                 } else {
                     res.end(message(

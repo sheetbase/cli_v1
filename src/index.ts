@@ -47,13 +47,13 @@ program
 
 /**
  * Manage Google accounts.
- * Sub-commands: list|ls, connect|add, disconnect|remove|rm, default.
+ * Sub-commands: list|ls, connect|login|add, disconnect|logout|remove|rm, default.
  * @name google
  * @param {string?} [subCommand] Supported sub-commands.
  * @param {string[]?} [params] Command params, comma-separated.
  * @param {boolean?} [-y,--yes] (connect) Agree on account connection.
  * @param {boolean?} [-c,--creds] (connect) Save credential to .googlerc.json.
- * @param {boolean?} [-f,--full] (connect) Not recommended, grant full access to Drive.
+ * @param {boolean?} [-f,--full-drive] (connect) Not recommended, grant full access to Drive.
  * @param {boolean?} [-d,--default] (list) Show default account only.
  */
 program
@@ -61,7 +61,7 @@ program
   .description('Manage Google accounts.')
   .option('-y, --yes', `(${chalk.green('connect')}) Agree on account connection.`)
   .option('-c, --creds', `(${chalk.green('connect')}) Save credential to .googlerc.json.`)
-  .option('-f, --full',
+  .option('-f, --full-drive',
     `(${chalk.green('connect')}) ${chalk.red('Not recommended')}, ` +
     `grant full access to Drive.`,
   )
@@ -75,8 +75,8 @@ program
  * @param {string?} [subCommand] Supported sub-commands.
  * @param {string[]?} [params] Command params, comma-separated.
  * @param {boolean?} [-i,--install] (start) Install npm packages.
- * @param {boolean?} [-x,--no-setup] (start) Do not run setup command.
- * @param {boolean?} [-r,--re-setup] (setup) Force re-setup.
+ * @param {boolean?} [-x,--not-setup] (start) Do not run setup command.
+ * @param {boolean?} [-r,--fresh] (setup) Force re-setup.
  * @param {boolean?} [-o,--open] (url) Open the url in browser.
  * @param {boolean?} [-b,--backend] (build, deploy) Build or deploy backend only.
  * @param {boolean?} [-f,--frontend] (build, deploy) Build or deploy frontend only.
@@ -86,8 +86,8 @@ program
   .command('project [subCommand] [params...]')
   .description('Project general tasks.')
   .option('-i, --install', `(${chalk.green('start')}) Install npm packages.`)
-  .option('-x, --no-setup', `(${chalk.green('start')}) Do not run setup command.`)
-  .option('-r, --re-setup', `(${chalk.green('setup')}) Force re-setup.`)
+  .option('-x, --not-setup', `(${chalk.green('start')}) Do not run setup command.`)
+  .option('-r, --fresh', `(${chalk.green('setup')}) Force re-setup.`)
   .option('-o, --open', `(${chalk.green('url')}) Open the url in browser.`)
   .option('-b, --backend', `(${chalk.green('build, deploy')}) Build or deploy backend only.`)
   .option('-f, --frontend', `(${chalk.green('build, deploy')}) Build or deploy frontend only.`)
@@ -101,13 +101,13 @@ program
  * @param {string?} [projectName] Name of the project, auto default.
  * @param {string?} [resource] Resource to create the project with, default to theme **blank_angular**.
  * @param {boolean?} [-i,--install] Install npm packages.
- * @param {boolean?} [-x,--no-setup] Do not run setup command.
+ * @param {boolean?} [-x,--not-setup] Do not run setup command.
  */
 program
   .command('start [projectName] [resource]')
   .description('Start a new project.')
   .option('-i, --install', 'Install npm packages.')
-  .option('-x, --no-setup', 'Do not run setup command.')
+  .option('-x, --not-setup', 'Do not run setup command.')
   .action((projectName, resource, options) => projectCommand(
     'start', [projectName, resource], options,
   ));
@@ -116,12 +116,12 @@ program
  * Setup the project.
  * Proxy of **project setup**
  * @name setup
- * @param {boolean?} [-r,--re-setup] Force re-setup.
+ * @param {boolean?} [-r,--fresh] Force re-setup.
  */
 program
   .command('setup')
   .description('Setup the project.')
-  .option('-r, --re-setup', `Force re-setup.`)
+  .option('-r, --fresh', `Force re-setup.`)
   .action(() => projectCommand('setup'));
 
 /**
