@@ -40,7 +40,7 @@ const FAKE_GOOGLE_ACCOUNTS = [];
       refreshToken: Math.random().toString(36).substr(2),
       profile: {
         id: Math.random().toString(12).substr(2),
-        email: `fake${i}@sheetbase.net`,
+        email: `fake${i}@sheetbase.dev`,
       },
       grantedAt: (new Date()).getTime(),
     });
@@ -473,7 +473,7 @@ describe('Test FRONTEND command', () => {
 });
 
 describe('Test DOCS command', () => {
-  it('should open docs', () => expectResult(['docs'], 'Link opened: https://sheetbase.net/docs'));
+  it('should open docs', () => expectResult(['docs'], 'Link opened: https://sheetbase.dev/docs'));
 });
 
 describe('Test UPDATE command', () => {

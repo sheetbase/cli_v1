@@ -3,7 +3,7 @@
   "version": "1.3.0",
   "description": "Official CLI for working with Sheetbase. ",
   "author": "Sheetbase",
-  "homepage": "https://sheetbase.net",
+  "homepage": "https://sheetbase.dev",
   "license": "Apache-2.0",
   "main": "./src/index.js",
   "bin": {
