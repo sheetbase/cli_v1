@@ -36,7 +36,7 @@ export async function projectSetupCommand(options: Options) {
 
     // load current configs
     let {
-        driveFolder,
+        projectId,
         configs: { frontend: { backendUrl = null } = {}} = {},
         // tslint:disable-next-line:prefer-const
         setupHooks, configs: { backend = {}, frontend = {}} = {},
@@ -44,17 +44,17 @@ export async function projectSetupCommand(options: Options) {
     let { scriptId } = await getClaspConfigs();
 
     // drive folder
-    if (!driveFolder) {
+    if (!projectId) {
         await logAction('Create the Drive folder', async () => {
-            driveFolder = await driveCreateFolder(googleClient, `Sheetbase: ${namePretty}`);
-            await setSheetbaseDotJson({ driveFolder });
+            projectId = await driveCreateFolder(googleClient, `Sheetbase: ${namePretty}`);
+            await setSheetbaseDotJson({ projectId });
         });
     }
 
     // backend
     if (!scriptId) {
         await logAction('Create the backend script', async () => {
-            scriptId = await gasCreate(googleClient, `${namePretty} Backend`, driveFolder);
+            scriptId = await gasCreate(googleClient, `${namePretty} Backend`, projectId);
             await setClaspConfigs({ scriptId }, true);
         });
 
@@ -72,7 +72,7 @@ export async function projectSetupCommand(options: Options) {
     if (!!setupHooks) {
         const builtinHooks = new BuiltinHooks({
             googleClient,
-            driveFolder,
+            projectId,
             projectName: name,
         });
         const newConfigs = {};

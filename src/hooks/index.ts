@@ -7,7 +7,7 @@ import { driveCreateFolder, driveCreateFile, copyFile } from '../services/drive'
 
 interface System {
     googleClient: OAuth2Client;
-    driveFolder: string;
+    projectId: string;
     projectName: string;
 }
 
@@ -36,33 +36,33 @@ export class BuiltinHooks {
     }
 
     async driveCreateFolder(name?: string) {
-        const { googleClient, driveFolder } = this.system;
+        const { googleClient, projectId } = this.system;
         return await driveCreateFolder(
             googleClient,
             name || `${this.projectPrettyName()} Folder`,
-            [driveFolder],
+            [projectId],
         );
     }
 
     async driveCreateFile(mimeType: string, name?: string) {
         if (!mimeType) { throw new Error('Missing args.'); }
-        const { googleClient, driveFolder } = this.system;
+        const { googleClient, projectId } = this.system;
         return await driveCreateFile(
             googleClient,
             name || `${this.projectPrettyName()} File`,
             mimeType,
-            [driveFolder],
+            [projectId],
         );
     }
 
     async driveCopyFile(fileId: string, name?: string) {
         if (!fileId) { throw new Error('Missing args.'); }
-        const { googleClient, driveFolder } = this.system;
+        const { googleClient, projectId } = this.system;
         return await copyFile(
             googleClient,
             fileId,
             name || `${this.projectPrettyName()} Copied (${fileId})`,
-            [driveFolder],
+            [projectId],
         );
     }
 

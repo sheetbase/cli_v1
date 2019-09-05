@@ -64,7 +64,7 @@ export async function gasCopy(
     name: string,
     parents: string[] = [],
 ): Promise<string> {
-    const driveFolderId: string = parents[0];
+    const folderId: string = parents[0];
     const requestData: FileCopyRequestBody = {
         name,
     };
@@ -77,11 +77,11 @@ export async function gasCopy(
     });
     // make sure the file in a correct folder
     const fileParents: string[] = ['root', ...data.parents];
-    if(!fileParents.includes(driveFolderId)) {
+    if(!fileParents.includes(folderId)) {
         await client.request({
             method: 'PATCH',
             url: `https://www.googleapis.com/drive/v3/files/${data.id}?` +
-                `addParents=${driveFolderId}&removeParents=${fileParents.join()}`,
+                `addParents=${folderId}&removeParents=${fileParents.join()}`,
             data: {
                 name,
             },

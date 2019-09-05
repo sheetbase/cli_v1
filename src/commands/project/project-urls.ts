@@ -24,23 +24,23 @@ export async function projectUrlsCommand() {
 
 export async function buildUrls() {
     // load all properties
-    const { driveFolder, urlMaps } = await getSheetbaseDotJson();
-    const { scriptId, projectId } = await getClaspConfigs();
+    const { projectId, urlMaps } = await getSheetbaseDotJson();
+    const { scriptId, projectId: gcpId } = await getClaspConfigs();
     const { backend, frontend } = await getConfigs();
     const properties = {
         ... backend,
         ... frontend,
-        driveFolder,
-        scriptId,
         projectId,
+        scriptId,
+        gcpId,
     };
 
     // load url mapping
     const allUrlMaps = {
         ... urlMaps,
-        driveFolder: ['drive', 'https://drive.google.com/drive/folders/'],
+        projectId: ['drive', 'https://drive.google.com/drive/folders/'],
         scriptId: ['script', 'https://script.google.com/d/', '/edit'],
-        projectId: ['gcp', 'https://console.cloud.google.com/home/dashboard?project='],
+        gcpId: ['gcp', 'https://console.cloud.google.com/home/dashboard?project='],
         backendUrl: ['backend'],
     };
 

@@ -36,7 +36,7 @@ export interface ModelExtended {
 }
 
 export interface SheetbaseDotJson {
-    driveFolder?: string;
+    projectId?: string;
     configs?: {
         frontend?: {
             backendUrl?: string;
@@ -238,7 +238,7 @@ export async function setInitialConfigs(name: string, customRoot?: string) {
     // sheetbase.json
     await setSheetbaseDotJson(
         {
-            driveFolder: '',
+            projectId: '',
             configs: {
                 backend: {},
                 frontend: {},

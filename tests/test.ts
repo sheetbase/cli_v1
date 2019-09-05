@@ -200,9 +200,9 @@ describe('Test SETUP command', () => {
   });
 
   afterEach(async () => {
-    const { driveFolder } = readJsonSync(`${PROJECT_PATH}/sheetbase.json`);
+    const { projectId } = readJsonSync(`${PROJECT_PATH}/sheetbase.json`);
     // remove drive folder
-    await driveRemove(await getOAuth2Client(), driveFolder);
+    await driveRemove(await getOAuth2Client(), projectId);
     // remove test project
     removeTestProject();
   });
