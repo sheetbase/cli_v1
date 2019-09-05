@@ -6,11 +6,10 @@
     "strict": true,
     "skipLibCheck": true,
     "lib": [
-	    "dom",
-      "es2018"
+      "esnext"
     ],
     "noImplicitAny": false,
-    "strictNullChecks": false,
+    "strictNullChecks": false
   },
   "include": [
     "src/*.ts",

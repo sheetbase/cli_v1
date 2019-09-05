@@ -6,14 +6,14 @@
   "homepage": "https://sheetbase.dev",
   "license": "Apache-2.0",
   "main": "./src/index.js",
-  "bin": {
-    "sheetbase": "./src/index.js"
-  },
   "files": [
     "src",
     "!**/*.ts"
   ],
   "preferGlobal": true,
+  "bin": {
+    "sheetbase": "./src/index.js"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json && npm i -g --loglevel=error",
     "build-fresh": "npm cache clean --force && npm i && npm run build",
@@ -23,29 +23,25 @@
     "api": "typedoc ./src --out ./docs/api --mode file --target ES5 --ignoreCompilerErrors --readme none",
     "docs": "npm run usage && npm run api",
     "lint": "tslint --project tslint.json && echo 'All files pass linting.'",
-    "test": "nyc --cache false mocha --timeout 100000 tests/*.js",
+    "test": "tsc -p tsconfig.json && nyc --cache false mocha tests/*.js",
     "coverage": "nyc --cache false report --reporter=text-lcov | coveralls"
   },
+  "nyc": {
+    "exclude": [
+      "**/tests"
+    ]
+  },
+  "keywords": [
+    "sheetbase",
+    "google-apps-script",
+    "cli"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/sheetbase/cli.git"
   },
   "bugs": {
     "url": "https://github.com/sheetbase/cli/issues"
-  },
-  "keywords": [
-    "sheetbase",
-    "google-apps-script",
-    "web",
-    "app",
-    "api"
-  ],
-  "importSort": {
-    ".ts": {
-      "parser": "typescript",
-      "style": "module-compact"
-    },
-    "on-save": false
   },
   "dependencies": {
     "adm-zip": "^0.4.13",

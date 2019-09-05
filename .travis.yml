@@ -4,19 +4,10 @@ os:
 
 language: node_js
 node_js:
-  - '8'
-
-before_install:
-  - openssl aes-256-cbc -K $encrypted_f1b01b43e7a5_key -iv $encrypted_f1b01b43e7a5_iv
-    -in ./tests/rc.tar.enc -out rc.tar -d || true
-  - tar xvf rc.tar
-  - npm install -g npm@latest
+  - '10'
 
 install:
-  - npm ci
-
-before_script:
-  - npm run build
+  - npm install
 
 script:
   - npm run lint
