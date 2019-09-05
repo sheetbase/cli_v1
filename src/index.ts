@@ -122,7 +122,7 @@ program
   .command('setup')
   .description('Setup the project.')
   .option('-r, --fresh', `Force re-setup.`)
-  .action(() => projectCommand('setup'));
+  .action((options) => projectCommand('setup', [], options));
 
 /**
  * View project configs.
