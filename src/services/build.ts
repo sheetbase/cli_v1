@@ -35,12 +35,12 @@ export interface LoadingScreen {
 }
 
 export function github404HtmlContent(url: string, title = 'Sheetbase') {
-    let subfolder = '';
-    if (isHostSubfolder(url)) {
-      subfolder = url.split('/').filter(Boolean)[2];
-    }
-    return (
-`<!DOCTYPE html>
+  let subfolder = '';
+  if (isHostSubfolder(url)) {
+    subfolder = url.split('/').filter(Boolean)[2];
+  }
+  return (
+    `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -54,7 +54,7 @@ export function github404HtmlContent(url: string, title = 'Sheetbase') {
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </body>
 </html>`
-    );
+  );
 }
 
 export async function loadPrerendering(
@@ -171,10 +171,10 @@ export function prerenderModifier(
     }
     // replacing
     if (!!loadingHtml) {
-      html = html.replace('</app-root>', `${ loadingHtml }</app-root>`);
+      html = html.replace('</app-root>', `${loadingHtml}</app-root>`);
     }
     if (!!loadingCss) {
-      html = html.replace('</head>', `<style>${ loadingCss }</style></head>`);
+      html = html.replace('</head>', `<style>${loadingCss}</style></head>`);
     }
   }
 
@@ -182,7 +182,7 @@ export function prerenderModifier(
   if (provider === 'github' && isIndex) {
     html = html.replace(
       '<head>',
-  `<head>
+      `<head>
 
   <!-- Github Pages hack to allow SPA refresh without receiving 404. -->
   <script>

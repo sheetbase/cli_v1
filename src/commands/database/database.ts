@@ -17,26 +17,26 @@ export async function databaseCommand(command: string, params: string[] = [], op
     case 'list':
     case 'ls':
       await databaseListCommand();
-    break;
+      break;
 
     case 'create':
       await databaseCreateCommand(params, options);
-    break;
+      break;
 
     case 'import':
     case 'im':
       await databaseImportCommand(params, options);
-    break;
+      break;
 
     case 'export':
     case 'ex':
       await databaseExportCommand(params, options);
-    break;
+      break;
 
     default:
       logInfo('APP__INFO__INVALID_SUBCOMMAND', false, ['db']);
       console.log(databaseHelp());
-    break;
+      break;
   }
 
 }

@@ -12,7 +12,7 @@ import { logError, logOk } from '../../services/message';
 import { Options } from './database';
 
 export async function databaseImportCommand(params: string[], options: Options) {
-  const [ tableName ] = params;
+  const [tableName] = params;
   let source = params[1] || tableName;
   const isProject = await isValid();
 
@@ -64,12 +64,12 @@ export async function databaseImportCommand(params: string[], options: Options) 
     values.shift(); // remove the header
   }
   if (!values || !values.length) {
-    return logError('DATABASE_IMPORT__ERROR__NO_DATA', true, [ source ]);
+    return logError('DATABASE_IMPORT__ERROR__NO_DATA', true, [source]);
   }
 
   // import the values
   await addData(googleClient, databaseId, tableName, values);
 
   // done
-  logOk('DATABASE_IMPORT__OK', true, [ tableName, source ]);
+  logOk('DATABASE_IMPORT__OK', true, [tableName, source]);
 }

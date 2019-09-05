@@ -44,17 +44,17 @@ export async function databaseCreateCommand(inputs: string[], options: Options) 
   let serverTables = {}; // current tables on the server
   const databaseGids = {}; // save public gids here
   const skippedTables = []; // save skipped tables here
-  let inputModels: {[name: string]: Model}; // all input models
+  let inputModels: { [name: string]: Model }; // all input models
   await logAction('Load data', async () => {
     // get server tables
     serverTables = await getSheets(googleClient, databaseId);
     // get project models
-    let projectModels: {[name: string]: Model};
+    let projectModels: { [name: string]: Model };
     if (isProject) {
       projectModels = await loadProjectModels();
     }
     // get custom models
-    let customModels: {[name: string]: Model};
+    let customModels: { [name: string]: Model };
     if (!!inputs.length && inputs[0] !== '*') {
       // sort input by type
       const builtinInputs: string[] = [];
@@ -71,9 +71,9 @@ export async function databaseCreateCommand(inputs: string[], options: Options) 
         }
       }
       // load data
-      let builtinModels: {[name: string]: Model};
-      let localModels: {[name: string]: Model};
-      let remoteModels: {[name: string]: Model};
+      let builtinModels: { [name: string]: Model };
+      let localModels: { [name: string]: Model };
+      let remoteModels: { [name: string]: Model };
       if (!!builtinInputs.length) {
         builtinModels = await getBuiltinModels(builtinInputs);
       }
@@ -83,10 +83,10 @@ export async function databaseCreateCommand(inputs: string[], options: Options) 
       if (!!remoteInputs.length) {
         remoteModels = await getRemoteModels(remoteInputs);
       }
-      customModels = { ... builtinModels, ... localModels, ... remoteModels };
+      customModels = { ...builtinModels, ...localModels, ...remoteModels };
     }
     // sum up models
-    inputModels = { ... projectModels, ... customModels };
+    inputModels = { ...projectModels, ...customModels };
     // refine input models
     // assign gid if not defined
     // and check for duplication

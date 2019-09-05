@@ -23,9 +23,9 @@ export async function getModelsPackageVersion(): Promise<string> {
   return dependencies['@sheetbase/models'].replace('~', '').replace('^', '');
 }
 
-export async function loadProjectModels(): Promise<{[name: string]: Model}> {
+export async function loadProjectModels(): Promise<{ [name: string]: Model }> {
   // built-in models
-  let builtinModels: {[name: string]: Model} = {};
+  let builtinModels: { [name: string]: Model } = {};
   const { models: configBuiltinModels } = await getSheetbaseDotJson();
   if (!!configBuiltinModels) {
     builtinModels = await getBuiltinModels(
@@ -35,19 +35,19 @@ export async function loadProjectModels(): Promise<{[name: string]: Model}> {
   }
   // load models in 'models' folder
   const modelsPath = resolve('models');
-  let localModels: {[name: string]: Model} = {};
+  let localModels: { [name: string]: Model } = {};
   if (await pathExists(modelsPath)) {
     const filePaths = (await readdirAsync(modelsPath)).map(path => modelsPath + '/' + path);
     localModels = await getLocalModels(filePaths);
   }
   // all project models
-  return { ... builtinModels, ... localModels };
+  return { ...builtinModels, ...localModels };
 }
 
 export async function getBuiltinModels(
   items: Array<string | ModelExtended>,
   version = 'latest',
-): Promise<{[name: string]: Model}> {
+): Promise<{ [name: string]: Model }> {
   const models = {};
   // get models
   for (let i = 0; i < items.length; i++) {
@@ -56,7 +56,7 @@ export async function getBuiltinModels(
     let modelName = (typeof builtInModel === 'string') ?
       builtInModel : builtInModel.from;
     const data: Model = await getData(
-      `https://unpkg.com/@sheetbase/models@${ version }/models/${ modelName }.json`,
+      `https://unpkg.com/@sheetbase/models@${version}/models/${modelName}.json`,
     );
     // extends
     if (typeof builtInModel !== 'string') {
@@ -71,7 +71,7 @@ export async function getBuiltinModels(
     }
     // default sample data (for public table only)
     if (!!data.public && !data.dataUrl) {
-      data.dataUrl = `https://unpkg.com/@sheetbase/models@${ version }/data/${ modelName }.json`;
+      data.dataUrl = `https://unpkg.com/@sheetbase/models@${version}/data/${modelName}.json`;
     }
     // save to builtin
     models[modelName] = data;
@@ -81,7 +81,7 @@ export async function getBuiltinModels(
 
 export async function getLocalModels(
   filePaths: string[],
-): Promise<{[name: string]: Model}> {
+): Promise<{ [name: string]: Model }> {
   const models = {};
   for (let i = 0; i < filePaths.length; i++) {
     const filePath = filePaths[i].replace(/\\/g, '/');
@@ -94,7 +94,7 @@ export async function getLocalModels(
 
 export async function getRemoteModels(
   urls: string[],
-): Promise<{[name: string]: Model}> {
+): Promise<{ [name: string]: Model }> {
   const models = {};
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i];

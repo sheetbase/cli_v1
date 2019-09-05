@@ -8,25 +8,25 @@ import { Options } from './backend';
 
 export async function backendDeployCommand(options: Options) {
 
-    // load default google account
-    const googleClient = await getOAuth2Client();
-    if (!googleClient) {
-        return logError('GOOGLE__ERROR__NO_ACCOUNT');
-    }
+  // load default google account
+  const googleClient = await getOAuth2Client();
+  if (!googleClient) {
+    return logError('GOOGLE__ERROR__NO_ACCOUNT');
+  }
 
-    // load script id and deployment id
-    const { scriptId } = await getClaspConfigs();
-    const { backendUrl = '' } = await getFrontendConfigs();
-    const deploymentId = backendUrl
-        .replace('https://script.google.com/macros/s/', '')
-        .replace('/exec', '');
-    if (!scriptId || !deploymentId) {
-        return logError('BACKEND__ERROR__INVALID');
-    }
+  // load script id and deployment id
+  const { scriptId } = await getClaspConfigs();
+  const { backendUrl = '' } = await getFrontendConfigs();
+  const deploymentId = backendUrl
+    .replace('https://script.google.com/macros/s/', '')
+    .replace('/exec', '');
+  if (!scriptId || !deploymentId) {
+    return logError('BACKEND__ERROR__INVALID');
+  }
 
-    // update the web app
-    await gasWebappUpdate(googleClient, scriptId, deploymentId, null, options.message);
+  // update the web app
+  await gasWebappUpdate(googleClient, scriptId, deploymentId, null, options.message);
 
-    // done
-    logOk('BACKEND_DEPLOY__OK', true);
+  // done
+  logOk('BACKEND_DEPLOY__OK', true);
 }

@@ -7,23 +7,24 @@ import { Options } from './project';
 
 export async function projectBuildCommand(options?: Options) {
 
-    // backend
-    if (!options.frontend) {
-        // build backend
-        logInfo('Build the backend...');
-        exec('npm run build', 'backend');
-    }
+  // backend
+  if (!options.frontend) {
+    // build backend
+    logInfo('Build the backend...');
+    exec('npm run build', 'backend');
+  }
 
-    // frontend
-    if (!options.backend) {
-        // build frontend
-        logInfo('Build the frontend...');
-        await frontendBuildCommand();
-        // pre-render content
-        logInfo('Prerender the content...');
-        await frontendPrerenderCommand({});
-    }
+  // frontend
+  if (!options.backend) {
+    // build frontend
+    logInfo('Build the frontend...');
+    await frontendBuildCommand();
+    // pre-render content
+    logInfo('Prerender the content...');
+    await frontendPrerenderCommand({});
+  }
 
-    // done
-    logOk('PROJECT_BUILD__OK', true);
+  // done
+  logOk('PROJECT_BUILD__OK', true);
+
 }

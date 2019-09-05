@@ -1,14 +1,14 @@
 import { OAuth2Client } from 'google-auth-library';
 
 export interface FileCreationRequestBody {
-    name: string;
-    mimeType: string;
-    parents?: string[];
+  name: string;
+  mimeType: string;
+  parents?: string[];
 }
 
 export interface FileCopyRequestBody {
-    name: string;
-    parents?: string[];
+  name: string;
+  parents?: string[];
 }
 
 /**
@@ -18,18 +18,18 @@ export interface FileCopyRequestBody {
  * @param parents - Parent folders
  */
 export async function driveCreate(
-    client: OAuth2Client, name: string, mimeType: string, parents: string[] = [],
+  client: OAuth2Client, name: string, mimeType: string, parents: string[] = [],
 ): Promise<string> {
-    const requestData: FileCreationRequestBody = {
-        name, mimeType,
-    };
-    if(parents) requestData.parents = parents;
-    const { data } = await client.request<{id: string}>({
-        method: 'POST',
-        url: 'https://www.googleapis.com/drive/v3/files',
-        data: requestData,
-    });
-    return data.id;
+  const requestData: FileCreationRequestBody = {
+    name, mimeType,
+  };
+  if (parents) requestData.parents = parents;
+  const { data } = await client.request<{ id: string }>({
+    method: 'POST',
+    url: 'https://www.googleapis.com/drive/v3/files',
+    data: requestData,
+  });
+  return data.id;
 }
 
 /**
@@ -39,9 +39,9 @@ export async function driveCreate(
  * @param parents - Parent folders
  */
 export async function driveCreateFile(
-    client: OAuth2Client, name: string, mimeType: string, parents: string[] = [],
+  client: OAuth2Client, name: string, mimeType: string, parents: string[] = [],
 ): Promise<string> {
-    return driveCreate(client, name, mimeType, parents);
+  return driveCreate(client, name, mimeType, parents);
 }
 
 /**
@@ -50,9 +50,9 @@ export async function driveCreateFile(
  * @param parents - Parent folders
  */
 export async function driveCreateFolder(
-    client: OAuth2Client, name: string, parents: string[] = [],
+  client: OAuth2Client, name: string, parents: string[] = [],
 ): Promise<string> {
-    return driveCreate(client, name, 'application/vnd.google-apps.folder', parents);
+  return driveCreate(client, name, 'application/vnd.google-apps.folder', parents);
 }
 
 /**
@@ -62,40 +62,40 @@ export async function driveCreateFolder(
  * @param parents - Parent folders
  */
 export async function copyFile(
-    client: OAuth2Client, fileId: string, name: string, parents: string[] = [],
+  client: OAuth2Client, fileId: string, name: string, parents: string[] = [],
 ): Promise<string> {
-    const requestData: FileCopyRequestBody = {
-        name,
-    };
-    if(parents) requestData.parents = parents;
-    // copy the file
-    const { data } = await client.request<{id: string, parents: string[]}>({
-        method: 'POST',
-        url: `https://www.googleapis.com/drive/v3/files/${fileId}/copy?fields=id,parents`,
-        data: requestData,
-    });
-    return data.id;
+  const requestData: FileCopyRequestBody = {
+    name,
+  };
+  if (parents) requestData.parents = parents;
+  // copy the file
+  const { data } = await client.request<{ id: string, parents: string[] }>({
+    method: 'POST',
+    url: `https://www.googleapis.com/drive/v3/files/${fileId}/copy?fields=id,parents`,
+    data: requestData,
+  });
+  return data.id;
 }
 
 export async function driveTrash(
-    client: OAuth2Client, fileId: string,
+  client: OAuth2Client, fileId: string,
 ): Promise<any> {
-    const { data } = await client.request({
-        method: 'PATCH',
-        url: `https://www.googleapis.com/drive/v3/files/${fileId}`,
-        data: {
-            trashed: true,
-        },
-    });
-    return data;
+  const { data } = await client.request({
+    method: 'PATCH',
+    url: `https://www.googleapis.com/drive/v3/files/${fileId}`,
+    data: {
+      trashed: true,
+    },
+  });
+  return data;
 }
 
 export async function driveRemove(
-    client: OAuth2Client, fileId: string,
+  client: OAuth2Client, fileId: string,
 ): Promise<any> {
-    const { data } = await client.request({
-        method: 'DELETE',
-        url: `https://www.googleapis.com/drive/v3/files/${fileId}`,
-    });
-    return data;
+  const { data } = await client.request({
+    method: 'DELETE',
+    url: `https://www.googleapis.com/drive/v3/files/${fileId}`,
+  });
+  return data;
 }

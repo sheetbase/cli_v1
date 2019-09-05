@@ -11,7 +11,7 @@ import { Options } from './database';
 
 export async function databaseExportCommand(params: string[], options: Options) {
   const isProject = await isValid();
-  const [ tableName, customDir ] = params;
+  const [tableName, customDir] = params;
 
   // no table name
   if (!tableName) {

@@ -4,26 +4,26 @@ import { projectConfigExportCommand } from './project-config-export';
 import { projectConfigsCommand } from './project-configs';
 
 export async function projectConfigCommand(command: string, params: string[]) {
-    switch (command) {
-        case 'update':
-        case 'set':
-            await projectConfigUpdateCommand(params);
-        break;
+  switch (command) {
+    case 'update':
+    case 'set':
+      await projectConfigUpdateCommand(params);
+      break;
 
-        case 'import':
-        case 'im':
-            await projectConfigImportCommand(params.shift());
-        break;
+    case 'import':
+    case 'im':
+      await projectConfigImportCommand(params.shift());
+      break;
 
-        case 'export':
-        case 'ex':
-            await projectConfigExportCommand();
-        break;
+    case 'export':
+    case 'ex':
+      await projectConfigExportCommand();
+      break;
 
-        case 'list':
-        case 'ls':
-        default:
-            await projectConfigsCommand();
-        break;
-    }
+    case 'list':
+    case 'ls':
+    default:
+      await projectConfigsCommand();
+      break;
+  }
 }

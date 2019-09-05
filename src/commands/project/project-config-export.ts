@@ -6,17 +6,17 @@ import { getSheetbaseDotJson } from '../../services/project';
 import { logOk } from '../../services/message';
 
 export async function projectConfigExportCommand() {
-    // get the path
-    const fileName = buildValidFileName(
-        'configs-exported-' + new Date().toISOString().split('T').shift(),
-    ) + '.json';
-    const savingPath = resolve('__exported__', fileName);
+  // get the path
+  const fileName = buildValidFileName(
+    'configs-exported-' + new Date().toISOString().split('T').shift(),
+  ) + '.json';
+  const savingPath = resolve('__exported__', fileName);
 
-    // export data
-    const { configs } = await getSheetbaseDotJson();
-    await ensureFile(savingPath);
-    await writeJson(savingPath, configs, { spaces: 3 });
+  // export data
+  const { configs } = await getSheetbaseDotJson();
+  await ensureFile(savingPath);
+  await writeJson(savingPath, configs, { spaces: 3 });
 
-    // done
-    logOk('PROJECT_CONFIG_EXPORT__OK', true, [ savingPath ]);
+  // done
+  logOk('PROJECT_CONFIG_EXPORT__OK', true, [savingPath]);
 }

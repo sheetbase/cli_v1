@@ -13,7 +13,7 @@ export async function databaseListCommand() {
       const { gid, schema, public: isPublic } = models[key];
       console.log('\n + ' +
         green(key) +
-        ` [${ blue('' + (gid || 'auto')) }]` +
+        ` [${blue('' + (gid || 'auto'))}]` +
         (isPublic ? ' (public)' : ''),
       );
       // preview
