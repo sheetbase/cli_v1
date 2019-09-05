@@ -86,13 +86,13 @@ export async function projectStartCommand(params: string[], options?: Options) {
 
 async function resolveResource(resource?: string) {
     /**
-     * n/a > blank@latest
+     * n/a > starter@latest
      * name > name@latest
      * name@ver > name@ver
      * <name>/<repo>@ver
      * full zip url > full zip url
      */
-    resource = (resource || 'sheetbase-themes/blank').replace('@latest', '');
+    resource = (resource || 'sheetbase-themes/starter').replace('@latest', '');
     if (!resource.endsWith('.git') && !resource.endsWith('.zip')) {
         // add repo org
         if (resource.indexOf('/') < 0) {
