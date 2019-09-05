@@ -153,13 +153,13 @@ export const LOGS = {
     PROJECT_START__OK__THEME: (name: string, options: any) => {
         let message = 'Sheetbase theme project created, next steps:';
         message += EOL + '    + Go to the project: ' + magenta('cd ' + name);
-        if (!options.setup) {
+        if (options.notSetup) {
             message += EOL + '    + Setup automatically: ' + magenta('sheetbase setup');
         }
         if (!options.install) {
             message += EOL + '    + Install packages: ' + magenta('sheetbase backend install && sheetbase frontend install');
         }
-        message += EOL + '    + Great, start developing :)';
+        message += EOL + '    + Great, now start developing :)';
         return message;
     },
     PROJECT_START__OK__NOT_THEME: (name: string, options: any) => {
@@ -168,7 +168,7 @@ export const LOGS = {
         if (!options.install) {
             message += EOL + '    + Install packages: ' + magenta('npm install');
         }
-        message += EOL + '    + Great, start developing :)';
+        message += EOL + '    + Great, now start developing :)';
         return message;
     },
     PROJECT_URL__OK: (name: string, url: string) => `Link of ${green(name)}: ${blue(url)}\n    + To open, include "-o" flag.`,
