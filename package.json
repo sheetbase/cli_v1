@@ -15,13 +15,8 @@
     "sheetbase": "./src/index.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && npm i -g --loglevel=error",
-    "build-fresh": "npm cache clean --force && npm i && npm run build",
-    "before-usage": "npm i --save-dev ucfirst extract-comments parse-comments@0.4.3",
-    "after-usage": "npm un --save-dev ucfirst extract-comments parse-comments",
-    "usage": "npm run before-usage && tsc src/usage.ts --lib es2018,dom && node src/usage.js && npm run after-usage",
-    "api": "typedoc ./src --out ./docs/api --mode file --target ES5 --ignoreCompilerErrors --readme none",
-    "docs": "npm run usage && npm run api",
+    "build": "tsc -p tsconfig.json && npm i -g",
+    "docs": "tsc usage/usage.ts --lib es2018 && node usage/usage.js && typedoc ./src --out ./docs --mode file --target ES5 --ignoreCompilerErrors --readme none",
     "lint": "tslint --project tslint.json && echo 'All files pass linting.'",
     "test": "tsc -p tsconfig.json && nyc --cache false mocha tests/*.js",
     "coverage": "nyc --cache false report --reporter=text-lcov | coveralls"

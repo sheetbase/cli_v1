@@ -78,6 +78,5 @@ for (const command of comments) {
     }
   }
 }
-// console.log(readme.join('\n'));
-fsExtra.outputFileSync('./docs/usage.md', readme.join('\n'));
-console.log('\nWrite ... ./docs/usage.md');
+fsExtra.outputFileSync('./usage.md', readme.join('\n'));
+console.log('\nWrite ... ./usage.md');
