@@ -5,9 +5,9 @@ import { driveCreateFolder } from '../../services/drive';
 import { gasCreate, gasWebappInit } from '../../services/gas';
 import { getOAuth2Client } from '../../services/google';
 import {
-    setInitialConfigs,
     getSheetbaseDotJson,
     setSheetbaseDotJson,
+    resetConfigs,
     setConfigs,
 } from '../../services/project';
 import { setClaspConfigs, getClaspConfigs } from '../../services/clasp';
@@ -30,20 +30,17 @@ export async function projectSetupCommand(options: Options) {
     // clear configs
     if (options.fresh) {
         await logAction('Reset configs', async () => {
-            await setInitialConfigs(name);
+            await resetConfigs(name);
         });
     }
 
     // load current configs
-    let {
-        projectId,
-        configs: { frontend: { backendUrl = null } = {}} = {},
-        // tslint:disable-next-line:prefer-const
-        setupHooks, configs: { backend = {}, frontend = {}} = {},
-    } = await getSheetbaseDotJson();
     let { scriptId } = await getClaspConfigs();
+    const projectConfigs = await getSheetbaseDotJson();
+    const { backend = {}, frontend = {} } = projectConfigs.configs;
 
     // drive folder
+    let projectId = projectConfigs.projectId;
     if (!projectId) {
         await logAction('Create the Drive folder', async () => {
             projectId = await driveCreateFolder(googleClient, `Sheetbase: ${namePretty}`);
@@ -52,12 +49,12 @@ export async function projectSetupCommand(options: Options) {
     }
 
     // backend
+    let backendUrl = frontend.backendUrl;
     if (!scriptId) {
         await logAction('Create the backend script', async () => {
             scriptId = await gasCreate(googleClient, `${namePretty} Backend`, projectId);
             await setClaspConfigs({ scriptId }, true);
         });
-
         // deploy backend
         if (!backendUrl) {
             await logAction('Initial deploy the backend', async () => {
@@ -69,6 +66,7 @@ export async function projectSetupCommand(options: Options) {
     }
 
     // hooks
+    const setupHooks = projectConfigs.setupHooks;
     if (!!setupHooks) {
         const builtinHooks = new BuiltinHooks({
             googleClient,

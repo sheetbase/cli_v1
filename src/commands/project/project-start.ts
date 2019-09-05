@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { buildValidFileName } from '../../services/utils';
 import { download, unzip, unwrap } from '../../services/file';
-import { setInitialConfigs, getBackendConfigs } from '../../services/project';
+import { getConfigs } from '../../services/project';
 import { exec } from '../../services/command';
 import { logError, logOk, logAction } from '../../services/message';
 
@@ -44,18 +44,14 @@ export async function projectStartCommand(params: string[], options?: Options) {
     // finalize for theme
     if (await pathExists(deployPath + '/sheetbase.json')) {
 
-        // reset configs
-        await logAction('Initial config the project', async () => {
-            await setInitialConfigs(name, deployPath);
-        });
-
         // run setup
         if (!options.notSetup) {
-            exec('sheetbase setup', deployPath);
+            exec('sheetbase setup --fresh', deployPath);
         }
 
         // create models
-        const { databaseId } = await getBackendConfigs(deployPath);
+        const { backend, frontend } = await getConfigs(deployPath);
+        const databaseId = backend.databaseId || frontend.databaseId;
         if (!!databaseId) {
             exec('sheetbase db create * --data', deployPath);
         }
